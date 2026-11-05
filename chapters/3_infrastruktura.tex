@@ -1,23 +1,21 @@
-\chapter{Rekonesans infrastruktury IT i sieciowej}\label{ch:infrastruktura}
+\chapter{Pasywny rekonesans infrastruktury sieciowej i protokołów}\label{ch:infrastruktura}
 
-\section{Przestrzeń adresowa IP i systemy autonomiczne}\label{sec:asn-ip}
-\subsection{Identyfikacja numerów ASN i bloków adresowych BGP}\label{subsec:asn-bgp}
-\subsection{Geolokalizacja i routing sieci szkieletowej}\label{subsec:routing}
+\section{Przestrzeń adresowa IP i routing autonomiczny}\label{sec:asn-ip}
+\subsection{System autonomiczny AS559 (SWITCH / ETH Zürich) i prefiksy BGP}\label{subsec:asn-bgp}
+\subsection{Pule adresowe IPv4 i IPv6 dedykowane dla sieci D-INFK}\label{subsec:pule-ip}
 
-\section{Domeny i subdomeny powiązane z jednostką}\label{sec:domeny-subdomeny}
-\subsection{Struktura domeny głównej i stref wydziałowych}\label{subsec:strefy-domenowe}
-\subsection{Enumeracja subdomen jednostek badawczych i projektowych}\label{subsec:enumeracja-subdomen}
+\section{Analiza rejestracyjna WHOIS i RDAP}\label{sec:whois-rdap}
+\subsection{Wpisy rejestracyjne domeny głównej oraz bloków adresowych}\label{subsec:whois-domeny-ip}
+\subsection{Historia rejestracji i kontakty techniczne oraz operacyjne}\label{subsec:whois-historia}
 
-\section{Analiza konfiguracji DNS i bezpieczeństwa poczty}\label{sec:dns}
-\subsection{Rekordy zasobów (A, AAAA, CNAME, MX, NS, TXT, SRV)}\label{subsec:rekordy-dns}
-\subsection{Mechanizmy ochrony poczty elektronicznej (SPF, DKIM, DMARC)}\label{subsec:ochrona-poczty}
+\section{Konfiguracja DNS i bezpieczeństwo protokołów pocztowych}\label{sec:dns-poczta}
+\subsection{Analiza rekordów strefy DNS (NS, MX, A, AAAA, TXT)}\label{subsec:rekordy-dns}
+\subsection{Weryfikacja mechanizmów ochrony poczty (SPF, DKIM, rygor polityki DMARC)}\label{subsec:ochrona-poczty-dmarc}
 
 \section{Analiza certyfikatów kryptograficznych TLS}\label{sec:certyfikaty-tls}
-\subsection{Eksploracja logów Certificate Transparency (crt.sh)}\label{subsec:ct-logs}
-\subsection{Urzędy certyfikacji, parametry kluczy i wygasłe certyfikaty}\label{subsec:analiza-certyfikatow}
+\subsection{Pasywna eksploracja logów Certificate Transparency (crt.sh)}\label{subsec:ct-logs}
+\subsection{Urzędy certyfikacji, parametry kryptograficzne i historia wystawień}\label{subsec:analiza-certyfikatow}
 
-\section{Ekspozycja serwerów i usług sieciowych}\label{sec:uslugi-sieciowe}
-\subsection{Dane z wyszukiwarek zasobów internetowych (Shodan, Censys)}\label{subsec:shodan-censys}
-\subsection{Identyfikacja technologii webowych, nagłówków HTTP i banerów usług}\label{subsec:technologie-web}
-\subsection{Systemy uwierzytelniania, portale logowania, VPN i repozytoria kodu}\label{subsec:portale-logowania}
-
+\section{Pasywna ekspozycja portów i usług w wyszukiwarkach sieciowych}\label{sec:shodan-censys}
+\subsection{Wyniki z wyszukiwarek Shodan i Censys na poziomie warstwy L4}\label{subsec:wyniki-shodan-censys}
+\subsection{Wykryte otwarte porty, usługi zdalnego dostępu i banery protokołów}\label{subsec:banery-uslug}

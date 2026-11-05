@@ -11,7 +11,7 @@ Project documentation for the **Advanced Network and Web Application Penetration
 - Aliaksei Lapachuk (276711)
 - Karyna Zahorskaya (272302)
 
-**Supervisor:** mgr inż. Bartłomiej Aleksander Balcerek
+**Supervisor:** mgr inż. Bartłomiej Balcerek
 
 ## Repository Structure
 
@@ -28,14 +28,13 @@ frontmatter/
   titlepage.tex                       title page layout
   abbreviations.tex                   list of abbreviations and acronyms
 chapters/
-  1_wstep.tex                         Introduction and research methodology
-  2_organizacja.tex                   Organizational, financial, and business information
-  3_infrastruktura.tex                IT and network infrastructure reconnaissance
-  4_archiwa_metadane.tex              Historical records, archives, and document metadata
-  5_slady_cyfrowe.tex                 Digital footprints, social media, and personnel
-  6_powierzchnia_ataku.tex            Attack surface analysis and potential threats
-  7_socjotechnika.tex                 Proposed social engineering attack scenarios
-  8_podsumowanie.tex                  Summary and security recommendations
+  1_wstep.tex                         Introduction, theoretical foundations, and OSINT methodology
+  2_organizacja.tex                   Organizational profile, economics, and physical environment
+  3_infrastruktura.tex                Passive network infrastructure and protocol reconnaissance
+  4_domeny_web.tex                    Passive web asset enumeration and application analysis
+  5_personel_slady.tex                Personnel, digital footprints, document metadata, and repositories
+  6_socjotechnika.tex                 Attack surface analysis and social engineering attack scenarios
+  7_podsumowanie.tex                  Summary, defensive recommendations, and conclusions
 appendices/
   A_przykladowy.tex                   Additional reconnaissance materials and raw data
 bib/
@@ -48,4 +47,3 @@ logos/                                university logos
 ## Build
 
 The document is automatically compiled to `APNWA-OSINT.pdf` and published to GitHub Releases and GitHub Pages via the GitHub Actions CI/CD workflow (`.github/workflows/compile.yml`) on every push to `main`.
-
