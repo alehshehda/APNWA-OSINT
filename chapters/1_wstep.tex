@@ -6,7 +6,7 @@
 
 Jako obiekt docelowy pasywnego rekonesansu bezpieczeństwa wybrano Wydział Informatyki Politechniki Federalnej w Zurychu (\textit{Department of Computer Science - D-INFK}, \textit{Departement Informatik}) \cite{eth_dinfk}. Założona w 1981 roku jednostka należy do ścisłej czołówki światowych instytucji naukowo-dydaktycznych w dziedzinie informatyki, zajmując czołowe miejsca w renomowanych zestawieniach akademickich, w tym pierwsze miejsce w Europie kontynentalnej według rankingu \textit{QS World University Rankings by Subject} \cite{qs_ranking_cs}. Wydział prowadzi zaawansowane badania w ramach wielu wyspecjalizowanych instytutów i laboratoriów, obejmujących m.in. bezpieczeństwo informacji, systemy komputerowe, uczenie maszynowe, systemy rozproszone oraz algorytmikę.
 
-Z~perspektywy analityki zagrożeń oraz modelowania powierzchni ataku, D-INFK stanowi reprezentatywny obiekt badawczy z~następujących powodów:
+Z perspektywy analityki zagrożeń oraz modelowania powierzchni ataku, D-INFK stanowi reprezentatywny obiekt badawczy z następujących powodów:
 \begin{enumerate}
     \item \textbf{Częściowa autonomia teleinformatyczna:} Poza ogólnouczelnianą infrastrukturą centralną ETH, wydział posiada własny, autonomiczny zespół wsparcia teleinformatycznego (\textit{IT Service Group - ISG D-INFK}), który administruje dedykowanymi serwerami, stacjami roboczymi, laboratoriami studenckimi oraz klastrami obliczeniowymi wysokiej wydajności.
     \item \textbf{Zasada otwartości akademickiej (\textit{Open Science}):} Specyfika działalności naukowej wymusza publiczne udostępnianie repozytoriów kodu źródłowego, publikacji, danych badawczych oraz szczegółowych konspektów dydaktycznych, co naturalnie generuje obszerny ślad cyfrowy w sieci.
@@ -28,24 +28,14 @@ Zgodnie z przyjętymi regułami elementy infrastruktury nadrzędnej podlegają a
 
 \subsection{Pojęcie białego wywiadu, hierarchia informacji i efekt mozaiki}\label{subsec:definicja-osint}
 
-Biały wywiad (\textit{Open-Source Intelligence - OSINT}) definiuje się jako dyscyplinę wywiadowczą polegającą na legalnym pozyskiwaniu, przetwarzaniu i analitycznej interpretacji informacji pochodzących ze źródeł jawnych i ogólnodostępnych w celu wytworzenia konkretnej wiedzy operacyjnej \cite{bazzell2023,nist_sp800_115}. W kontekście inżynierii bezpieczeństwa oraz testów penetracyjnych OSINT nie sprowadza się do biernego gromadzenia wycinków danych, lecz stanowi usystematyzowany proces transformacji poznawczej oparty na trzystopniowej hierarchii:
+Biały wywiad (\textit{Open-Source Intelligence - OSINT}) definiuje się jako dyscyplinę wywiadowczą polegającą na legalnym pozyskiwaniu, przetwarzaniu i analitycznej interpretacji informacji pochodzących ze źródeł jawnych i ogólnodostępnych w celu wytworzenia konkretnej wiedzy operacyjnej \cite{bazzell2023,nist_sp800_115}. W inżynierii bezpieczeństwa OSINT polega na ustrukturyzowanym przetwarzaniu surowych danych w trzystopniowym modelu:
 \begin{enumerate}
-    \item \textbf{Dane surowe (\textit{Raw Data}):} Pojedyncze, niepowiązane fakty techniczne lub organizacyjne, np. adres IP serwera, nazwisko badacza w~stopce artykułu, wersja biblioteki w~repozytorium czy numer rozstrzygniętego przetargu.
-    \item \textbf{Informacja (\textit{Information}):} Dane poddane wstępnej selekcji, oczyszczeniu i~uporządkowaniu kontekstowemu, np. powiązanie adresu IP z~konkretną subdomeną oraz zidentyfikowanym nagłówkiem serwera WWW.
-    \item \textbf{Wiedza operacyjna (\textit{Actionable Intelligence}):} Wnioski o~wysokim stopniu korelacji, wskazujące konkretne wektory ryzyka lub podatności, które mogą zostać wykorzystane przez zespół audytorski lub potencjalnego adwersarza do zaplanowania precyzyjnych działań penetracyjnych lub scenariuszy socjotechnicznych.
-\end{enumerate}
-
-Podstawowym mechanizmem w~analityce OSINT jest efekt mozaiki informacyjnej (\textit{Mosaic Effect}). Zjawisko to polega na tym, że pojedyncze fragmenty informacji, które rozpatrywane w~izolacji wydają się całkowicie nieszkodliwe i~zgodne z~zasadami ochrony informacji (np. ogłoszenie o~zamówieniu serwerów, instrukcja konfiguracji VPN dla studentów, publiczny profil naukowca na platformie zawodowej), po zestawieniu w~jeden graf relacji ujawniają krytyczne szczegóły wewnętrznej architektury teleinformatycznej organizacji oraz hierarchii uprawnień personelu. Integralną częścią tego procesu jest analiza niezamierzonych wycieków operacyjnych (\textit{OPSEC leakage}), powstających podczas rutynowej działalności pracowników jednostki.
-
-\subsection{Cykl wywiadowczy w analizie bezpieczeństwa teleinformatycznego}\label{subsec:cykl-wywiadowczy}
-
-Proces zbierania informacji ze źródeł jawnych zorganizowano zgodnie z cyklem wywiadowczym zaadaptowanym do metodyk testów penetracyjnych, w~szczególności standardu PTES (\textit{Penetration Testing Execution Standard}) w~fazie \textit{Intelligence Gathering}~\cite{ptes2014}. Cykl ten składa się z~pięciu powtarzalnych faz:
     \item \textbf{Dane surowe (\textit{Raw Data}):} Pojedyncze, niepowiązane fakty techniczne lub organizacyjne, np. adres IP serwera, nazwisko badacza w stopce artykułu, wersja biblioteki w repozytorium czy numer rozstrzygniętego przetargu.
     \item \textbf{Informacja (\textit{Information}):} Dane poddane wstępnej selekcji, oczyszczeniu i uporządkowaniu kontekstowemu, np. powiązanie adresu IP z konkretną subdomeną \code{isg.inf.ethz.ch} oraz zidentyfikowanym nagłówkiem serwera WWW.
     \item \textbf{Wiedza operacyjna (\textit{Actionable Intelligence}):} Wnioski o wysokim stopniu korelacji, wskazujące konkretne wektory ryzyka lub podatności, które mogą zostać wykorzystane przez zespół audytorski (lub potencjalnego adwersarza) do zaplanowania precyzyjnych działań penetracyjnych lub scenariuszy socjotechnicznych.
 \end{enumerate}
 
-Podstawowym mechanizmem w analityce OSINT jest tzw. \textbf{efekt mozaiki informacyjnej} (\textit{Mosaic Effect}). Zjawisko to polega na tym, że pojedyncze fragmenty informacji, które rozpatrywane w izolacji wydają się całkowicie nieszkodliwe i zgodne z zasadami ochrony informacji (np. ogłoszenie o zamówieniu serwerów, instrukcja konfiguracji VPN dla studentów, publiczny profil naukowca na platformie zawodowej), po zestawieniu w jeden graf relacji ujawniają krytyczne szczegóły wewnętrznej architektury teleinformatycznej organizacji oraz hierarchii uprawnień personelu. Integralną częścią tego procesu jest analiza niezamierzonych wycieków operacyjnych (\textit{OPSEC leakage}), powstających podczas rutynowej działalności pracowników jednostki.
+Kluczową rolę w analityce OSINT odgrywa efekt mozaiki (\textit{Mosaic Effect}). Dane nieszkodliwe w izolacji (np. parametry przetargu na serwery, instrukcja konfiguracji VPN, profile pracowników) po skorelowaniu w graf relacji odsłaniają architekturę sieciową i strukturę uprawnień w organizacji. Integralną częścią tego procesu jest analiza niezamierzonych wycieków operacyjnych (\textit{OPSEC leakage}), powstających podczas rutynowej działalności pracowników jednostki.
 
 \subsection{Cykl wywiadowczy w analizie bezpieczeństwa teleinformatycznego}\label{subsec:cykl-wywiadowczy}
 
@@ -103,7 +93,7 @@ Dla zachowania pełnej anonimowości osób z drugiej grupy, w całym dokumencie 
 
 \section{Metodyka operacyjna i klasyfikacja wektorów rozpoznania}\label{sec:warsztat-narzedziowy}
 
-W celu zapewnienia powtarzalności badań i systematycznego pokrycia powierzchni ekspozycji wydziału D-INFK, procedurę badawczą podzielono na trzy spójne filary metodologiczne. Podział ten bezpośrednio przekłada się na strukturę dalszych rozdziałów raportu:
+Procedurę badawczą podzielono na trzy obszary tematyczne odpowiadające strukturze kolejnych rozdziałów raportu:
 \begin{itemize}
     \item \textbf{Filar I: Wywiad organizacyjno-gospodarczy i osobowy} stanowi podstawę rozdziału \ref{ch:organizacja} (analiza struktury, budynków, grantów SNSF i przetargów simap.ch w warstwach L1-L4) oraz rozdziału \ref{ch:personel-slady} (analiza personelu, adresacji e-mail i śladów SOCMINT).
     \item \textbf{Filar II: Pasywny rekonesans sieciowo-domenowy i webowy} odpowiada rozdziałowi \ref{ch:infrastruktura} (analiza routingu BGP, systemów autonomicznych AS559, rejestrów WHOIS, DNS i bezpieczeństwa poczty na poziomach L3/L4) oraz rozdziałowi \ref{ch:domeny-web} (pasywna enumeracja subdomen i identyfikacja technologii WWW na poziomie aplikacji L7).
