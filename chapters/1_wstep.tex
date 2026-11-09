@@ -1,19 +1,163 @@
 \chapter{Wstęp, podstawy teoretyczne i metodyka OSINT}\label{ch:wstep}
 
 \section{Cel i zakres projektu}\label{sec:cel-zakres}
+
 \subsection{Uzasadnienie wyboru celu (ETH Zürich - D-INFK)}\label{subsec:wybor-celu}
-\subsection{Formalne granice rekonesansu i reguły rozszerzania zakresu}\label{subsec:granice-zakresu}
+
+Jako obiekt docelowy pasywnego rekonesansu bezpieczeństwa wybrano Wydział Informatyki Politechniki Federalnej w~Zurychu (\textit{Department of Computer Science - D-INFK}, \textit{Departement Informatik})~\cite{eth_dinfk}. Założona w~1981 roku jednostka należy do ścisłej czołówki światowych instytucji naukowo-dydaktycznych w~dziedzinie informatyki, zajmując czołowe miejsca w~renomowanych zestawieniach akademickich, w~tym pierwsze miejsce w~Europie kontynentalnej według rankingu \textit{QS World University Rankings by Subject}~\cite{qs_ranking_cs}. Wydział prowadzi zaawansowane badania w~ramach wielu wyspecjalizowanych instytutów i~laboratoriów, obejmujących m.in. bezpieczeństwo informacji, systemy komputerowe, uczenie maszynowe, systemy rozproszone oraz algorytmikę.
+
+Z~perspektywy analityki zagrożeń (\textit{Threat Intelligence}) oraz modelowania powierzchni ataku (\textit{Attack Surface Management}), D-INFK stanowi reprezentatywny obiekt badawczy z~następujących powodów:
+\begin{enumerate}
+    \item \textbf{Częściowa autonomia teleinformatyczna:} Poza ogólnouczelnianą infrastrukturą centralną ETH, wydział posiada własny, autonomiczny zespół wsparcia teleinformatycznego (\textit{IT Service Group - ISG D-INFK}), który administruje dedykowanymi serwerami, stacjami roboczymi, laboratoriami studenckimi oraz klastrami obliczeniowymi wysokiej wydajności.
+    \item \textbf{Zasada otwartości akademickiej (\textit{Open Science}):} Specyfika działalności naukowej wymusza publiczne udostępnianie repozytoriów kodu źródłowego, publikacji, danych badawczych oraz szczegółowych konspektów dydaktycznych, co naturalnie generuje obszerny ślad cyfrowy w~sieci.
+    \item \textbf{Wielowymiarowy obieg gospodarczy i~grantowy:} Wydział zarządza znaczącymi środkami finansowymi pochodzącymi ze źródeł publicznych (Szwajcarska Narodowa Fundacja Nauki - SNSF, programy ramowe Unii Europejskiej) oraz z~kontraktów z~wiodącymi partnerami przemysłowymi, co generuje publicznie dostępną dokumentację przetargową i~finansową.
+    \item \textbf{Wysoka rotacja kadr i~zróżnicowanie tożsamości:} Stały napływ międzynarodowych naukowców, doktorantów, stażystów i~studentów prowadzi do dużej zmienności tożsamości cyfrowych i~podatności na wektory socjotechniczne oparte na podszywaniu się pod wewnętrzne procedury administracyjne.
+\end{enumerate}
+
+\subsection{Formalne granice rekonesansu i punkty styku z infrastrukturą nadrzędną}\label{subsec:granice-zakresu}
+
+W~celu zapewnienia pełnej zgodności z~przyjętymi regułami zaangażowania (\textit{Rules of Engagement - RoE}) zakres prac analitycznych został precyzyjnie ograniczony do poziomu wydziału D-INFK, wykluczając pełny audyt całej politechniki ETH Zürich. W~związku z~tym wprowadzono formalny podział aktywów na dwa obszary operacyjne:
+\begin{itemize}
+    \item \textbf{Obszar bezpośredni (\textit{In-Scope}):} Domeny i~subdomeny w~przestrzeni nazw \code{*.inf.ethz.ch}, domeny dedykowane instytutom wydziałowym (np. \code{systems.ethz.ch}, \code{vis.ethz.ch}), serwisy utrzymywane przez grupę ISG D-INFK (w~tym \code{isg.inf.ethz.ch}, \code{gitlab.inf.ethz.ch}), publicznie dostępne dane personelu afiliowanego przy D-INFK, budynki wydziałowe (m.in. kompleksy CAB, CHN, CNB) oraz powiązane zamówienia publiczne i~granty.
+    \item \textbf{Obszar infrastruktury nadrzędnej (\textit{Shared Infrastructure Touchpoints}):} Ogólnouczelniane zasoby ETH Zürich oraz operatora sieci akademickiej SWITCH, takie jak system autonomiczny \code{AS559}, nadrzędna domena \code{ethz.ch}, centralne serwery pocztowe MX oraz uczelniany dostawca tożsamości \textit{Switch edu-ID / AAI}.
+\end{itemize}
+
+Zgodnie z~przyjętymi regułami elementy infrastruktury nadrzędnej podlegają analizie \textbf{wyłącznie w~punktach bezpośredniego styku} z~systemami wydziału D-INFK. Przykładowo, konfiguracja rekordów SPF i~polityki DMARC domeny \code{ethz.ch} jest badana jedynie pod kątem stopnia ochrony adresów e-mail pracowników D-INFK przed podszywaniem się (\textit{spoofing}), a~federacyjny system logowania jest analizowany wyłącznie jako docelowy panel uwierzytelniania użytkowników wydziałowych.
 
 \section{Podstawy teoretyczne białego wywiadu (OSINT)}\label{sec:podstawy-teoretyczne}
-\subsection{Definicja i taksonomia źródeł jawnych w cyberbezpieczeństwie}\label{subsec:definicja-osint}
+
+\subsection{Pojęcie białego wywiadu, hierarchia informacji i efekt mozaiki}\label{subsec:definicja-osint}
+
+Biały wywiad (\textit{Open-Source Intelligence - OSINT}) definiuje się jako dyscyplinę wywiadowczą polegającą na legalnym pozyskiwaniu, przetwarzaniu i~analitycznej interpretacji informacji pochodzących ze źródeł jawnych i~ogólnodostępnych w~celu wytworzenia konkretnej wiedzy operacyjnej~\cite{bazzell2023,nist_sp800_115}. W~kontekście inżynierii bezpieczeństwa oraz testów penetracyjnych OSINT nie sprowadza się do biernego gromadzenia wycinków danych, lecz stanowi usystematyzowany proces transformacji poznawczej oparty na trzystopniowej hierarchii:
+\begin{enumerate}
+    \item \textbf{Dane surowe (\textit{Raw Data}):} Pojedyncze, niepowiązane fakty techniczne lub organizacyjne, np. adres IP serwera, nazwisko badacza w~stopce artykułu, wersja biblioteki w~repozytorium czy numer rozstrzygniętego przetargu.
+    \item \textbf{Informacja (\textit{Information}):} Dane poddane wstępnej selekcji, oczyszczeniu i~uporządkowaniu kontekstowemu, np. powiązanie adresu IP z~konkretną subdomeną \code{isg.inf.ethz.ch} oraz zidentyfikowanym nagłówkiem serwera WWW.
+    \item \textbf{Wiedza operacyjna (\textit{Actionable Intelligence}):} Wnioski o~wysokim stopniu korelacji, wskazujące konkretne wektory ryzyka lub podatności, które mogą zostać wykorzystane przez zespół audytorski (lub potencjalnego adwersarza) do zaplanowania precyzyjnych działań penetracyjnych lub scenariuszy socjotechnicznych.
+\end{enumerate}
+
+Podstawowym mechanizmem w~analityce OSINT jest tzw. \textbf{efekt mozaiki informacyjnej} (\textit{Mosaic Effect}). Zjawisko to polega na tym, że pojedyncze fragmenty informacji, które rozpatrywane w~izolacji wydają się całkowicie nieszkodliwe i~zgodne z~zasadami ochrony informacji (np. ogłoszenie o~zamówieniu serwerów, instrukcja konfiguracji VPN dla studentów, publiczny profil naukowca na platformie zawodowej), po zestawieniu w~jeden graf relacji ujawniają krytyczne szczegóły wewnętrznej architektury teleinformatycznej organizacji oraz hierarchii uprawnień personelu. Integralną częścią tego procesu jest analiza niezamierzonych wycieków operacyjnych (\textit{OPSEC leakage}), powstających podczas rutynowej działalności pracowników jednostki.
+
 \subsection{Cykl wywiadowczy w analizie bezpieczeństwa teleinformatycznego}\label{subsec:cykl-wywiadowczy}
-\subsection{Różnice operacyjne między rekonesansem pasywnym a aktywnym}\label{subsec:pasywny-vs-aktywny}
 
-\section{Ramy prawne, etyczne i polityka anonimizacji}\label{sec:etyka-anonimizacja}
-\subsection{Zgodność z regulaminem projektu i przepisami prawa (FADP / RODO)}\label{subsec:zgodnosc-prawna}
-\subsection{Zasady anonimizacji danych osobowych w raporcie i prezentacji}\label{subsec:zasady-anonimizacji}
+Proces zbierania informacji ze źródeł jawnych zorganizowano zgodnie z~klasycznym cyklem wywiadowczym zaadaptowanym do metodyk testów penetracyjnych, w~szczególności standardu PTES (\textit{Penetration Testing Execution Standard}) w~fazie \textit{Intelligence Gathering}~\cite{ptes2014}. Cykl ten składa się z~pięciu powtarzalnych faz:
+\begin{enumerate}
+    \item \textbf{Planowanie i~kierowanie (\textit{Planning \& Direction}):} Sprecyzowanie założeń badania, ustalenie granic odpowiedzialności (\textit{RoE}) oraz zdefiniowanie priorytetowych wymagań wywiadowczych dotyczących struktury D-INFK, wykorzystywanych technologii i~procedur autoryzacji.
+    \item \textbf{Gromadzenie danych (\textit{Collection}):} Pasywne pozyskiwanie surowych rekordów DNS, metadanych plików, wpisów w~rejestrach WHOIS/BGP, logów przejrzystości certyfikatów (\textit{Certificate Transparency}) oraz danych z~serwisów społecznościowych i~repozytoriów kodu.
+    \item \textbf{Przetwarzanie i~normalizacja (\textit{Processing}):} Ekstrakcja metadanych z~pobranych dokumentów, parsowanie nagłówków sieciowych, deduplikacja wykrytych subdomen oraz weryfikacja aktualności zidentyfikowanych wpisów.
+    \item \textbf{Analiza i~korelacja (\textit{Analysis \& Production}):} Łączenie faktów z~wielu domen, identyfikacja luk konfiguracyjnych (np. brak mechanizmu wymuszenia w~polityce DMARC), profilowanie potencjalnych celów osobowych oraz ocena podatności procedur organizacyjnych.
+    \item \textbf{Opracowanie i~dystrybucja (\textit{Dissemination}):} Usystematyzowanie wyników w~formie niniejszego raportu technicznego, synteza powierzchni ataku oraz sformułowanie założeń dla kontrolowanych scenariuszy inżynierii społecznej.
+\end{enumerate}
 
-\section{Warsztat narzędziowy rekonesansu}\label{sec:warsztat-narzedziowy}
-\subsection{Frameworki OSINT (osintframework.pl, osintframework.com)}\label{subsec:frameworki-osint}
-\subsection{Narzędzia identyfikacji tożsamości cyfrowych (whatsmyname.app)}\label{subsec:whatsmyname}
-\subsection{Pasywne narzędzia sieciowe i analityczne}\label{subsec:narzedzia-pasywne}
+\section{Ramy prawne, operacyjne i granice pasywności}\label{sec:etyka-anonimizacja}
+
+\subsection{Rekonesans pasywny a aktywny oraz uwarunkowania prawne (FADP / RODO)}\label{subsec:zgodnosc-prawna}
+
+Podstawowym założeniem niniejszego projektu jest przeprowadzenie badania o~charakterze \textbf{ściśle pasywnym}. W~odróżnieniu od rekonesansu aktywnego, działania pasywne opierają się wyłącznie na odpytywaniu publicznie dostępnych rejestrów, buforów pamięci podręcznej osób trzecich, baz danych wyszukiwarek sieciowych oraz standardowych, jawnych odpowiedzi generowanych przez serwery podczas zwykłej komunikacji HTTP/HTTPS.
+
+Z~przyjętych reguł zaangażowania całkowicie wykluczono aktywne skanowanie podatności (np. narzędziami Nessus, OpenVAS czy Nuclei), bezpośrednie skanowanie portów (np. pakietami TCP SYN z~narzędzia Nmap), próby siłowego zgadywania ścieżek URL (\textit{directory fuzzing}) oraz jakiekolwiek próby uwierzytelniania w~odnalezionych formularzach logowania. Wszelkie interakcje z~zasobami celu ograniczono do operacji równoważnych standardowemu przeglądaniu publicznie dostępnych stron internetowych przez zwykłego użytkownika.
+
+Podejście to wynika bezpośrednio ze szwajcarskich oraz europejskich uwarunkowań prawnych. ETH Zürich jako szwajcarska uczelnia federalna podlega zrewidowanej Federalnej Ustawie o~Ochronie Danych (\textit{Federal Act on Data Protection - FADP})~\cite{fadp2020}. Równolegle, z~racji przetwarzania danych obywateli państw członkowskich Unii Europejskiej oraz udziału w~unijnych programach badawczych, zastosowanie znajdują zasady Ogólnego Rozporządzenia o~Ochronie Danych (RODO / GDPR)~\cite{gdpr2016}. Dodatkowo szwajcarski kodeks karny (\textit{Schweizerisches Strafgesetzbuch - StGB}, art.~143\textsuperscript{bis}) jednoznacznie penalizuje nieautoryzowany dostęp do systemów przetwarzania danych z~pominięciem systemów zabezpieczeń.
+
+W~tabeli~\ref{tab:legalnosc-osint} zestawiono techniki i~źródła dopuszczone do realizacji w~niniejszym projekcie z~działaniami inwazyjnymi lub nielegalnymi, które zostały kategorycznie wykluczone.
+
+\begin{table}[H]
+    \centering
+    \caption{Zestawienie dopuszczalnych technik pasywnych oraz wykluczonych działań inwazyjnych}\label{tab:legalnosc-osint}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.22\linewidth} C{0.14\linewidth} C{0.20\linewidth} Y}
+        \toprule
+        \hcell{Kategoria działania} & \hcell{Charakter} & \hcell{Status w projekcie} & \hcell{Uzasadnienie techniczne i prawne} \\
+        \midrule
+        Rejestry publiczne i~DNS (WHOIS, BGP, crt.sh, DNS) & Pasywny & Dopuszczone & Odpytywanie publicznych rejestrów i~logów; brak bezpośredniego ruchu do celu. \\
+        Indeksy IoT i~wyszukiwarki (Shodan, Censys, Wayback) & Pasywny & Dopuszczone & Korzystanie z~historycznych danych zebranych przez niezależne roboty indeksujące. \\
+        Ekstrakcja metadanych plików publicznych (ExifTool) & Pasywny & Dopuszczone & Analiza jawnych dokumentów pobranych z~oficjalnych serwisów WWW uczelni. \\
+        Korelacja tożsamości cyfrowych (WhatsMyName, SOCMINT) & Pasywny & Dopuszczone & Analiza publicznych profili i~nazw kont bez przełamywania zabezpieczeń. \\
+        \midrule
+        Skanowanie portów L4 (Nmap TCP SYN/UDP) & Aktywny & Wykluczone & Generowanie nietypowego ruchu; ryzyko zakłócenia pracy i~reakcji systemów IDS/IPS. \\
+        Automatyczne skanowanie podatności (Nessus, Nuclei) & Aktywny & Wykluczone & Wstrzykiwanie ładunków testowych; przekroczenie granic pasywnego rekonesansu. \\
+        Wymuszanie ścieżek URL (ffuf, Dirbuster) & Aktywny & Wykluczone & Atak typu DoS na warstwę aplikacji; kwalifikacja jako próba naruszenia integralności. \\
+        Eksploracja haseł z~wycieków (bazy Darknet/Cleartext) & Nielegalny & Wykluczone & Naruszenie art.~143\textsuperscript{bis} StGB oraz przepisów FADP/RODO o~ochronie danych. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Polityka minimalizacji i anonimizacji danych osobowych}\label{subsec:zasady-anonimizacji}
+
+W~trakcie prowadzenia rekonesansu OSINT zidentyfikowano liczne dane osobowe personelu naukowego, technicznego i~administracyjnego wydziału D-INFK. W~celu ochrony prywatności osób fizycznych w~raporcie wdrożono rygorystyczną politykę podziału tożsamości na dwie kategorie:
+\begin{enumerate}
+    \item \textbf{Jawne dane instytucjonalne:} Informacje dotyczące osób pełniących formalne funkcje kierownicze i~reprezentacyjne (Dziekan wydziału, członkowie zarządu, kierownicy poszczególnych instytutów, rzecznicy prasowi). Osoby te reprezentują instytucję w~przestrzeni publicznej, a~ich nazwiska są trwale powiązane z~oficjalną strukturą organizacyjną D-INFK.
+    \item \textbf{Dane podlegające bezwzględnej anonimizacji:} Informacje dotyczące szeregowych pracowników naukowo-dydaktycznych, doktorantów, studentów, inżynierów wsparcia IT oraz pracowników sekretariatów.
+\end{enumerate}
+
+Dla zachowania pełnej anonimowości osób z~drugiej grupy, w~całym dokumencie zastosowano ujednolicone makro semantyczne \latexcmd{anon\{...\}}. Makro to zastępuje imiona, nazwiska, prywatne adresy e-mail oraz nazwy użytkowników kont systemowych jednoznacznymi identyfikatorami ról organizacyjnych, takimi jak \anon{Pracownik_Sekretariatu_01}, \anon{Doktorant_Sys_02} czy \anon{Inzynier_ISG_01}. Mechanizm ten pozwala na precyzyjne i~wiarygodne modelowanie ścieżek ataku oraz przepływu uprawnień w~późniejszych scenariuszach socjotechnicznych, eliminując ryzyko upublicznienia wrażliwych danych konkretnych osób fizycznych.
+
+\section{Metodyka operacyjna i klasyfikacja wektorów rozpoznania}\label{sec:warsztat-narzedziowy}
+
+W~celu zapewnienia powtarzalności badań i~systematycznego pokrycia powierzchni ekspozycji wydziału D-INFK, procedurę badawczą podzielono na trzy spójne filary metodologiczne. Podział ten bezpośrednio przekłada się na strukturę dalszych rozdziałów raportu:
+\begin{itemize}
+    \item \textbf{Filar I: Wywiad organizacyjno-gospodarczy i~osobowy} stanowi podstawę rozdziału~\ref{ch:organizacja} (analiza struktury, budynków, grantów SNSF i~przetargów simap.ch w~warstwach L1-L4) oraz rozdziału~\ref{ch:personel-slady} (analiza personelu, adresacji e-mail i~śladów SOCMINT).
+    \item \textbf{Filar II: Pasywny rekonesans sieciowo-domenowy i~webowy} odpowiada rozdziałowi~\ref{ch:infrastruktura} (analiza routingu BGP, systemów autonomicznych AS559, rejestrów WHOIS, DNS i~bezpieczeństwa poczty na poziomach L3/L4) oraz rozdziałowi~\ref{ch:domeny-web} (pasywna enumeracja subdomen i~identyfikacja technologii WWW na poziomie aplikacji L7).
+    \item \textbf{Filar III: Analiza artefaktów plikowych, repozytoriów kodu i~archiwów} wspiera rozdział~\ref{ch:domeny-web} (w~zakresie eksploracji Wayback Machine i~zapytań Google Dorking) oraz rozdział~\ref{ch:personel-slady} (w~zakresie ekstrakcji metadanych ExifTool i~analizy projektów GitLab/GitHub).
+\end{itemize}
+
+Wszystkie trzy filary dostarczają skorelowanych danych wywiadowczych na potrzeby rozdziału~\ref{ch:socjotechnika}, w~którym zsyntezowano powierzchnię ataku i~zaprojektowano trzy zwięzłe, techniczne scenariusze socjotechniczne. W~tabeli~\ref{tab:warsztat-narzedziowy} zestawiono wykorzystany warsztat narzędziowy, przypisując poszczególne narzędzia i~katalogi do zdefiniowanych filarów metodologicznych.
+
+\begin{table}[H]
+    \centering
+    \caption{Matryca warsztatu narzędziowego pasywnego OSINT-u wykorzystanego w badaniu}\label{tab:warsztat-narzedziowy}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.20\linewidth} L{0.20\linewidth} Y L{0.20\linewidth}}
+        \toprule
+        \hcell{Filar metodyczny} & \hcell{Narzędzie / Źródło} & \hcell{Zastosowanie operacyjne w badaniu D-INFK} & \hcell{Źródło / Standard} \\
+        \midrule
+        \multirow{3}{=}{I. Wywiad korporacyjny i~osobowy} 
+            & \url{osintframework.com} / \url{osintframework.pl} & Taksonomia i~weryfikacja publicznych rejestrów gospodarczych oraz katalogów instytucjonalnych. & OSINT Framework~\cite{osintframework_com,osintframework_pl} \\
+            & \url{whatsmyname.app} & Pasywna korelacja pseudonimów badaczy i~inżynierów między platformami internetowymi. & WhatsMyName~\cite{whatsmyname_app} \\
+            & \file{data.snf.ch} / \file{simap.ch} & Pobieranie publicznych danych o~grantach badawczych i~rozstrzygnięciach przetargów sprzętowych. & Rejestry federalne CH \\
+        \midrule
+        \multirow{3}{=}{II. Rekonesans sieciowo-domenowy} 
+            & \cmd{dig} / \cmd{whois} & Badanie strefy DNS, weryfikacja rekordów SPF/DMARC/MX oraz danych rejestracyjnych IP/AS. & Narzędzia systemowe \\
+            & \url{crt.sh} & Eksploracja publicznych logów Certificate Transparency w~celu wykrycia subdomen i~certyfikatów TLS. & Sectigo CT Log \\
+            & \cmd{subfinder} / \cmd{amass} & Pasywna agregacja subdomen \code{*.inf.ethz.ch} z~zewnętrznych baz danych bez wysyłania pakietów do celu. & ProjectDiscovery / OWASP \\
+            & Shodan / Censys & Analiza pasywnych skanów portów L4, wykrytych banerów usług i~wersji serwerów brzegowych. & Wyszukiwarki IoT \\
+        \midrule
+        \multirow{3}{=}{III. Analiza artefaktów i~archiwów} 
+            & \cmd{exiftool} & Ekstrakcja metadanych technicznych z~publicznie dostępnych plików PDF, DOCX i~prezentacji. & Narzędzie lokalne \\
+            & Wayback Machine & Eksploracja historycznych wersji witryn, wycofanych podstron i~dawnych konfiguracji ISG. & Internet Archive \\
+            & Zaawansowany Dorking & Ukierunkowane zapytania wyszukiwarkowe w~celu lokalizacji indeksowanych plików konfiguracyjnych. & Google Search \\
+            & Publiczny GitLab / GitHub & Analiza commitów, adresów deweloperskich i~plików konfiguracyjnych potoków CI/CD. & Repozytoria kodu \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Wywiad organizacyjno-gospodarczy i osobowy}\label{subsec:metodyka-korp-osobowa}
+
+Metodyka wywiadu organizacyjno-gospodarczego i~osobowego koncentruje się na analizie formalnego otoczenia wydziału oraz relacji łączących jednostkę z~podmiotami zewnętrznymi. Procedura obejmuje:
+\begin{enumerate}
+    \item \textbf{Analizę struktury decyzyjnej i~operacyjnej:} Odtworzenie hierarchii wydziału D-INFK, powiązań między instytutami badawczymi oraz identyfikację personelu kluczowego dla ciągłości działania systemów teleinformatycznych (w~szczególności inżynierów grupy ISG D-INFK).
+    \item \textbf{Pozyskanie danych finansowo-przetargowych (Actionable Intelligence):} Eksplorację publicznych sprawozdań finansowych ETH, bazy grantów badawczych SNSF (\file{data.snf.ch}) oraz szwajcarskiego portalu zamówień publicznych (\file{simap.ch}). W~odróżnieniu od klasycznej analizy ekonomicznej, celem badania jest identyfikacja konkretnych modeli urządzeń sieciowych, serwerów obliczeniowych, kontraktów na oprogramowanie oraz zewnętrznych dostawców usług (\textit{Third-Party Vendors}), co pozwala na wskazanie wektorów ataku na łańcuch dostaw (\textit{Supply Chain}).
+    \item \textbf{Rozpoznanie topografii fizycznej:} Analizę lokalizacji budynków wydziału (CAB, CHN, CNB, OAT), wejść, recepcji i~punktów logistycznych w~oparciu o~ogólnodostępne mapy kampusowe i~fotografie, co stanowi podstawę do oceny ryzyka fizycznej socjotechniki (\textit{tailgating}).
+    \item \textbf{Profilowanie obecności w sieciach społecznościowych (SOCMINT):} Pasywne mapowanie oficjalnych kanałów komunikacji wydziału oraz publicznych profili personelu na platformach LinkedIn, X oraz ResearchGate, połączone z~korelacją pseudonimów za pomocą narzędzia \file{whatsmyname.app} zgodnie z~wytycznymi metodycznymi frameworków OSINT~\cite{osintframework_com,whatsmyname_app}.
+\end{enumerate}
+
+\subsection{Pasywny rekonesans sieciowo-domenowy i webowy}\label{subsec:metodyka-sieciowo-webowa}
+
+Metodyka rekonesansu sieciowo-domenowego obejmuje wielowarstwową analizę architektury komunikacyjnej D-INFK w~warstwach od L3 do L7:
+\begin{enumerate}
+    \item \textbf{Warstwa adresowa i routing (L3/L4):} Identyfikacja systemów autonomicznych (głównie \code{AS559} SWITCH), tras routingu BGP, rozgłaszanych prefiksów oraz wydzielonych pul adresów IPv4 i~IPv6 przypisanych do wydziału.
+    \item \textbf{Rejestry domenowe i konfiguracja DNS:} Analiza wpisów WHOIS/RDAP oraz szczegółowa weryfikacja strefy DNS, w~tym rekordów NS, MX, TXT. Szczególny nacisk położono na weryfikację implementacji standardów bezpieczeństwa poczty elektronicznej: SPF (\textit{Sender Policy Framework}), DKIM (\textit{DomainKeys Identified Mail}) oraz polityki DMARC (\textit{Domain-based Message Authentication, Reporting, and Conformance}). Weryfikacja ta pozwala ocenić podatność domeny na podszywanie się pod adresy wydziałowe w~scenariuszach phishingowych.
+    \item \textbf{Analiza przejrzystości certyfikatów (Certificate Transparency):} Odpytywanie publicznych rejestrów logów CT (\file{crt.sh}) w~celu ujawnienia historycznych i~aktywnych certyfikatów TLS, co pozwala na bezgłośną identyfikację nieudokumentowanych subdomen, środowisk deweloperskich oraz stosowanych algorytmów kryptograficznych.
+    \item \textbf{Pasywna enumeracja subdomen i ekspozycji portów:} Zastosowanie narzędzi \cmd{subfinder} oraz \cmd{amass} w~trybach wyłącznie pasywnych (wykorzystujących zewnętrzne repozytoria danych i~wyszukiwarki) oraz analiza indeksów Shodan i~Censys w~celu zidentyfikowania otwartych usług sieciowych i~banerów aplikacji bez wysyłania pakietów bezpośrednio do infrastruktury D-INFK.
+    \item \textbf{Identyfikacja technologii webowych i portali dostępowych (L7):} Pasywna analiza serwerów WWW (Nginx, Apache, AEM), systemów CMS instytutów badawczych oraz mechanizmów federacyjnego uwierzytelniania (\textit{Switch edu-ID / Shibboleth AAI}), repozytoriów kodu (\textit{GitLab D-INFK}) i~systemów dydaktycznych.
+\end{enumerate}
+
+\subsection{Analiza artefaktów plikowych, repozytoriów kodu i archiwów}\label{subsec:metodyka-artefakty-archiwa}
+
+Trzeci filar metodologiczny skupia się na wydobywaniu wiedzy operacyjnej z~artefaktów wtórnych i~śladów historycznych pozostawionych w~sieci przez pracowników i~systemy D-INFK:
+\begin{enumerate}
+    \item \textbf{Ekstrakcja metadanych dokumentów publicznych:} Pobranie reprezentatywnej próby publicznie udostępnionych dokumentów (pliki PDF, DOCX, XLSX, PPTX ze stron \code{*.inf.ethz.ch}) i~ich analiza narzędziem \cmd{exiftool}. Pozwala to na wydobycie nazw użytkowników systemowych, wewnętrznych ścieżek katalogowych, wersji oprogramowania edytorskiego oraz modeli drukarek sieciowych, ujawniając konfigurację stacji roboczych personelu.
+    \item \textbf{Eksploracja archiwów internetowych (Wayback Machine):} Badanie historycznych wersji witryn D-INFK i~portalu ISG w~serwisie \textit{Internet Archive}. Pozwala to na odnalezienie wycofanych podstron, dawnych schematów adresacji, nieobowiązujących instrukcji technicznych oraz zapomnianych plików konfiguracyjnych.
+    \item \textbf{Zaawansowane techniki wyszukiwawcze (Google Dorking):} Konstruowanie sprofilowanych zapytań indeksujących (np. z~operatorami \code{site:}, \code{filetype:}, \code{inurl:}), ukierunkowanych na odnalezienie niechronionych katalogów z~dokumentacją techniczną, skryptami pomocniczymi oraz komunikatami diagnostycznymi na subdomenach wydziałowych.
+    \item \textbf{Inspekcja otwartych repozytoriów oprogramowania:} Analiza publicznych projektów w~instancji \code{gitlab.inf.ethz.ch} oraz powiązanych organizacji w~serwisie GitHub pod kątem historii commitów, ujawnionych adresów e-mail autorów, konfiguracji potoków CI/CD (\file{.gitlab-ci.yml}) oraz potencjalnych nieumyślnych wycieków poświadczeń technicznych.
+    \item \textbf{Statystyczna weryfikacja ekspozycji w wyciekach danych:} Pasywne sprawdzenie występowania domeny \code{inf.ethz.ch} w~publicznych indeksach naruszeń integralności baz danych (bez pozyskiwania ani przetwarzania haseł w~otwartym tekście) w~celu oszacowania ryzyka ataków typu \textit{credential stuffing} oraz \textit{password spraying}.
+\end{enumerate}
