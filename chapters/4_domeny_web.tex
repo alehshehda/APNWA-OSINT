@@ -1,18 +1,73 @@
 \chapter{Pasywna enumeracja zasobów webowych i analiza aplikacji}\label{ch:domeny-web}
 
-\section{Architektura strefy domenowej i subdomenowej D-INFK}\label{sec:struktura-domenowa}
-\subsection{Hierarchia nazw w domenie inf.ethz.ch i domenach powiązanych}\label{subsec:hierarchia-domen}
-\subsection{Wyniki pasywnej enumeracji subdomen (subfinder, amass, crt.sh)}\label{subsec:wyniki-enumeracji}
+% ==============================================================================
+% ROZDZIAŁ 4 - WSKAZÓWKI I TO-DO DLA AGENTA PISZĄCEGO:
+% Rola: Osoba 2 (Aplikacje L7, subdomeny, serwery WWW, federacja edu-ID, archiwum i dorking).
+% Cel: Identyfikacja punktów logowania SSO pod Evilginx2, taksonomia subdomen, procedury ISG.
+% Narzędzia: crt.sh (wildcard SQL %), subfinder, amass, Wappalyzer, Wayback CDX, Google Dorking.
+% Objętość docelowa: ~7-8 stron.
+% ==============================================================================
 
-\section{Identyfikacja serwisów internetowych i stosu technologicznego}\label{sec:systemy-webowe}
-\subsection{Serwery WWW, systemy CMS i frameworki (AEM, Apache, Nginx)}\label{subsec:technologie-cms}
-\subsection{Portale uwierzytelniania i dostępowe (Switch edu-ID, Shibboleth/AAI, GitLab, Moodle)}\label{subsec:portale-uwierzytelniania}
+\section{Architektura strefy domenowej i subdomenowej D-INFK}\label{sec:struktura-domenowa}
+
+\subsection{Hierarchia przestrzeni nazw i domen powiązanych}\label{subsec:hierarchia-domen}
+% TO-DO:
+% 1. Opisać strukturę strefy inf.ethz.ch podpiętej pod nadrzędną ethz.ch.
+% 2. Scharakteryzować 3 warstwy: centralna wydziału, instytuty badawcze (subdomeny lub domeny zewnętrzne
+%    jak systems.ethz.ch, zisc.ethz.ch) oraz społeczność studencka (vis.ethz.ch).
+% 3. Zwrócić uwagę na hybrydowy charakter strefy w kontekście wyznaczania granic rekonesansu.
+
+\subsection{Pasywna enumeracja i taksonomia subdomen}\label{subsec:wyniki-enumeracji}
+% TO-DO:
+% 1. Przedstawić zapytanie do logów CT z symbolem wieloznacznym SQL LIKE (%): https://crt.sh/?q=%.inf.ethz.ch&output=json.
+% 2. Pasywna agregacja subdomen z subfinder, amass (-passive) i crt.sh z deduplikacją unikalnych FQDN.
+% 3. Syntetyczna taksonomia subdomen w 4 kategoriach (z podaniem przykładów np.):
+%    - Bramy dostępowe i infrastruktura IT (np. isg, vpn, password, ssh).
+%    - Usługi dydaktyczne i programistyczne (np. gitlab, moodle, svn, grader).
+%    - Instytuty i laboratoria badawcze (np. spcl, las, netsec, systems).
+%    - Klastry obliczeniowe i infrastruktura badawcza (z rozróżnieniem węzłów D-INFK od zasobów ogólnouczelnianych).
+
+\section{Identyfikacja serwisów WWW i stosu technologicznego}\label{sec:systemy-webowe}
+
+\subsection{Serwery WWW, systemy CMS i nagłówki HTTP}\label{subsec:technologie-cms}
+% TO-DO:
+% 1. Zidentyfikować system CMS na portalu głównym (Adobe Experience Manager - AEM, ścieżki /etc.clientlibs/ i /content/dam/).
+% 2. Scharakteryzować serwery w laboratoriach (np. Nginx, Apache, generatory statyczne Hugo, Jekyll, GitLab Pages).
+% 3. Tabela audytu nagłówków bezpieczeństwa HTTP (HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Server) dla wybranych serwisów wydziałowych.
+% 4. Zinterpretować wykryte luki w nagłówkach (np. brak CSP lub ujawnianie wersji oprogramowania) vs wzorcową konfigurację obronną (High Security Posture).
+
+\subsection{Portale logowania i federacja tożsamości (edu-ID, AAI)}\label{subsec:portale-uwierzytelniania}
+% TO-DO:
+% 1. Opisać architekturę federacji tożsamości akademickiej: Switch edu-ID oraz Shibboleth AAI (SAML 2.0).
+% 2. Zmapować dokładne punkty końcowe logowania (IdP): https://aai-logon.ethz.ch/... oraz https://eduid.ch/...
+% 3. Wskazać punkty logowania GitLab (/users/sign_in) oraz portal samodzielnego zarządzania hasłami ISG (password.inf.ethz.ch).
+% 4. Actionable Intelligence: powiązanie punktów logowania z atakiem Evilginx2 (przechwycenie ciasteczek sesyjnych
+%    i ominięcie 2FA w Scenariuszu 1 w Rozdziale 6).
 
 \section{Eksploracja archiwów internetowych}\label{sec:archiwa-internetowe}
+
 \subsection{Archiwalne wersje stron w serwisie Wayback Machine}\label{subsec:wayback-machine}
-\subsection{Wycofane podstrony, historyczne struktury URL i pliki techniczne}\label{subsec:wycofane-zasoby}
+% TO-DO:
+% 1. Opisać metodykę zapytań do CDX Server API Wayback Machine:
+%    https://web.archive.org/cdx/search/cdx?url=*.inf.ethz.ch/*&output=json&fl=original,timestamp,mimetype.
+% 2. Przeanalizować etapy ewolucji: strony statyczne Solaris/Apache (1998-2006), Plone/Zope (2007-2015), konsolidacja na AEM.
+
+\subsection{Wycofane podstrony i archiwalne artefakty techniczne}\label{subsec:wycofane-zasoby}
+% TO-DO:
+% 1. Wyszukanie w Wayback Machine historycznych artefaktów (np. dawne konfiguracje VPN/SSH, archiwalne ścieżki udziałów sieciowych NFS/SMB, nazewnictwo stacji studenckich).
+% 2. Actionable Intelligence: wykorzystanie odnalezionych artefaktów do budowania wiarygodnych pretekstów technicznych w socjotechnice.
 
 \section{Zaawansowane wyszukiwanie zasobów (Google Dorking)}\label{sec:google-dorking}
-\subsection{Indeksowane katalogi, pliki konfiguracyjne i komunikaty błędów}\label{subsec:dorking-katalogi}
-\subsection{Publicznie dostępna dokumentacja techniczna helpdesku ISG D-INFK}\label{subsec:dorking-isg}
 
+\subsection{Indeksowane katalogi i artefakty konfiguracyjne}\label{subsec:dorking-katalogi}
+% TO-DO:
+% 1. Tabela sprofilowanych operatorów Google Dorking dla domeny inf.ethz.ch (otwarte indeksy katalogów, dokumenty wewnętrzne, skrypty konfiguracyjne, komunikaty błędów).
+% 2. Ocena perymetru: wykryte potencjalne ekspozycje vs potwierdzenie High Security Posture (brak wycieków kluczy API, tokenów czy plików środowiskowych .env).
+
+\subsection{Publiczna dokumentacja operacyjna helpdesku ISG}\label{subsec:dorking-isg}
+% TO-DO:
+% 1. Przeanalizować bazę wiedzy ISG (isg.inf.ethz.ch) i otwarte wiki:
+%    - Procedura onboardingu w CAB (pokój CAB E 41.1, odbiór karty ETH Card, przydział konta nethz).
+%    - Podział stacji roboczych: Fully Managed Workstations vs Self-Administered (uprawnienia sudo).
+%    - Oficjalne kanały wsparcia (helpdesk@inf.ethz.ch, telefon, system ticketowy).
+% 2. Actionable Intelligence: wykorzystanie terminologii ISG, procedur i numerów pokoi jako legendy w scenariuszu vishingu w Rozdziale 6.

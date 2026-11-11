@@ -1,21 +1,76 @@
 \chapter{Pasywny rekonesans infrastruktury sieciowej i protokołów}\label{ch:infrastruktura}
 
+% ==============================================================================
+% ROZDZIAŁ 3 - WSKAZÓWKI I TO-DO DLA AGENTA PISZĄCEGO:
+% Rola: Osoba 1 (Infrastruktura sieciowa, protokoły L3/L4, krypto TLS, Shodan).
+% Cel: Pasywne zmapowanie BGP, pul IP, DNS/MX, rygoru SPF/DMARC, TLS i portów L4.
+% Interpretacja: Brak luk na L4 traktować jako High Security Posture (perymetr chroniony).
+% Objętość docelowa: ~7-8 stron.
+% ==============================================================================
+
 \section{Przestrzeń adresowa IP i routing autonomiczny}\label{sec:asn-ip}
-\subsection{System autonomiczny AS559 (SWITCH / ETH Zürich) i prefiksy BGP}\label{subsec:asn-bgp}
-\subsection{Pule adresowe IPv4 i IPv6 dedykowane dla sieci D-INFK}\label{subsec:pule-ip}
+
+\subsection{System autonomiczny AS559 i routing BGP}\label{subsec:asn-bgp}
+% TO-DO:
+% 1. Opisać rolę systemu autonomicznego AS559 zarządzanego przez SWITCH.
+% 2. Wymienić główne prefiksy IPv4 (np. 129.132.0.0/16, 195.176.0.0/16) oraz IPv6 (np. 2001:620::/32).
+% 3. Wskazać narzędzia pasywne: RIPE Stat, BGPView, bgp.he.net (stabilność routingu i punkty peeringu).
+
+\subsection{Podsieci IPv4 i IPv6 dedykowane dla D-INFK}\label{subsec:pule-ip}
+% TO-DO:
+% 1. Wyodrębnić podsieci D-INFK w ramach bloku 129.132.0.0/16 na podstawie rezolucji DNS hostów wydziałowych.
+% 2. Tabela podsieci wydziałowych (np. stacje robocze CAB, serwery ISG, klastry HPC oraz IPv6).
+% 3. Ocenić poprawność segmentacji logicznej i fizycznej sieci w budynku CAB.
 
 \section{Analiza rejestracyjna WHOIS i RDAP}\label{sec:whois-rdap}
-\subsection{Wpisy rejestracyjne domeny głównej oraz bloków adresowych}\label{subsec:whois-domeny-ip}
-\subsection{Historia rejestracji i kontakty techniczne oraz operacyjne}\label{subsec:whois-historia}
 
-\section{Konfiguracja DNS i bezpieczeństwo protokołów pocztowych}\label{sec:dns-poczta}
-\subsection{Analiza rekordów strefy DNS (NS, MX, A, AAAA, TXT)}\label{subsec:rekordy-dns}
-\subsection{Weryfikacja mechanizmów ochrony poczty (SPF, DKIM, rygor polityki DMARC)}\label{subsec:ochrona-poczty-dmarc}
+\subsection{Wpisy rejestracyjne domen i bloków adresowych}\label{subsec:whois-domeny-ip}
+% TO-DO:
+% 1. Analiza obiektów RIPE inetnum dla 129.132.0.0/16 (netname: ETHZ-NET, org: ORG-EZ1-RIPE, status: ASSIGNED PA).
+% 2. Analiza wpisu domeny ethz.ch w szwajcarskim rejestrze SWITCH NIC (nic.ch).
+
+\subsection{Kontakty techniczne i zespoły reagowania (CSIRT)}\label{subsec:whois-historia}
+% TO-DO:
+% 1. Zidentyfikować role kontaktowe: admin-c, tech-c, abuse-c (zanonimizowane makrem \anon{...}).
+% 2. Wskazać integrację z CSIRT uczelni oraz zespołem SWITCH-CERT (cert@switch.ch).
+% 3. Odnotować stabilność wpisów i brak ryzyka domain hijacking.
+
+\section{Konfiguracja DNS i bezpieczeństwo poczty}\label{sec:dns-poczta}
+
+\subsection{Architektura i rekordy strefy DNS}\label{subsec:rekordy-dns}
+% TO-DO:
+% 1. Wymienić serwery nazw NS (np. ns1.ethz.ch, ns2.ethz.ch, scsnms.switch.ch) i zabezpieczenie DNSSEC.
+% 2. Wskazać serwery pocztowe MX (np. mx1.ethz.ch, mx2.ethz.ch) - centralna obsługa poczty uczelnianej.
+
+\subsection{Ochrona poczty elektronicznej (SPF, DKIM, DMARC)}\label{subsec:ochrona-poczty-dmarc}
+% TO-DO:
+% 1. Odpytać na żywo rekordy TXT dla inf.ethz.ch oraz ethz.ch (SPF, DMARC: _dmarc.inf.ethz.ch).
+% 2. Zinterpretować wykryty stan konfiguracji pod kątem Actionable Intelligence:
+%    - Wariant A (rygor łagodny ~all / p=none lub brak DMARC): luka umożliwiająca bezpośredni email spoofing z adresem @inf.ethz.ch w Rozdziale 6.
+%    - Wariant B (rygor restrykcyjny -all / p=reject lub p=quarantine): High Security Posture perymetru pocztowego, co wymusza wykorzystanie domeny typosquattingowej/lookalike w Scenariuszach 1 i 2 oraz spoofingu telefonicznego (Caller ID) w Scenariuszu 3 (Rozdział 6).
 
 \section{Analiza certyfikatów kryptograficznych TLS}\label{sec:certyfikaty-tls}
-\subsection{Pasywna eksploracja logów Certificate Transparency (crt.sh)}\label{subsec:ct-logs}
-\subsection{Urzędy certyfikacji, parametry kryptograficzne i historia wystawień}\label{subsec:analiza-certyfikatow}
 
-\section{Pasywna ekspozycja portów i usług w wyszukiwarkach sieciowych}\label{sec:shodan-censys}
-\subsection{Wyniki z wyszukiwarek Shodan i Censys na poziomie warstwy L4}\label{subsec:wyniki-shodan-censys}
-\subsection{Wykryte otwarte porty, usługi zdalnego dostępu i banery protokołów}\label{subsec:banery-uslug}
+\subsection{Eksploracja logów Certificate Transparency (crt.sh)}\label{subsec:ct-logs}
+% TO-DO:
+% 1. Prześledzić ewolucję urzędów certyfikacji w logach CT (od SWITCH PKI, przez komercyjne CA, po Let's Encrypt).
+% 2. Zwrócić uwagę na poziom automatyzacji certyfikacji w laboratoriach badawczych.
+
+\subsection{Urzędy certyfikacji i parametry kryptograficzne}\label{subsec:analiza-certyfikatow}
+% TO-DO:
+% 1. Tabela parametrów certyfikatów dla zidentyfikowanych serwisów wydziałowych (np. inf.ethz.ch, isg.inf.ethz.ch, gitlab.inf.ethz.ch):
+%    urząd certyfikacji (CA), algorytm i długość klucza (np. RSA 2048/4096 vs ECDSA secp256r1), funkcja skrótu podpisu.
+% 2. Ocenić spełnianie współczesnych standardów kryptograficznych i brak przestarzałych protokołów SSLv3/TLS 1.0.
+
+\section{Pasywna ekspozycja portów i usług (Shodan, Censys)}\label{sec:shodan-censys}
+
+\subsection{Indeksacja zasobów wydziałowych w warstwie L4}\label{subsec:wyniki-shodan-censys}
+% TO-DO:
+% 1. Przedstawić metodykę pasywnych zapytań Shodan i Censys (filtry net, org, hostname dla domen *.inf.ethz.ch).
+% 2. Podkreślić całkowicie pasywny charakter analizy bez bezpośredniego wysyłania pakietów skanujących.
+
+\subsection{Ekspozycja usług zdalnego dostępu i ocena perymetru}\label{subsec:banery-uslug}
+% TO-DO:
+% 1. Tabela wykrytych usług i otwartych portów L4 (np. HTTP 80, HTTPS 443, SSH 22 na bastionach, OpenVPN 1194).
+% 2. Zastosować zasadę High Security Posture: ocenić brak odsłoniętych portów bazodanowych (MySQL/PostgreSQL) i zdalnego pulpitu (RDP/VNC) jako dowód skutecznej filtracji firewall.
+% 3. Uzasadnić przesunięcie wektorów ataku z warstwy sieciowej L4 na warstwę aplikacji L7 (Rozdział 4) i socjotechnikę (Rozdział 6).

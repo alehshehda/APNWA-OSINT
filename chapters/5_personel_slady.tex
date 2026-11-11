@@ -1,23 +1,85 @@
 \chapter{Personel, ślady cyfrowe, metadane dokumentów i repozytoria}\label{ch:personel-slady}
 
+% ==============================================================================
+% ROZDZIAŁ 5 - WSKAZÓWKI I TO-DO DLA AGENTA PISZĄCEGO:
+% Rola: Osoba 2 (Personel, adresacja e-mail, ExifTool, SOCMINT, GitLab/GitHub, bazy wycieków).
+% Cel: Profilowanie stacji roboczych pod canary token, identyfikacja personelu, telemetria naruszeń.
+% Anonimizacja: Rygorystyczne stosowanie \anon{Rola_Jednostka_Inicjały} we wszystkich tabelach i tekście.
+% Objętość docelowa: ~7-8 stron.
+% ==============================================================================
+
 \section{Struktura adresacji e-mail i punkty kontaktowe}\label{sec:struktura-email}
-\subsection{Schematy formatowania adresów pocztowych pracowników i studentów}\label{subsec:schematy-email}
-\subsection{Publiczne książki adresowe, skrzynki funkcyjne i listy dystrybucyjne}\label{subsec:ksiazki-adresowe}
+
+\subsection{Schematy adresacji pocztowej pracowników i studentów}\label{subsec:schematy-email}
+% TO-DO:
+% 1. Przedstawić schemat poczty pracowników i doktorantów: <imie>.<nazwisko>@inf.ethz.ch oraz techniczny alias nethz.
+% 2. Przedstawić schemat poczty studentów: <nethz_login>@student.ethz.ch (8-znakowy identyfikator).
+% 3. Wyjaśnić znaczenie wywiadowcze schematów dla generowania słowników pod kątem spear phishingu.
+
+\subsection{Katalogi osobowe i skrzynki funkcyjne}\label{subsec:ksiazki-adresowe}
+% TO-DO:
+% 1. Opisać ogólnouczelnianą wyszukiwarkę ETH People Directory oraz katalog wydziałowy inf.ethz.ch/people.html.
+% 2. Zidentyfikować skrzynki funkcyjne o wysokim zaufaniu: helpdesk@inf.ethz.ch, studies@inf.ethz.ch, zisc-info@inf.ethz.ch.
+% 3. Wskazać ryzyko podszywania się pod adresy funkcyjne w kampaniach socjotechnicznych.
 
 \section{Ekstrakcja i analiza metadanych dokumentów publicznych}\label{sec:metadane-plikow}
-\subsection{Pozyskiwanie plików PDF, DOCX i prezentacji ze stron wydziału}\label{subsec:pozyskiwanie-dokumentow}
-\subsection{Analiza atrybutów oprogramowania, nazw użytkowników i ścieżek (ExifTool)}\label{subsec:analiza-exiftool}
 
-\section{Obecność w sieciach społecznościowych i profilowanie (SOCMINT)}\label{sec:socmint-tozsamosci}
-\subsection{Oficjalne kanały komunikacyjne D-INFK (LinkedIn, X, YouTube)}\label{subsec:oficjalne-social-media}
-\subsection{Profile akademickie i zawodowe pracowników (LinkedIn, ResearchGate)}\label{subsec:profile-zawodowe}
-\subsection{Korelacja tożsamości cyfrowych i pseudonimów za pomocą whatsmyname.app}\label{subsec:korelacja-whatsmyname}
+\subsection{Dobór próby dokumentów i metodyka ekstrakcji}\label{subsec:pozyskiwanie-dokumentow}
+% TO-DO:
+% 1. Pasywne pobranie reprezentatywnej próby dokumentów (formularze ISG, regulaminy laboratoriów, wnioski grantowe).
+% 2. Zastosowanie narzędzia ExifTool do lokalnej ekstrakcji metadanych bez ingerencji w serwery uczelni.
+
+\subsection{Analiza metadanych środowiskowych (ExifTool)}\label{subsec:analiza-exiftool}
+% TO-DO:
+% 1. Tabela zanonimizowanych metadanych dla próby plików (z identyfikatorami \anon{Inzynier_ISG_AB},
+%    \anon{Doktorant_Sys_MK}, \anon{Sekretariat_CAB_JS}, \anon{Kierownik_Kat_GH} itd.):
+%    - Oprogramowanie tworzące (np. TeX Live, Quartz PDFContext, MS Word for Mac, Acrobat Distiller, LibreOffice).
+%    - Ujawnione ścieżki lokalne i sieciowe (np. katalogi domowe użytkowników, zasoby współdzielone SMB/NFS).
+% 2. Wnioski: heterogeniczność stacji roboczych (Linux/macOS/Windows) wykorzystana w Scenariuszu 2 (Rozdział 6)
+%    do przygotowania nieszkodliwego nośnika PDF z canary tokenem.
+
+\section{Profilowanie w mediach społecznościowych (SOCMINT)}\label{sec:socmint-tozsamosci}
+
+\subsection{Oficjalne kanały komunikacji wydziałowej}\label{subsec:oficjalne-social-media}
+% TO-DO:
+% 1. Przeanalizować kanały instytucjonalne: profil LinkedIn (>20 tys. obserwujących), X (@ETH_DINFK), YouTube.
+% 2. Wskazać pozyskane informacje: relacje z konferencji, zdjęcia wnętrz CAB, zapowiedzi grantów i harmonogramy nieobecności.
+
+\subsection{Profile zawodowe i naukowe personelu}\label{subsec:profile-zawodowe}
+% TO-DO:
+% 1. Zanalizować profile personelu na LinkedIn, ResearchGate, Google Scholar i dblp (zanonimizowane przez \anon{...}).
+% 2. Skategoryzować profile: kadra badawcza (np. PyTorch, LLVM, C++, Rust, FPGA) vs kadra inżynieryjna (np. Kubernetes, Docker, Slurm, Ceph).
+% 3. Wykorzystać profilowanie techniczne do personalizacji treści spear phishingowych.
+
+\subsection{Korelacja pseudonimów i kont (WhatsMyName)}\label{subsec:korelacja-whatsmyname}
+% TO-DO:
+% 1. Zastosować narzędzie whatsmyname.app do pasywnej weryfikacji unikalnych pseudonimów personelu D-INFK.
+% 2. Zidentyfikować powiązane konta na platformach deweloperskich i forach (np. Stack Overflow, GitHub, Reddit, Keybase).
+% 3. Zidentyfikować wycieki operacyjne (OPSEC leakage) w pytaniach zadawanych na forach technicznych.
 
 \section{Aktywność w otwartych repozytoriach kodu źródłowego}\label{sec:repozytoria-kodu}
-\subsection{Publiczne projekty w instancji GitLab D-INFK oraz na GitHubie}\label{subsec:projekty-gitlab-github}
-\subsection{Analiza commitów, adresów deweloperskich i konfiguracji CI/CD}\label{subsec:analiza-commitow}
+
+\subsection{Publiczne repozytoria GitLab D-INFK oraz GitHub}\label{subsec:projekty-gitlab-github}
+% TO-DO:
+% 1. Przeanalizować publiczną instancję gitlab.inf.ethz.ch (kursy, szablony laboratoriów studenckich).
+% 2. Przeanalizować organizacje badawcze D-INFK na platformie GitHub (np. eth-sri, spcl, systems-ethz).
+
+\subsection{Analiza historii commitów i potoków CI/CD}\label{subsec:analiza-commitow}
+% TO-DO:
+% 1. Zbadać metadane commitów: korelacja służbowych adresów @inf.ethz.ch z prywatnymi kontami deweloperów.
+% 2. Przeanalizować pliki CI/CD (.gitlab-ci.yml, GitHub Actions): obrazy Docker, tagi runnerów wewnętrznych klastrów.
+% 3. Przeprowadzić pasywny audyt secret scanning: ocenić higienę kodu (potwierdzenie High Security Posture przy braku poświadczeń).
 
 \section{Pasywna weryfikacja ekspozycji w wyciekach danych}\label{sec:wycieki-danych}
-\subsection{Statystyczna analiza wystąpień domenowych w bazach naruszeń}\label{subsec:bazy-naruszen}
-\subsection{Ocena ryzyka ataków credential stuffing i password spraying}\label{subsec:ryzyko-poswiadczen}
 
+\subsection{Analiza ekspozycji domenowej w bazach naruszeń}\label{subsec:bazy-naruszen}
+% TO-DO:
+% 1. Wykorzystać darmową i legalną telemetrię naruszeń: Intelligence X (intelx.io), raporty infostealerów (np. Hudson Rock), LeakIX.
+% 2. Zestawić statystyki: dominacja starych incydentów zewnętrznych (serwisy konferencyjne i edukacyjne).
+% 3. Zinterpretować skalę ekspozycji domeny inf.ethz.ch pod kątem dojrzałości higieny haseł (High Security Posture).
+
+\subsection{Ocena ryzyka ataków na poświadczenia}\label{subsec:ryzyko-poswiadczen}
+% TO-DO:
+% 1. Przeprowadzić modelowanie ryzyka: wykazać nieskuteczność credential stuffingu i password sprayingu.
+% 2. Zastosować zasadę High Security Posture: egzekwowanie MFA na bramie Switch edu-ID, rate limiting, blokady kont.
+% 3. Wnioski dla Rozdziału 6: konieczność zastosowania zaawansowanego ataku AitM (Evilginx2) zamiast prostych ataków słownikowych.
