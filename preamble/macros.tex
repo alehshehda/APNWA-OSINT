@@ -1,40 +1,417 @@
-%***************************************************************************************************
-% preamble/macros.tex - makra semantyczne, skróty matematyczne, twierdzenia, listy.
-%***************************************************************************************************
+% Makra semantyczne, pomocniki warunkowe, skróty matematyczne, twierdzenia i listy.
+
+\ExplSyntaxOn
+
+\cs_generate_variant:Nn \tl_if_blank:nTF { oTF }
+
+\NewDocumentCommand{\IfNotEmpty}{ m +m }
+  {
+    \tl_if_blank:oTF {#1} { } {#2}
+  }
+
+\NewDocumentCommand{\IfEmpty}{ m +m +m }
+  {
+    \tl_if_blank:oTF {#1} {#2} {#3}
+  }
 
 % ---------------------------------------------------------------------------------------------
-% Makra semantyczne (spójny wygląd kodu, plików, poleceń i skrótów)
-% \detokenize pozwala wpisywać znaki specjalne (np. _ oraz %) bez zabezpieczania.
+% Makra inline: \code (czysty monospace), \hash (łamany po każdym znaku)
+% Obsługują polskie znaki UTF-8, ścieżki Windows (\) oraz _, %, #, &, $, ^, ~ bez escapowania.
 % ---------------------------------------------------------------------------------------------
-\newcommand{\code}[1]{\texttt{\detokenize{#1}}}   % fragment kodu / wyrażenie
-\newcommand{\file}[1]{\texttt{\detokenize{#1}}}   % nazwa pliku lub ścieżka
-\newcommand{\cmd}[1]{\texttt{\detokenize{#1}}}    % polecenie konsoli
-% Polecenie LaTeX-a w tekście: \latexcmd{section} wypisuje \section; nawiasy klamrowe zapisuj jako \{ \}
-\newcommand{\latexcmd}[1]{\texttt{\textbackslash #1}}
-% Skrót kryptograficzny lub inny długi ciąg znaków - zawija się w dowolnym miejscu
-\newcommand{\hash}[1]{{\ttfamily\footnotesize\seqsplit{#1}}}
+\tl_new:N \l__report_seg_tl
+\quark_new:N \q__report_stop
+
+\cs_new_protected:Npn \__report_set_inline_catcodes:
+  {
+    \catcode 92  = 12\relax % \
+    \catcode 95  = 12\relax % _
+    \catcode 37  = 12\relax % %
+    \catcode 35  = 12\relax % #
+    \catcode 38  = 12\relax % &
+    \catcode 36  = 12\relax % $
+    \catcode 94  = 12\relax % ^
+    \catcode 126 = 12\relax % ~
+  }
+
+\cs_new_protected:Npn \__report_flush_seg:
+  {
+    \tl_if_empty:NF \l__report_seg_tl
+      {
+        \l__report_seg_tl
+        \tl_clear:N \l__report_seg_tl
+      }
+  }
+
+\cs_new_protected:Npn \__report_emit_break:
+  {
+    \__report_flush_seg:
+    \allowbreak
+  }
+
+\cs_new_protected:Npn \__report_walk_loop:n #1
+  {
+    \tl_if_head_is_space:nTF {#1}
+      { \__report_walk_space:w . #1 \q_stop }
+      {
+        \tl_if_head_is_group:nTF {#1}
+          { \__report_walk_group:nw #1 \q_stop }
+          { \__report_walk_token:Nw #1 \q_stop }
+      }
+  }
+
+\cs_new_protected:Npn \__report_walk_space:w . ~ #1 \q_stop
+  {
+    \__report_flush_seg:
+    \space
+    \allowbreak
+    \__report_walk_loop:n {#1}
+  }
+
+\cs_new_protected:Npn \__report_walk_group:nw #1 #2 \q_stop
+  {
+    \tl_put_right:Nn \l__report_seg_tl { \textbraceleft }
+    \__report_walk_loop:n { #1 \q__report_stop }
+    \tl_put_right:Nn \l__report_seg_tl { \textbraceright }
+    \__report_walk_loop:n {#2}
+  }
+
+\cs_new_protected:Npn \__report_walk_token:Nw #1 #2 \q_stop
+  {
+    \token_if_eq_meaning:NNTF #1 \q__report_stop
+      { }
+      {
+        \__report_handle_token:N #1
+        \__report_walk_loop:n {#2}
+      }
+  }
+
+\cs_new_protected:Npn \__report_handle_token:N #1
+  {
+    \token_if_cs:NTF #1
+      { \__report_handle_cs:N #1 }
+      {
+        \token_if_active:NTF #1
+          {
+            \int_compare:nNnTF { `#1 } = { 126 }
+              { \tl_put_right:Nn \l__report_seg_tl { \textasciitilde } }
+              { \tl_put_right:Nn \l__report_seg_tl {#1} }
+          }
+          { \__report_handle_char:N #1 }
+      }
+  }
+
+\cs_new_protected:Npn \__report_handle_cs:N #1
+  {
+    \token_if_eq_meaning:NNTF #1 \{
+      { \tl_put_right:Nn \l__report_seg_tl { \textbraceleft } }
+      {
+        \token_if_eq_meaning:NNTF #1 \}
+          { \tl_put_right:Nn \l__report_seg_tl { \textbraceright } }
+          {
+            \token_if_eq_meaning:NNTF #1 \_
+              {
+                \tl_put_right:Nn \l__report_seg_tl { \_ }
+                \__report_emit_break:
+              }
+              {
+                \token_if_eq_meaning:NNTF #1 \%
+                  { \tl_put_right:Nn \l__report_seg_tl { \% } }
+                  {
+                    \token_if_eq_meaning:NNTF #1 \#
+                      { \tl_put_right:Nn \l__report_seg_tl { \# } }
+                      {
+                        \token_if_eq_meaning:NNTF #1 \&
+                          { \tl_put_right:Nn \l__report_seg_tl { \& } }
+                          {
+                            \token_if_eq_meaning:NNTF #1 \$
+                              { \tl_put_right:Nn \l__report_seg_tl { \$ } }
+                              {
+                                \token_if_eq_meaning:NNTF #1 \textbackslash
+                                  {
+                                    \tl_put_right:Nn \l__report_seg_tl { \textbackslash }
+                                    \__report_emit_break:
+                                  }
+                                  {
+                                    \token_if_eq_meaning:NNTF #1 \ %
+                                      {
+                                        \__report_flush_seg:
+                                        \space
+                                        \allowbreak
+                                      }
+                                      {
+                                        \tl_put_right:Nn \l__report_seg_tl { \textbackslash }
+                                        \__report_emit_break:
+                                        \tl_put_right:Nx \l__report_seg_tl { \cs_to_str:N #1 }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+\cs_new_protected:Npn \__report_handle_char:N #1
+  {
+    \int_case:nnF { `#1 }
+      {
+        { 92 }  { \tl_put_right:Nn \l__report_seg_tl { \textbackslash } \__report_emit_break: }
+        { 47 }  { \tl_put_right:Nn \l__report_seg_tl { / } \__report_emit_break: }
+        { 46 }  { \tl_put_right:Nn \l__report_seg_tl { . } \__report_emit_break: }
+        { 95 }  { \tl_put_right:Nn \l__report_seg_tl { \_ } \__report_emit_break: }
+        { 45 }  { \tl_put_right:Nn \l__report_seg_tl { { - \kern 0pt } } \__report_emit_break: }
+        { 37 }  { \tl_put_right:Nn \l__report_seg_tl { \% } }
+        { 35 }  { \tl_put_right:Nn \l__report_seg_tl { \# } }
+        { 38 }  { \tl_put_right:Nn \l__report_seg_tl { \& } }
+        { 36 }  { \tl_put_right:Nn \l__report_seg_tl { \$ } }
+        { 94 }  { \tl_put_right:Nn \l__report_seg_tl { \textasciicircum } }
+        { 126 } { \tl_put_right:Nn \l__report_seg_tl { \textasciitilde } }
+        { 60 }  { \tl_put_right:Nn \l__report_seg_tl { { < \kern 0pt } } }
+        { 62 }  { \tl_put_right:Nn \l__report_seg_tl { { > \kern 0pt } } }
+        { 96 }  { \tl_put_right:Nn \l__report_seg_tl { { ` \kern 0pt } } }
+        { 39 }  { \tl_put_right:Nn \l__report_seg_tl { { ' \kern 0pt } } }
+      }
+      { \tl_put_right:Nn \l__report_seg_tl {#1} }
+  }
+
+\cs_new_protected:Npn \__report_inline_exec:n #1
+  {
+    \upshape\ttfamily
+    \tl_clear:N \l__report_seg_tl
+    \tl_if_empty:nF {#1}
+      {
+        \__report_walk_loop:n { #1 \q__report_stop }
+        \__report_flush_seg:
+      }
+    \group_end:
+  }
+
+\NewDocumentCommand{\code}{}
+  {
+    \group_begin:
+    \__report_set_inline_catcodes:
+    \__report_inline_exec:n
+  }
+
+% --- \hash: długie ciągi znaków łamane po każdym znaku (z zachowaniem bajtów UTF-8) ---
+\cs_new_protected:Npn \__report_hash_walk:n #1
+  {
+    \tl_if_head_is_space:nTF {#1}
+      { \__report_hash_space:w . #1 \q_stop }
+      {
+        \tl_if_head_is_group:nTF {#1}
+          { \__report_hash_group:nw #1 \q_stop }
+          { \__report_hash_token:Nw #1 \q_stop }
+      }
+  }
+
+\cs_new_protected:Npn \__report_hash_space:w . ~ #1 \q_stop
+  {
+    \space\allowbreak
+    \__report_hash_walk:n {#1}
+  }
+
+\cs_new_protected:Npn \__report_hash_group:nw #1 #2 \q_stop
+  {
+    \textbraceleft\allowbreak
+    \__report_hash_walk:n { #1 \q__report_stop }
+    \textbraceright\allowbreak
+    \__report_hash_walk:n {#2}
+  }
+
+\cs_new_protected:Npn \__report_hash_token:Nw #1 #2 \q_stop
+  {
+    \token_if_eq_meaning:NNTF #1 \q__report_stop
+      { }
+      {
+        \token_if_cs:NTF #1
+          {
+            \textbackslash\allowbreak
+            \cs_to_str:N #1\allowbreak
+          }
+          {
+            \token_if_active:NTF #1
+              {
+                \int_compare:nNnTF { `#1 } = { 126 }
+                  { \textasciitilde\allowbreak }
+                  { #1 }
+              }
+              {
+                \int_case:nnF { `#1 }
+                  {
+                    { 92 }  { \textbackslash\allowbreak }
+                    { 95 }  { \_\allowbreak }
+                    { 37 }  { \%\allowbreak }
+                    { 35 }  { \#\allowbreak }
+                    { 38 }  { \&\allowbreak }
+                    { 36 }  { \$\allowbreak }
+                    { 94 }  { \textasciicircum\allowbreak }
+                    { 126 } { \textasciitilde\allowbreak }
+                    { 45 }  { { - \kern 0pt }\allowbreak }
+                  }
+                  { #1\allowbreak }
+              }
+          }
+        \__report_hash_walk:n {#2}
+      }
+  }
+
+\cs_new_protected:Npn \__report_hash_exec:n #1
+  {
+    \upshape\ttfamily\footnotesize
+    \tl_if_empty:nF {#1}
+      { \__report_hash_walk:n { #1 \q__report_stop } }
+    \group_end:
+  }
+
+\NewDocumentCommand{\hash}{}
+  {
+    \group_begin:
+    \__report_set_inline_catcodes:
+    \__report_hash_exec:n
+  }
+
 % Oznaczenie zanonimizowanych danych osobowych / ról (np. \anon{Pracownik_Adm_01})
-\newcommand{\anon}[1]{\texttt{[\detokenize{#1}]}}
+\cs_new_protected:Npn \__report_anon_exec:n #1
+  {
+    \upshape\ttfamily
+    \tl_clear:N \l__report_seg_tl
+    [
+    \tl_if_empty:nF {#1}
+      {
+        \__report_walk_loop:n { #1 \q__report_stop }
+        \__report_flush_seg:
+      }
+    ]
+    \group_end:
+  }
 
-% Pogrubiony nagłówek wewnątrz sekcji (zamiast ręcznego \medskip\noindent\textbf{..}\\)
+\NewDocumentCommand{\anon}{}
+  {
+    \group_begin:
+    \__report_set_inline_catcodes:
+    \__report_anon_exec:n
+  }
+
+% --- Wersja rozwijalna do zakładek PDF (hyperref) ---
+\cs_new:Npn \__report_pdfstring:n #1
+  {
+    \__report_pdfstring_loop:nn { #1 \q__report_stop } { }
+  }
+
+\cs_new:Npn \__report_pdfstring_loop:nn #1 #2
+  {
+    \tl_if_head_is_space:nTF {#1}
+      { \__report_pdfstring_space:wn . #1 \q_stop {#2} }
+      {
+        \tl_if_head_is_group:nTF {#1}
+          { \__report_pdfstring_group:nwn #1 \q_stop {#2} }
+          { \__report_pdfstring_token:Nwn #1 \q_stop {#2} }
+      }
+  }
+
+\cs_new:Npn \__report_pdfstring_space:wn . ~ #1 \q_stop #2
+  {
+    \__report_pdfstring_loop:nn {#1} { #2 ~ }
+  }
+
+\cs_new:Npn \__report_pdfstring_group:nwn #1 #2 \q_stop #3
+  {
+    \__report_pdfstring_loop:nn {#2} { #3 \{ \__report_pdfstring:n {#1} \} }
+  }
+
+\cs_new:Npn \__report_pdfstring_token:Nwn #1 #2 \q_stop #3
+  {
+    \token_if_eq_meaning:NNTF #1 \q__report_stop
+      {#3}
+      {
+        \token_if_cs:NTF #1
+          {
+            \token_if_eq_meaning:NNTF #1 \{
+              { \__report_pdfstring_loop:nn {#2} { #3 \{ } }
+              {
+                \token_if_eq_meaning:NNTF #1 \}
+                  { \__report_pdfstring_loop:nn {#2} { #3 \} } }
+                  {
+                    \token_if_eq_meaning:NNTF #1 \_
+                      { \__report_pdfstring_loop:nn {#2} { #3 \_ } }
+                      {
+                        \token_if_eq_meaning:NNTF #1 \%
+                          { \__report_pdfstring_loop:nn {#2} { #3 \% } }
+                          {
+                            \token_if_eq_meaning:NNTF #1 \#
+                              { \__report_pdfstring_loop:nn {#2} { #3 \# } }
+                              {
+                                \token_if_eq_meaning:NNTF #1 \&
+                                  { \__report_pdfstring_loop:nn {#2} { #3 \& } }
+                                  {
+                                    \token_if_eq_meaning:NNTF #1 \$
+                                      { \__report_pdfstring_loop:nn {#2} { #3 \$ } }
+                                      {
+                                        \token_if_eq_meaning:NNTF #1 \textbackslash
+                                          { \__report_pdfstring_loop:nn {#2} { #3 \textbackslash } }
+                                          { \__report_pdfstring_loop:nn {#2} { #3 \textbackslash \cs_to_str:N #1 } }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          {
+            \token_if_active:NTF #1
+              {
+                \int_compare:nNnTF { `#1 } = { 126 }
+                  { \__report_pdfstring_loop:nn {#2} { #3 \textasciitilde } }
+                  { \__report_pdfstring_loop:nn {#2} { #3 #1 } }
+              }
+              {
+                \int_case:nnF { `#1 }
+                  {
+                    { 92 }  { \__report_pdfstring_loop:nn {#2} { #3 \textbackslash } }
+                    { 95 }  { \__report_pdfstring_loop:nn {#2} { #3 \_ } }
+                    { 37 }  { \__report_pdfstring_loop:nn {#2} { #3 \% } }
+                    { 35 }  { \__report_pdfstring_loop:nn {#2} { #3 \# } }
+                    { 38 }  { \__report_pdfstring_loop:nn {#2} { #3 \& } }
+                    { 36 }  { \__report_pdfstring_loop:nn {#2} { #3 \$ } }
+                    { 94 }  { \__report_pdfstring_loop:nn {#2} { #3 \textasciicircum } }
+                    { 126 } { \__report_pdfstring_loop:nn {#2} { #3 \textasciitilde } }
+                  }
+                  { \__report_pdfstring_loop:nn {#2} { #3 #1 } }
+              }
+          }
+      }
+  }
+
+\cs_new_eq:NN \ReportPdfString \__report_pdfstring:n
+
+\ExplSyntaxOff
+
+% Polecenie LaTeX-a w tekście (np. \latexcmd{section})
+\newcommand{\latexcmd}[1]{\texttt{\textbackslash #1}}
+
+% Pogrubiony nagłówek wewnątrz sekcji
 \newcommand{\lead}[1]{\par\medskip\noindent\textbf{#1}\par\nopagebreak\smallskip}
 
-% Ramka z podpowiedzią w przykładowych rozdziałach - usuń wywołania \TemplateNote przy pisaniu własnej treści
-\newcommand{\TemplateNote}[1]{%
-  \par\medskip\noindent
-  \fcolorbox{lgray}{gray!8}{%
-    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\small\textbf{Wskazówka szablonu.} #1}}%
-  \par\medskip
-}
-
-% Rozdział bez numeru (dopisany do spisu treści): \UnnumberedChapter{Streszczenie}
+% Rozdział nienumerowany: w \frontmatter trafia do spisu treści bez numeru strony
+\makeatletter
 \newcommand{\UnnumberedChapter}[1]{%
   \clearpage\phantomsection
-  \addcontentsline{toc}{chapter}{#1}%
+  \if@mainmatter
+    \addcontentsline{toc}{chapter}{#1}%
+  \else
+    \protected@write\@auxout
+      {\let\label\@gobble \let\index\@gobble \let\glossary\@gobble}%
+      {\string\@writefile{toc}{\protect\contentsline{chapter}{#1}{}{\@currentHref}}}%
+  \fi
   \chapter*{#1}%
 }
+\makeatother
 
-% Pytanie i odpowiedź: \begin{qa}{Treść pytania} Odpowiedź... \end{qa}
+% Pytanie i odpowiedź: \begin{qa}{Treść pytania} ... \end{qa}
 \newcounter{qacount}
 \newenvironment{qa}[1]{%
   \refstepcounter{qacount}%
@@ -43,22 +420,20 @@
   \noindent\textbf{Odpowiedź}\par\nopagebreak
 }{\par\medskip}
 
-% Spis skrótów: \begin{abbreviations} \item[HTTP] Hypertext Transfer Protocol ... \end{abbreviations}
+% Spis skrótów
 \newenvironment{abbreviations}
   {\begin{description}[style=multiline, leftmargin=3.5cm, font=\bfseries, itemsep=2pt]}
   {\end{description}}
 
-% Tylda wyśrodkowana w pionie (przybliżenie)
+% Tylda wyśrodkowana w pionie
 \newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 
-% Znaczniki w tabelach (\cmark, \xmark) i pogrubiona komórka nagłówka
+% Znaczniki w tabelach i pogrubiona komórka nagłówka
 \newcommand{\cmark}{\ding{51}}
 \newcommand{\xmark}{\ding{55}}
 \newcommand{\hcell}[1]{\textbf{#1}}
 
-% ---------------------------------------------------------------------------------------------
-% Skróty matematyczne
-% ---------------------------------------------------------------------------------------------
+% --- Skróty matematyczne ---
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\QQ}{\mathbb{Q}}
@@ -66,9 +441,7 @@
 \newcommand{\IMP}{\rightarrow}
 \newcommand{\IFF}{\leftrightarrow}
 
-% ---------------------------------------------------------------------------------------------
-% Twierdzenia, definicje, przykłady, uwagi (numeracja w obrębie rozdziału, wspólny licznik)
-% ---------------------------------------------------------------------------------------------
+% --- Twierdzenia, definicje, przykłady, uwagi ---
 \theoremstyle{plain}
 \newtheorem{theorem}{Twierdzenie}[chapter]
 \newtheorem{lemma}[theorem]{Lemat}
@@ -80,15 +453,12 @@
 \newtheorem*{remark}{Uwaga}
 \renewcommand{\qedsymbol}{$\blacklozenge$}
 
-% ---------------------------------------------------------------------------------------------
-% Listy (zwykłe itemize / enumerate - jeden spójny styl w całym dokumencie)
-% ---------------------------------------------------------------------------------------------
+% --- Listy ---
 \setlist{topsep=0.4em, itemsep=0.2em, parsep=0pt, partopsep=0pt}
 \setlist[itemize,1]{label=\textbullet, leftmargin=*}
-\setlist[itemize,2]{label=-, leftmargin=*}
+\setlist[itemize,2]{label=\textendash, leftmargin=*}
 \setlist[itemize,3]{label=$\diamond$, leftmargin=*}
 \setlist[enumerate,1]{label=\arabic*., leftmargin=*}
 \setlist[enumerate,2]{label=\alph*), leftmargin=*}
 
-% Mniej "rozjeżdżonych" akapitów w wąskich kolumnach i listach
 \setlength{\emergencystretch}{2em}

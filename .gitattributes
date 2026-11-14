@@ -1,20 +1,14 @@
-# Auto detect text files and normalize line endings to LF
+# Jednolite końce linii LF (spójność między Windows, Linux i Overleaf)
 * text=auto eol=lf
 
-# Explicitly declare text files
 *.tex text eol=lf
 *.bib text eol=lf
 *.bst text eol=lf
 *.md  text eol=lf
-*.yml text eol=lf
-*.yaml text eol=lf
-.gitignore text eol=lf
-.gitattributes text eol=lf
 
-# Binary files
-*.pdf binary
-*.png binary
-*.jpg binary
+# Pliki binarne
+*.png  binary
+*.jpg  binary
 *.jpeg binary
-*.eps binary
-
+*.pdf  binary
+*.eps  binary

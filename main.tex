@@ -1,32 +1,29 @@
-%***************************************************************************************************
-% main.tex - szkielet dokumentu. Dane dokumentu edytuj w config/metadata.tex,
-% treść w katalogach chapters/ i appendices/, a wygląd w preamble/ i config/theme-pwr.tex.
-% Kompilacja: pdfLaTeX + BibTeX (na Overleaf: kompilator pdfLaTeX, plik główny main.tex).
-%***************************************************************************************************
+% Szkielet dokumentu. Kompilacja: pdfLaTeX + BibTeX (plik główny: main.tex).
+% Dla druku dwustronnego zamień "oneside" na "twoside".
+\documentclass[12pt, a4paper, oneside, openany]{book}
 
-% Dla druku jednostronnego zamień "twoside" na "oneside".
-\documentclass[12pt, a4paper, twoside, openany]{book}
-
-% ============================== KONFIGURACJA I PREAMBUŁA ==============================
-\input{config/metadata}          % dane dokumentu i przełączniki
-\input{preamble/packages}        % pakiety (kolejność istotna)
-\input{config/theme-pwr}         % kolory, nazwy uczelni i wydziału, logo
-\input{preamble/polish}          % polskie napisy dokumentu
-\input{preamble/macros}          % makra, twierdzenia, listy
+% --- Konfiguracja i preambuła ---
+\input{config/metadata}
+\input{preamble/packages}
+\input{config/theme-pwr}
+\input{preamble/polish}
+\input{preamble/macros}
 \input{preamble/floats-and-tables}
 \input{preamble/listings}
 \input{preamble/headings}
 \input{preamble/pagestyles}
-\input{preamble/links}           % hyperref - zawsze na końcu
+\input{preamble/links}
 
 \begin{document}
 
-% ============================== CZĘŚĆ WSTĘPNA ==============================
+% --- Część wstępna ---
 \frontmatter
-\assignpagestyle{\chapter}{frontstyle}   % pierwsze strony rozdziałów wstępnych: czyste
+\assignpagestyle{\chapter}{frontstyle}
 \pagestyle{frontstyle}
 
+\hypersetup{pageanchor=false}
 \input{frontmatter/titlepage}
+\hypersetup{pageanchor=true}
 \ifshowabstract
     \input{frontmatter/abstract}
 \fi
@@ -38,9 +35,9 @@
     \input{frontmatter/abbreviations}
 \fi
 
-% ============================== TREŚĆ GŁÓWNA ==============================
+% --- Treść główna ---
 \mainmatter
-\assignpagestyle{\chapter}{chapterfirst} % pierwsza strona rozdziału: tylko stopka
+\assignpagestyle{\chapter}{chapterfirst}
 \pagestyle{mainstyle}
 
 \input{chapters/1_wstep}
@@ -51,11 +48,12 @@
 \input{chapters/6_socjotechnika}
 \input{chapters/7_podsumowanie}
 
-% ============================== CZĘŚĆ KOŃCOWA ==============================
+% --- Bibliografia i spisy ---
 \ifshowbibliography
     \clearpage\phantomsection
     \pagestyle{bibstyle}
     \addcontentsline{toc}{chapter}{\bibname}
+    \nocite{*}
     \bibliographystyle{bib/plabbrv-fixed}
     \bibliography{bib/references}
 \fi
@@ -73,11 +71,10 @@
     \BackList{loastyle}{\listalgorithmcfname}{\listofalgorithms}
 \fi
 
-% ============================== ZAŁĄCZNIKI ==============================
+% --- Załączniki ---
 \ifshowappendices
     \StartAppendices
     \pagestyle{mainstyle}
-    \input{appendices/A_przykladowy}
 \fi
 
 \end{document}

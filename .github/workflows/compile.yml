@@ -5,41 +5,39 @@ on:
     branches:
       - main
       - master
+  pull_request:
+    branches:
+      - main
+      - master
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
 
 jobs:
   build_latex:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@e2f99d4b3685b0da93f97e1b86ad8fab81105098 # v3
         with:
           root_file: main.tex
+          args: -pdf -bibtex -interaction=nonstopmode -halt-on-error
 
-      - name: Rename compiled PDF
-        run: mv main.pdf APNWA-OSINT.pdf
-
-      - name: Move latest tag to current commit
+      - name: Rename and verify PDF
         run: |
-          git tag -f latest
-          git push -f origin latest
-
-      - name: Update latest release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: latest
-          name: Latest Compiled PDF
-          draft: false
-          prerelease: false
-          files: APNWA-OSINT.pdf
+          mv main.pdf APNWA-OSINT.pdf
+          test -s APNWA-OSINT.pdf
 
       - name: Prepare GitHub Pages site
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         run: |
           mkdir -p _site
           cp APNWA-OSINT.pdf _site/
@@ -49,7 +47,7 @@ jobs:
           <head>
             <meta charset="utf-8">
             <meta http-equiv="refresh" content="0; url=APNWA-OSINT.pdf">
-            <title>APNWA OSINT - PDF</title>
+            <title>APNWA-OSINT - PDF</title>
           </head>
           <body>
             <p>Redirecting to <a href="APNWA-OSINT.pdf">APNWA-OSINT.pdf</a>...</p>
@@ -58,24 +56,57 @@ jobs:
           EOF
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: _site
 
+      - name: Upload PDF artifact
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: compiled-pdf
+          path: APNWA-OSINT.pdf
+          retention-days: 7
+
   deploy_pages:
     needs: build_latex
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     permissions:
       pages: write
       id-token: write
-    concurrency:
-      group: "pages"
-      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
 
+  release:
+    needs: build_latex
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download PDF artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: compiled-pdf
+
+      - name: Create or update latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          if gh release view latest --repo "$REPO" >/dev/null 2>&1; then
+            gh api -X PATCH "repos/$REPO/git/refs/tags/latest" -f sha="$GITHUB_SHA" -F force=true >/dev/null
+            while IFS= read -r asset; do
+              [ -n "$asset" ] && gh release delete-asset latest "$asset" --yes --repo "$REPO"
+            done < <(gh release view latest --repo "$REPO" --json assets --jq '.assets[].name | select(endswith(".pdf") and . != "APNWA-OSINT.pdf")')
+            gh release upload latest APNWA-OSINT.pdf --clobber --repo "$REPO"
+          else
+            gh release create latest APNWA-OSINT.pdf --target "$GITHUB_SHA" --title "Latest Compiled PDF" --notes "Automated LaTeX build." --repo "$REPO"
+          fi

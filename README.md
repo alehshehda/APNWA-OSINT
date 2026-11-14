@@ -35,8 +35,6 @@ chapters/
   5_personel_slady.tex                Personnel, digital footprints, document metadata, and repositories
   6_socjotechnika.tex                 Attack surface analysis and social engineering attack scenarios
   7_podsumowanie.tex                  Summary, defensive recommendations, and conclusions
-appendices/
-  A_przykladowy.tex                   Additional reconnaissance materials and raw data
 bib/
   references.bib                      BibTeX bibliography database
   plabbrv-fixed.bst                   Polish bibliography style

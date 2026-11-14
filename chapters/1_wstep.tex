@@ -37,7 +37,7 @@ Biały wywiad (\textit{Open-Source Intelligence - OSINT}) definiuje się jako dy
 
 W kontekście metodyki białego wywiadu istotne znaczenie ma również interpretacja wyników negatywnych według zasady \textit{High Security Posture} - brak wykrytych luk lub wycieków w danym wektorze (np. na poziomie filtracji portów L4 czy restrykcyjnych polityk pocztowych) stanowi empiryczny dowód dojrzałości obronnej perymetru organizacji i kieruje dalsze modelowanie wektorów ataku w stronę wyższych warstw aplikacji oraz inżynierii społecznej.
 
-Kluczową rolę w analityce OSINT odgrywa efekt mozaiki (\textit{Mosaic Effect}). Dane nieszkodliwe w izolacji (np. parametry przetargu na serwery, instrukcja konfiguracji VPN, profile pracowników) po skorelowaniu odsłaniają architekturę sieciową i strukturę uprawnień w organizacji. Integralną częścią tego procesu jest analiza niezamierzonych wycieków operacyjnych (\textit{OPSEC leakage}), powstających podczas rutynowej działalności pracowników jednostki.
+W analityce OSINT istotnym mechanizmem jest efekt mozaiki (\textit{Mosaic Effect}). Dane nieszkodliwe w izolacji (np. parametry przetargu na serwery, instrukcja konfiguracji VPN, profile pracowników) po skorelowaniu odsłaniają architekturę sieciową i strukturę uprawnień w organizacji. Integralną częścią tego procesu jest analiza niezamierzonych wycieków operacyjnych (\textit{OPSEC leakage}), powstających podczas rutynowej działalności pracowników jednostki.
 
 \subsection{Cykl wywiadowczy w analizie bezpieczeństwa IT}\label{subsec:cykl-wywiadowczy}
 
@@ -115,16 +115,16 @@ Wszystkie trzy filary dostarczają skorelowanych danych wywiadowczych na potrzeb
         \multirow{3}{=}{I. Wywiad gospodarczy i osobowy}
             & \code{osintframework.com} / \code{osintframework.pl} & Taksonomia i weryfikacja publicznych rejestrów oraz katalogów instytucjonalnych. & OSINT Framework \cite{osintframework_com,osintframework_pl} \\
             & \code{whatsmyname.app} & Korelacja pseudonimów badaczy i inżynierów między platformami internetowymi. & WhatsMyName \cite{whatsmyname_app} \\
-            & \file{data.snf.ch} / \file{simap.ch} & Pobieranie publicznych danych o grantach badawczych i rozstrzygnięciach przetargów. & Rejestry federalne CH \\
+            & \code{data.snf.ch} / \code{simap.ch} & Pobieranie publicznych danych o grantach badawczych i rozstrzygnięciach przetargów. & Rejestry federalne CH \\
         \midrule
         \multirow{4}{=}{II. Rekonesans sieciowo-domenowy}
-            & \cmd{dig} / \cmd{whois} & Badanie DNS, weryfikacja rekordów SPF/MX oraz danych rejestracyjnych IP/AS. & Narzędzia systemowe \\
+            & \code{dig} / \code{whois} & Badanie DNS, weryfikacja rekordów SPF/MX oraz danych rejestracyjnych IP/AS. & Narzędzia systemowe \\
             & \code{crt.sh} & Eksploracja logów Certificate Transparency w celu wykrycia subdomen i certyfikatów TLS. & Sectigo CT Log \\
-            & \cmd{subfinder} / \cmd{amass} & Agregacja subdomen \code{*.inf.ethz.ch}. & ProjectDiscovery / OWASP \\
+            & \code{subfinder} / \code{amass} & Agregacja subdomen \code{*.inf.ethz.ch}. & ProjectDiscovery / OWASP \\
             & Shodan / Censys & Analiza pasywnych skanów portów, wykrytych banerów i wersji serwerów brzegowych. & Wyszukiwarki IoT \\
         \midrule
         \multirow{5}{=}{III. Analiza artefaktów i archiwów}
-            & \cmd{exiftool} & Ekstrakcja metadanych z publicznie dostępnych plików. & Narzędzie lokalne \\
+            & \code{exiftool} & Ekstrakcja metadanych z publicznie dostępnych plików. & Narzędzie lokalne \\
             & Wayback Machine & Analiza historycznych wersji stron i podstron. & Internet Archive \\
             & Zaawansowany Dorking & Ukierunkowane zapytania w celu lokalizacji indeksowanych plików konfiguracyjnych. & Google Search \\
             & Publiczny GitLab / GitHub & Analiza commitów, adresów deweloperskich i plików konfiguracyjnych CI/CD. & Repozytoria kodu \\
@@ -138,9 +138,9 @@ Wszystkie trzy filary dostarczają skorelowanych danych wywiadowczych na potrzeb
 Metodyka wywiadu organizacyjno-gospodarczego i osobowego koncentruje się na analizie formalnego otoczenia wydziału oraz relacji łączących jednostkę z podmiotami zewnętrznymi. Procedura obejmuje następujące działania:
 \begin{enumerate}
     \item \textbf{Analiza struktury decyzyjnej i operacyjnej:} Odtworzenie hierarchii wydziału D-INFK, powiązań między instytutami badawczymi oraz identyfikacja personelu kluczowego dla ciągłości działania systemów teleinformatycznych.
-    \item \textbf{Pozyskanie danych finansowo-przetargowych (Actionable Intelligence):} Analiza publicznych sprawozdań finansowych, bazy grantów badawczych SNSF (\file{data.snf.ch}) oraz szwajcarskiego portalu zamówień publicznych (\file{simap.ch}). W odróżnieniu od klasycznej analizy ekonomicznej, celem badania jest identyfikacja konkretnych modeli urządzeń sieciowych, serwerów obliczeniowych, kontraktów na oprogramowanie oraz zewnętrznych dostawców usług (\textit{Third-Party Vendors}), co pozwala na wskazanie wektorów ataku na łańcuch dostaw (\textit{Supply Chain}).
+    \item \textbf{Pozyskanie danych finansowo-przetargowych (Actionable Intelligence):} Analiza publicznych sprawozdań finansowych, bazy grantów badawczych SNSF (\code{data.snf.ch}) oraz szwajcarskiego portalu zamówień publicznych (\code{simap.ch}). W odróżnieniu od klasycznej analizy ekonomicznej, celem badania jest identyfikacja konkretnych modeli urządzeń sieciowych, serwerów obliczeniowych, kontraktów na oprogramowanie oraz zewnętrznych dostawców usług (\textit{Third-Party Vendors}), co pozwala na wskazanie wektorów ataku na łańcuch dostaw (\textit{Supply Chain}).
     \item \textbf{Rozpoznanie topografii fizycznej:} Analiza lokalizacji budynków wydziału, wejść, recepcji i punktów logistycznych w oparciu o ogólnodostępne mapy kampusowe i fotografie, co stanowi podstawę do oceny ryzyka fizycznych ataków.
-    \item \textbf{Profilowanie obecności w sieciach społecznościowych (SOCMINT):} Mapowanie oficjalnych kanałów komunikacji wydziału oraz publicznych profili personelu na platformach LinkedIn, X, ResearchGate, połączone z korelacją pseudonimów za pomocą narzędzia \file{whatsmyname.app} zgodnie z wytycznymi metodycznymi frameworków OSINT \cite{osintframework_com,whatsmyname_app}.
+    \item \textbf{Profilowanie obecności w sieciach społecznościowych (SOCMINT):} Mapowanie oficjalnych kanałów komunikacji wydziału oraz publicznych profili personelu na platformach LinkedIn, X, ResearchGate, połączone z korelacją pseudonimów za pomocą narzędzia \code{whatsmyname.app} zgodnie z wytycznymi metodycznymi frameworków OSINT \cite{osintframework_com,whatsmyname_app}.
     \item \textbf{Identyfikacja schematów adresacji e-mail i punktów kontaktowych:} Analiza konwencji nazewniczych kont pocztowych pracowników i studentów oraz mapowanie oficjalnych skrzynek funkcyjnych (w tym helpdesku ISG i sekretariatów instytutów).
 \end{enumerate}
 
@@ -150,8 +150,8 @@ Metodyka rekonesansu sieciowo-domenowego obejmuje wielowarstwową analizę archi
 \begin{enumerate}
     \item \textbf{Warstwa adresowa i routing (L3/L4):} Identyfikacja systemów autonomicznych, tras routingu BGP, rozgłaszanych prefiksów oraz wydzielonych pul adresów IPv4 i IPv6 przypisanych do wydziału.
     \item \textbf{Rejestry domenowe i konfiguracja DNS:} Analiza wpisów WHOIS oraz strefy DNS, w tym rekordów NS, MX, TXT. Szczególny nacisk położono na weryfikację implementacji standardów bezpieczeństwa poczty elektronicznej: SPF (\textit{Sender Policy Framework}), DKIM (\textit{DomainKeys Identified Mail}) oraz polityki DMARC (\textit{Domain-based Message Authentication, Reporting, and Conformance}). Weryfikacja ta pozwala ocenić podatność domeny na podszywanie się pod adresy wydziałowe w scenariuszach phishingowych.
-    \item \textbf{Analiza certyfikatów TLS i ekspozycji portów (L4):} Badanie parametrów kryptograficznych certyfikatów i urzędów certyfikacji w logach CT (\file{crt.sh}) oraz analiza indeksów Shodan i Censys pod kątem otwartych portów transportowych i banerów usług sieciowych.
-    \item \textbf{Pasywna enumeracja strefy subdomenowej:} Wykorzystanie logów przejrzystości certyfikatów oraz narzędzi \cmd{subfinder} i \cmd{amass} do zmapowania hierarchii poddomen \code{*.inf.ethz.ch} oraz domen instytutowych.
+    \item \textbf{Analiza certyfikatów TLS i ekspozycji portów (L4):} Badanie parametrów kryptograficznych certyfikatów i urzędów certyfikacji w logach CT (\code{crt.sh}) oraz analiza indeksów Shodan i Censys pod kątem otwartych portów transportowych i banerów usług sieciowych.
+    \item \textbf{Pasywna enumeracja strefy subdomenowej:} Wykorzystanie logów przejrzystości certyfikatów oraz narzędzi \code{subfinder} i \code{amass} do zmapowania hierarchii poddomen \code{*.inf.ethz.ch} oraz domen instytutowych.
     \item \textbf{Identyfikacja technologii webowych i portali dostępowych (L7):} Pasywna analiza serwerów WWW (Nginx, Apache, AEM), systemów CMS instytutów badawczych, nagłówków bezpieczeństwa HTTP oraz mechanizmów federacyjnego uwierzytelniania (\textit{Switch edu-ID / Shibboleth AAI}) i systemów dydaktycznych.
 \end{enumerate}
 
@@ -159,7 +159,7 @@ Metodyka rekonesansu sieciowo-domenowego obejmuje wielowarstwową analizę archi
 
 Trzeci filar metodologiczny skupia się na wydobywaniu wiedzy operacyjnej z artefaktów wtórnych i śladów historycznych pozostawionych w sieci przez pracowników i systemy D-INFK:
 \begin{enumerate}
-    \item \textbf{Ekstrakcja metadanych dokumentów publicznych:} Pobranie reprezentatywnej próby publicznie udostępnionych dokumentów i ich analiza narzędziem \cmd{exiftool}. Pozwala to na wydobycie nazw użytkowników systemowych, wewnętrznych ścieżek katalogowych, wersji oprogramowania edytorskiego oraz modeli drukarek sieciowych, ujawniając konfigurację stacji roboczych personelu.
+    \item \textbf{Ekstrakcja metadanych dokumentów publicznych:} Pobranie reprezentatywnej próby publicznie udostępnionych dokumentów i ich analiza narzędziem \code{exiftool}. Pozwala to na wydobycie nazw użytkowników systemowych, wewnętrznych ścieżek katalogowych, wersji oprogramowania edytorskiego oraz modeli drukarek sieciowych, ujawniając konfigurację stacji roboczych personelu.
     \item \textbf{Eksploracja archiwów internetowych (Wayback Machine):} Badanie historycznych wersji witryn D-INFK i portalu ISG. Pozwala to na odnalezienie wycofanych podstron, dawnych schematów adresacji, nieobowiązujących instrukcji technicznych oraz zapomnianych plików konfiguracyjnych.
     \item \textbf{Zaawansowane techniki wyszukiwawcze (Google Dorking):} Konstruowanie sprofilowanych zapytań indeksujących, ukierunkowanych na odnalezienie niechronionych katalogów z dokumentacją techniczną, skryptami pomocniczymi oraz komunikatami diagnostycznymi na subdomenach wydziałowych.
     \item \textbf{Inspekcja otwartych repozytoriów oprogramowania:} Analiza publicznych projektów GitLab / GitHub pod kątem historii commitów, ujawnionych adresów e-mail autorów, konfiguracji CI/CD oraz potencjalnych wycieków poświadczeń technicznych.

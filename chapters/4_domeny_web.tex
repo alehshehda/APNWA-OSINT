@@ -1,73 +1,342 @@
 \chapter{Pasywna enumeracja zasobów webowych i analiza aplikacji}\label{ch:domeny-web}
 
-% ==============================================================================
-% ROZDZIAŁ 4 - WSKAZÓWKI I TO-DO DLA AGENTA PISZĄCEGO:
-% Rola: Osoba 2 (Aplikacje L7, subdomeny, serwery WWW, federacja edu-ID, archiwum i dorking).
-% Cel: Identyfikacja punktów logowania SSO pod Evilginx2, taksonomia subdomen, procedury ISG.
-% Narzędzia: crt.sh (wildcard SQL %), subfinder, amass, Wappalyzer, Wayback CDX, Google Dorking.
-% Objętość docelowa: ~7-8 stron.
-% ==============================================================================
+Analiza przeprowadzona w rozdziale \ref{ch:infrastruktura} na poziomie warstwy sieciowej i transportowej (L3/L4) wskazuje na dojrzałą segmentację perymetru uczelni oraz brak bezpośredniej ekspozycji wrażliwych usług administracyjnych. Zgodnie z przyjętą w rozdziale \ref{ch:wstep} zasadą \textit{High Security Posture}, wysoka odporność niskopoziomowa przenosi ciężar rozpoznania na warstwę aplikacji (L7). Celem niniejszego rozdziału jest zmapowanie pełnej przestrzeni domenowej i subdomenowej wydziału D-INFK, identyfikacja wykorzystywanego stosu technologicznego WWW, odwzorowanie punktów końcowych federacyjnego uwierzytelniania oraz pozyskanie archiwalnych i dokumentacyjnych artefaktów technicznych z zachowaniem ścisłej pasywności badania.
 
 \section{Architektura strefy domenowej i subdomenowej D-INFK}\label{sec:struktura-domenowa}
 
 \subsection{Hierarchia przestrzeni nazw i domen powiązanych}\label{subsec:hierarchia-domen}
-% TO-DO:
-% 1. Opisać strukturę strefy inf.ethz.ch podpiętej pod nadrzędną ethz.ch.
-% 2. Scharakteryzować 3 warstwy: centralna wydziału, instytuty badawcze (subdomeny lub domeny zewnętrzne
-%    jak systems.ethz.ch, zisc.ethz.ch) oraz społeczność studencka (vis.ethz.ch).
-% 3. Zwrócić uwagę na hybrydowy charakter strefy w kontekście wyznaczania granic rekonesansu.
+
+Przestrzeń nazw Wydziału Informatyki ETH Zürich nie stanowi odizolowanego drzewa DNS, lecz funkcjonuje jako wydzielona strefa \code{inf.ethz.ch} delegowana z nadrzędnej domeny uczelnianej \code{ethz.ch} \cite{eth_dinfk}. Pasywna analiza powiązań organizacyjnych i usługowych wykazuje istnienie modelu hybrydowego, w którym zasoby wydziałowe rozkładają się na trzy wyraźnie zróżnicowane warstwy logiczne, powiązane jednocześnie z ogólnouczelnianymi punktami styku (\textit{Shared Infrastructure Touchpoints}).
+
+\begin{enumerate}
+    \item \textbf{Warstwa centralna wydziału oraz infrastruktury ISG (\code{*.inf.ethz.ch}):} Obejmuje oficjalną witrynę wydziałową (\code{inf.ethz.ch}, \code{www.inf.ethz.ch}) oraz rdzeń usług technicznych utrzymywanych bezpośrednio przez zespół \textit{IT Service Group} (ISG D-INFK) \cite{isg_dinfk_wiki}. W warstwie tej mieszczą się systemy wsparcia i rezerwacji (\code{isg.inf.ethz.ch}, \code{support.inf.ethz.ch}, \code{bookings.inf.ethz.ch}), wydziałowa platforma kontroli wersji i CI/CD (\code{gitlab.inf.ethz.ch}) \cite{gitlab_dinfk}, serwery dostępowe SSH/SFTP (\code{maximus.inf.ethz.ch}, \code{web-login.inf.ethz.ch}) oraz przestrzenie webowe i plikowe personelu (\code{people.inf.ethz.ch}, \code{home.inf.ethz.ch}).
+    \item \textbf{Warstwa instytutów i laboratoriów badawczych (model hybrydowy):} Ze względu na historyczną autonomię poszczególnych katedr i grup badawczych (opisaną w rozdziale \ref{ch:organizacja}), część jednostek utrzymuje swoje serwisy bezpośrednio jako subdomeny trzeciego i czwartego rzędu w strefie wydziałowej (np. \code{spcl.inf.ethz.ch}, \code{sri.inf.ethz.ch}, \code{netsec.inf.ethz.ch}, \code{las.inf.ethz.ch}, \code{da.inf.ethz.ch}, \code{igl.inf.ethz.ch}, \code{cgl.inf.ethz.ch}, \code{bmi.inf.ethz.ch}, \code{mds.inf.ethz.ch}, \code{gtc.inf.ethz.ch}). Równolegle wybrane instytuty i centra badawcze o zasięgu międzywydziałowym lub strategicznym funkcjonują w autonomicznych subdomenach drugiego rzędu pod nadrzędną strefą \code{ethz.ch} - dotyczy to m.in. grupy systemowej \code{systems.ethz.ch}, centrum cyberbezpieczeństwa \code{zisc.ethz.ch} \cite{zisc_ethz} oraz grup bezpieczeństwa \code{syssec.ethz.ch} i \code{infsec.ethz.ch}.
+    \item \textbf{Warstwa dydaktyczna, klastrowa i społeczności studenckiej:} Obejmuje z jednej strony wydziałowe zasoby obliczeniowe dla studentów (klastry \code{student-cluster.inf.ethz.ch}, środowisko \code{student-jupyter.inf.ethz.ch}, portal alokacji \code{student-cluster-courses.inf.ethz.ch}, udział plikowy \code{student-files.inf.ethz.ch}), a z drugiej strony portal stowarzyszenia studentów informatyki VIS (\textit{Verein der Informatikstudierenden}) pod domeną \code{vis.ethz.ch} \cite{vis_ethz}. Choć formalnie VIS podlega ogólnouczelnianej organizacji VSETH (\code{vseth.ethz.ch}), jego biura, zaplecze organizacyjne oraz większość użytkowników przynależą bezpośrednio do wydziału D-INFK w budynku CAB.
+\end{enumerate}
+
+Na styku tych trzech warstw funkcjonują ponadwydziałowe usługi centralne ETH Zürich, takie jak brama federacji tożsamości \code{aai-logon.ethz.ch} \cite{switch_eduid}, centralny portal zarządzania poświadczeniami \code{password.ethz.ch} \cite{eth_password_iam}, system oceny kodu \code{expert.ethz.ch}, platforma e-learningowa \code{moodle-app2.let.ethz.ch}, centralny klaster obliczeniowy \code{euler.ethz.ch} oraz wydziałowa przestrzeń SharePoint \code{inf.sp.ethz.ch}. Rozgraniczenie to ma fundamentalne znaczenie dla zachowania reguł zaangażowania (\textit{RoE}): pełnemu rozpoznaniu podlega strefa \code{*.inf.ethz.ch} oraz powiązane zasoby instytutów wydziałowych, natomiast systemy centralne ETH analizowane są wyłącznie jako punkty styku uwierzytelniania i usług dydaktycznych. Zależności te zobrazowano na rysunku \ref{fig:architektura-domen}.
+
+\Figure[0.95]{ch4_architektura_domen.png}{Trójwarstwowa architektura przestrzeni nazw DNS związanej z wydziałem D-INFK}{fig:architektura-domen}
 
 \subsection{Pasywna enumeracja i taksonomia subdomen}\label{subsec:wyniki-enumeracji}
-% TO-DO:
-% 1. Przedstawić zapytanie do logów CT z symbolem wieloznacznym SQL LIKE (%): https://crt.sh/?q=%.inf.ethz.ch&output=json.
-% 2. Pasywna agregacja subdomen z subfinder, amass (-passive) i crt.sh z deduplikacją unikalnych FQDN.
-% 3. Syntetyczna taksonomia subdomen w 4 kategoriach (z podaniem przykładów np.):
-%    - Bramy dostępowe i infrastruktura IT (np. isg, vpn, password, ssh).
-%    - Usługi dydaktyczne i programistyczne (np. gitlab, moodle, svn, grader).
-%    - Instytuty i laboratoria badawcze (np. spcl, las, netsec, systems).
-%    - Klastry obliczeniowe i infrastruktura badawcza (z rozróżnieniem węzłów D-INFK od zasobów ogólnouczelnianych).
+
+Pasywną enumerację zasobów w strefie \code{*.inf.ethz.ch} przeprowadzono bez wysyłania pakietów sondujących bezpośrednio do serwerów nazw ETH Zürich. Podstawowym źródłem danych był publiczny agregator logów przejrzystości certyfikatów (\textit{Certificate Transparency}) \code{crt.sh} \cite{crt_sh}, odpytywany za pośrednictwem interfejsu JSON z wykorzystaniem operatora wieloznacznego SQL \code{LIKE} (\code{%.inf.ethz.ch}). Wyniki z logów CT uzupełniono pasywną agregacją narzędziami \code{subfinder} oraz \code{amass} w trybie \code{-passive}, łączącymi dane z archiwów DNS, baz pasywnego DNS oraz indeksów wyszukiwarek.
+
+Przetworzenie zrzutu pobranego z interfejsu API \code{crt.sh} dla zapytania o poddomeny (\code{%.inf.ethz.ch}) dostarczyło łącznie \textbf{4105 rekordów} wystawionych certyfikatów X.509. Po ekstrakcji nazw z rozszerzenia \textit{Subject Alternative Name} (SAN), normalizacji wielkości liter, usunięciu prefiksów wieloznacznych i deduplikacji wyodrębniono \textbf{795 unikalnych nazw FQDN} należących do przestrzeni \code{*.inf.ethz.ch} oraz \textbf{4 certyfikaty typu wildcard}: \code{*.pages.inf.ethz.ch} (obsługujący publikacje GitLab Pages), \code{*.flexo.inf.ethz.ch}, \code{*.idvm-infk-isg68.inf.ethz.ch} oraz \code{*.stud10-spare.inf.ethz.ch}. Ponadto w polu SAN zidentyfikowano 21 wpisów zawierających adresy poczty elektronicznej (głównie certyfikaty S/MIME), wśród których wyróżniono skrzynki funkcyjne takie jak \nolinkurl{support@inf.ethz.ch}, \code{webmaster-dbis@inf.ethz.ch}, \nolinkurl{sslcert@systems.inf.ethz.ch} oraz \nolinkurl{sans@lists.inf.ethz.ch}, podczas gdy adresy przypisane osobom fizycznym wykluczono zgodnie z polityką anonimizacji określoną w rozdziale \ref{subsec:zasady-anonimizacji}.
+
+Z perspektywy oceny higieny API oraz dojrzałości automatyzacji warto odnotować dwa zjawiska zaobserwowane w surowym strumieniu danych \code{crt.sh}:
+\begin{itemize}
+    \item \textbf{Dominacja zautomatyzowanej certyfikacji ACME:} W przeanalizowanym zbiorze aż 3409 z 4105 rekordów (ok. 83,0\%) pochodziło z urzędu \textit{Let's Encrypt}, natomiast 657 wpisów (16,0\%) wystawiła grupa \textit{QuoVadis} (współpracująca z infrastrukturą SWITCH PKI), a pozostałe 39 wpisów przypadało na historyczne lub specjalistyczne CA (\textit{Cybertrust}, \textit{CAcert}, \textit{StartCom}, \textit{DigiCert}). Wysoki udział \textit{Let's Encrypt} świadczy o szerokiej automatyzacji wdrażania mikroserwisów i klastrów w laboratoriach badawczych.
+    \item \textbf{Ograniczenia paginacji interfejsu JSON:} Domyślne zapytanie wildcardowe bez filtrowania daty lub flagi \code{exclude=expired} zwraca w pojedynczym zrzucie historyczne i operacyjne rekordy o ograniczonym oknie czasowym (w pobranej próbce do listopada 2021 r.), co potwierdza konieczność równoległego łączenia zapytań celowanych w konkretne subdomeny oraz agregacji wieloźródłowej (\code{subfinder}, \code{amass}).
+\end{itemize}
+
+Na listingu \ref{lst:crtsh-subfinder} zaprezentowano wykorzystany potok poleceń oraz fragment rzeczywistej odpowiedzi JSON zwróconej przez API \code{crt.sh}.
+
+\begin{lstlisting}[caption={Pasywna enumeracja subdomen za pomocą API crt.sh, subfinder i amass wraz z próbką JSON}, label={lst:crtsh-subfinder}]
+$ curl -s "https://crt.sh/?q=%25.inf.ethz.ch&output=json" > crtsh_inf_ethz.json
+$ subfinder -d inf.ethz.ch -silent -o subfinder_inf.txt
+$ amass enum -passive -d inf.ethz.ch -o amass_inf.txt
+$ jq -r '.[].name_value' crtsh_inf_ethz.json | tr '[:upper:]' '[:lower:]' \
+  | grep -E '^[a-z0-9.*-]+\.inf\.ethz\.ch$' | sed 's/^\*\.//' | sort -u | wc -l
+795
+
+# Przykładowe rekordy zwrócone przez https://crt.sh/?q=%25.inf.ethz.ch&output=json:
+[
+  {
+    "issuer_ca_id": 183267,
+    "issuer_name": "C=US, O=Let's Encrypt, CN=R3",
+    "common_name": "sml.inf.ethz.ch",
+    "name_value": "sml.inf.ethz.ch\nwww.sml.inf.ethz.ch",
+    "id": 5639000898,
+    "not_before": "2021-11-19T09:45:36",
+    "not_after": "2022-02-17T09:45:35"
+  },
+  {
+    "issuer_ca_id": 16418,
+    "issuer_name": "C=US, O=Let's Encrypt, CN=Let's Encrypt Authority X3",
+    "common_name": "*.pages.inf.ethz.ch",
+    "name_value": "*.pages.inf.ethz.ch",
+    "id": 2578089944,
+    "not_before": "2020-03-11T14:37:43",
+    "not_after": "2020-06-09T14:37:43"
+  }
+]
+\end{lstlisting}
+
+Wszystkie zidentyfikowane i skorelowane z dokumentacją ISG subdomeny uporządkowano w syntetycznej taksonomii czterech kategorii funkcjonalnych przedstawionej w tabeli \ref{tab:taksonomia-subdomen}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Taksonomia funkcjonalna zidentyfikowanych subdomen wydziału D-INFK i punktów styku}\label{tab:taksonomia-subdomen}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.20\linewidth} L{0.37\linewidth} Y}
+        \toprule
+        \hcell{Kategoria funkcjonalna} & \hcell{Przykładowe nazwy FQDN} & \hcell{Rola operacyjna i znaczenie wywiadowcze} \\
+        \midrule
+        1. Bramy dostępowe i infrastruktura IT (ISG) &
+        \nolinkurl{isg.inf.ethz.ch}, \nolinkurl{support.inf.ethz.ch}, \nolinkurl{bookings.inf.ethz.ch}, \nolinkurl{maximus.inf.ethz.ch}, \code{web-login.inf.ethz.ch}, \nolinkurl{home.inf.ethz.ch}, \nolinkurl{mailhub.inf.ethz.ch}, \nolinkurl{www.pw.inf.ethz.ch}, \code{idvm-infk-isg22..68.inf.ethz.ch} &
+        Rdzeń administracji IT wydziału: dokumentacja procedur, system zgłoszeń, rezerwacja sal i laboratoriów, bastiony SSH/SFTP, udziały domowe NFS/SMB oraz maszyny wirtualne grupy ISG. \\
+        \midrule
+        2. Usługi dydaktyczne i inżynierii oprogramowania &
+        \nolinkurl{gitlab.inf.ethz.ch}, \code{gitlab-isg.inf.ethz.ch}, \code{gitlab-pages-01.inf.ethz.ch}, \nolinkurl{*.pages.inf.ethz.ch}, \nolinkurl{svn.inf.ethz.ch}, \nolinkurl{www.cxci.inf.ethz.ch}, \nolinkurl{www.cxhub.inf.ethz.ch}, \nolinkurl{grader.dtf.netsec.inf.ethz.ch}, \nolinkurl{course.netsec.inf.ethz.ch} &
+        Platformy rozwoju kodu, CI/CD, publikacji stron projektowych, archiwalne repozytoria SVN oraz mikroserwisy oceny zadań (\textit{Code Expert}, \textit{NetSec Grader}). Wysoki priorytet pod analizę commitów w rozdziale \ref{ch:personel-slady}. \\
+        \midrule
+        3. Instytuty i laboratoria badawcze &
+        \nolinkurl{spcl.inf.ethz.ch}, \nolinkurl{files.sri.inf.ethz.ch}, \nolinkurl{netsec.inf.ethz.ch}, \code{netsec-awx.inf.ethz.ch}, \code{netsec-monit.inf.ethz.ch}, \nolinkurl{las.inf.ethz.ch}, \nolinkurl{da.inf.ethz.ch}, \nolinkurl{igl.inf.ethz.ch}, \nolinkurl{cgl.inf.ethz.ch}, \nolinkurl{bmi.inf.ethz.ch}, \nolinkurl{mds.inf.ethz.ch}, \nolinkurl{gtc.inf.ethz.ch}, \nolinkurl{crypto.inf.ethz.ch}, \nolinkurl{ast.inf.ethz.ch} &
+        Autonomiczne serwisy grup badawczych wraz z zapleczem operacyjnym (np. instancje Ansible AWX, monitoring, portale wiki jak \nolinkurl{sriwiki.inf.ethz.ch}, \nolinkurl{twiki.acl.inf.ethz.ch} oraz serwery plików badawczych). \\
+        \midrule
+        4. Klastry obliczeniowe i infrastruktura badawcza &
+        \code{student-cluster.inf.ethz.ch}, \code{student-cluster1/2.inf.ethz.ch}, \code{student-jupyter.inf.ethz.ch}, \code{student-cluster-courses.inf.ethz.ch}, \code{student-files.inf.ethz.ch}, \nolinkurl{kube.system.cluster.cake.da.inf.ethz.ch}, \nolinkurl{argocd.system.cluster.cake.da.inf.ethz.ch}, \nolinkurl{grafana.system.cluster.cake.da.inf.ethz.ch}, \nolinkurl{clearml.apps.cluster.cake.da.inf.ethz.ch} &
+        Wydziałowe węzły GPU dla studentów (oddzielone od uczelnianego klastra \nolinkurl{euler.ethz.ch}) oraz wewnętrzne klastry Kubernetes/ArgoCD/ClearML grupy Data Analytics (\nolinkurl{cake.da.inf.ethz.ch}). \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 \section{Identyfikacja serwisów WWW i stosu technologicznego}\label{sec:systemy-webowe}
 
 \subsection{Serwery WWW, systemy CMS i nagłówki HTTP}\label{subsec:technologie-cms}
-% TO-DO:
-% 1. Zidentyfikować system CMS na portalu głównym (Adobe Experience Manager - AEM, ścieżki /etc.clientlibs/ i /content/dam/).
-% 2. Scharakteryzować serwery w laboratoriach (np. Nginx, Apache, generatory statyczne Hugo, Jekyll, GitLab Pages).
-% 3. Tabela audytu nagłówków bezpieczeństwa HTTP (HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Server) dla wybranych serwisów wydziałowych.
-% 4. Zinterpretować wykryte luki w nagłówkach (np. brak CSP lub ujawnianie wersji oprogramowania) vs wzorcową konfigurację obronną (High Security Posture).
+
+Pasywna analiza zindeksowanych zasobów oraz dokumentacji technicznej wydziału ujawnia silnie zróżnicowaną architekturę warstwy webowej, bezpośrednio odzwierciedlającą podział kompetencyjny między centralną administracją ETH Zürich, grupą ISG D-INFK a autonomicznymi laboratoriami badawczymi:
+\begin{itemize}
+    \item \textbf{Główny portal wydziału (\code{inf.ethz.ch}, \code{www.inf.ethz.ch}):} Witryna wykorzystuje korporacyjny system zarządzania treścią \textbf{Adobe Experience Manager (AEM)}, wdrożony jednolicie w ramach komunikacji korporacyjnej ETH Zürich. Identyfikacja opiera się na charakterystycznych ścieżkach zasobów statycznych i multimedialnych (\code{/etc.clientlibs/} oraz \code{/content/dam/ethz/special-interest/infk/}) serwowanych przez warstwę buforującą Apache Dispatcher z wymuszeniem przekierowań HTTPS na adres kanoniczny bez prefiksu \code{www}.
+    \item \textbf{Baza wiedzy wsparcia technicznego (\code{isg.inf.ethz.ch}):} Serwis utrzymywany jest na silniku \textbf{iiTWiki} - wewnętrznej, dostosowanej przez ISG odmianie platformy \textbf{TWiki / Foswiki}, wyposażonej w autorską skórkę graficzną zgodną z księgą identyfikacji wizualnej ETH. Charakterystyczna struktura adresów URL obejmuje ścieżki \code{/bin/view/Main/} dla stron dokumentacyjnych oraz \code{/pub/Main/} dla publicznych załączników PDF \cite{isg_dinfk_wiki}.
+    \item \textbf{Hosting pracowniczy, dydaktyczny i laboratoryjny:} Zgodnie z dokumentacją usług webowych ISG \cite{isg_dinfk_wiki}, strony osobiste pracowników i doktorantów w domenie \code{people.inf.ethz.ch} (udostępniane z katalogów \code{public_html} z limitem 2 GB) oraz wspólne serwisy grupowe działają na klastrowym serwerze \textbf{Apache HTTPD 2.4}, dopuszczającym lokalne reguły w plikach \code{.htaccess}. Równolegle laboratoria badawcze utrzymują własne instancje WWW: przykładowo w indeksach dla \code{spcl.inf.ethz.ch} odnotowano sygnaturę \code{Apache/2.4.62 (Debian)}, natomiast znaczna część nowych witryn projektowych i katedr powstaje w oparciu o generatory statyczne - oficjalnie wspierany przez ISG szablon \textbf{D-INFK Jekyll Theme}, motyw \code{al-folio}, \textbf{Hugo} oraz \textbf{MkDocs} wdrażane poprzez \textbf{GitLab Pages} (\code{*.pages.inf.ethz.ch}).
+    \item \textbf{Platformy aplikacyjne i studenckie:} Wydziałowa instancja \code{gitlab.inf.ethz.ch} działa w oparciu o \textbf{GitLab Community Edition} serwowany za pośrednictwem odwrotnego proxy \textbf{Nginx} współpracującego z serwerem aplikacyjnym Puma \cite{gitlab_dinfk}. Z kolei portal stowarzyszenia studenckiego \code{vis.ethz.ch} wykorzystuje heterogeniczny stos oparty na klastrze kontenerowo-wirtualizacyjnym Proxmox, odwrotnym proxy Nginx oraz aplikacjach w języku Python/Django \cite{vis_ethz}.
+\end{itemize}
+
+Z uwagi na rygorystyczne przestrzeganie zasad pasywności przyjętych w rozdziale \ref{sec:etyka-anonimizacja} oraz unikanie bezpośredniego sondowania serwerów produkcyjnych, ocenę konfiguracji zabezpieczeń warstwy L7 (nagłówków HTTP takich jak \code{Strict-Transport-Security}, \code{Content-Security-Policy}, \code{X-Frame-Options}, \code{X-Content-Type-Options} oraz ujawniania wersji w nagłówku \code{Server}) oparto na pasywnej korelacji zindeksowanych sygnatur serwerowych, wymagań architektonicznych zastosowanych platform oraz analizie ekspozycji L7. Zestawienie charakterystyk dla sześciu kluczowych serwisów zawiera tabela \ref{tab:audyt-naglowkow-http}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Pasywna analiza stosu technologicznego WWW, sygnatur oraz profilu ochrony warstwy L7 wybranych serwisów D-INFK i punktów styku}\label{tab:audyt-naglowkow-http}
+    \tablefont
+    \renewcommand{\arraystretch}{1.05}
+    \begin{tabularx}{\linewidth}{L{0.20\linewidth} L{0.18\linewidth} L{0.23\linewidth} Y}
+        \toprule
+        \hcell{Host / Domena} & \hcell{Stos WWW / CMS} & \hcell{Zidentyfikowane artefakty i sygnatury} & \hcell{Profil zabezpieczeń L7 i ocena ekspozycji} \\
+        \midrule
+        \nolinkurl{inf.ethz.ch} (\nolinkurl{www.inf.ethz.ch}) &
+        Adobe Experience Manager (AEM) + Apache Dispatcher &
+        Ścieżki \nolinkurl{/etc.clientlibs/}, \nolinkurl{/content/dam/}; HTTP 301 $\rightarrow$ HTTPS &
+        \textit{High Security Posture}: centralna infrastruktura ETH; izolacja panelu autorskiego od Dispatchera oraz wymuszone TLS/HSTS. \\
+        \midrule
+        \nolinkurl{isg.inf.ethz.ch} &
+        iiTWiki (TWiki / Foswiki) + Apache HTTPD 2.4 &
+        Ścieżki \nolinkurl{/bin/view/Main/}, \nolinkurl{/pub/Main/}; skórka ETH &
+        Publiczna baza operacyjna z kontrolą edycji i ochroną antyspamową; wysokie ryzyko informacyjne (indeksowane regulaminy). \\
+        \midrule
+        \nolinkurl{gitlab.inf.ethz.ch} &
+        GitLab CE + Nginx (proxy dla Puma) &
+        \nolinkurl{/users/sign_in}, LDAP + OAuth (Google/GitHub), Git LFS &
+        Domyślne utwardzenie GitLab CE (HSTS, \code{X-Frame-Options: SAMEORIGIN}, CSP); ekspozycja przez publiczne repozytoria i OAuth. \\
+        \midrule
+        \nolinkurl{password.ethz.ch} (powiąz. \code{password.inf.ethz.ch}) &
+        ETH Web Center / IAM &
+        Centralny węzeł haseł LDAP/AD/RADIUS oraz MFA/OTP &
+        Krytyczny węzeł uwierzytelniania (styk centralny); restrykcyjna ochrona sesji i przed \textit{clickjacking}, brak indeksowania katalogów. \\
+        \midrule
+        \nolinkurl{spcl.inf.ethz.ch} &
+        Apache HTTP Server (hosting lab.) &
+        Baner \code{Apache/2.4.62 (Debian)}; powiąz. \nolinkurl{wiki.spcl.}, \nolinkurl{git.spcl.} &
+        Podwyższona ekspozycja L7: ujawnianie szczegółowego banera wersji i dystrybucji oraz autonomiczne zarządzanie CSP. \\
+        \midrule
+        \nolinkurl{vis.ethz.ch} &
+        Nginx + Python / Django (Proxmox) &
+        Integracja VSETH/ETH SSO, archiwa i portale wydarzeń &
+        Środowisko organizacji studenckiej; niejednorodna konfiguracja mikroserwisów wymaga weryfikacji CSP i flag ciasteczek. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Analiza danych zawartych w tabeli \ref{tab:audyt-naglowkow-http} prowadzi do istotnego wniosku architektonicznego: o ile centralne systemy ETH Zürich oraz główne platformy utrzymywane przez ISG charakteryzują się wysoką spójnością zabezpieczeń warstwy transportowej i aplikacyjnej (\textit{High Security Posture}), o tyle warstwa rozproszonych witryn laboratoryjnych (takich jak \code{spcl.inf.ethz.ch} czy prywatne podstrony w \code{people.inf.ethz.ch}) wykazuje większą heterogeniczność konfiguracyjną, w tym ujawnianie szczegółowych banerów oprogramowania (\code{Apache/2.4.62 (Debian)}) oraz zróżnicowanie stosowanych reguł \code{.htaccess}.
 
 \subsection{Portale logowania i federacja tożsamości (edu-ID, AAI)}\label{subsec:portale-uwierzytelniania}
-% TO-DO:
-% 1. Opisać architekturę federacji tożsamości akademickiej: Switch edu-ID oraz Shibboleth AAI (SAML 2.0).
-% 2. Zmapować dokładne punkty końcowe logowania (IdP): https://aai-logon.ethz.ch/... oraz https://eduid.ch/...
-% 3. Wskazać punkty logowania GitLab (/users/sign_in) oraz portal samodzielnego zarządzania hasłami ISG (password.inf.ethz.ch).
-% 4. Actionable Intelligence: powiązanie punktów logowania z atakiem Evilginx2 (przechwycenie ciasteczek sesyjnych
-%    i ominięcie 2FA w Scenariuszu 1 w Rozdziale 6).
+
+Kluczowym elementem rozpoznania aplikacji L7 na potrzeby projektowania scenariuszy socjotechnicznych jest zmapowanie architektury uwierzytelniania. Pracownicy, doktoranci oraz studenci wydziału D-INFK korzystają ze zintegrowanego ekosystemu tożsamości opartego na krajowej federacji akademickiej \textbf{SWITCHaai} oraz powiązanym systemie \textbf{Switch edu-ID} \cite{switch_eduid}.
+
+Rozwiązanie to wykorzystuje standard \textbf{SAML 2.0} zaimplementowany w oparciu o oprogramowanie \textbf{Shibboleth}. Pasywna analiza dokumentacji federacyjnej SWITCH oraz konfiguracji usług ETH Zürich pozwoliła zidentyfikować dokładne punkty końcowe biorące udział w wymianie poświadczeń:
+\begin{itemize}
+    \item \textbf{Instytucjonalny dostawca tożsamości ETH Zürich (IdP):} Oficjalny identyfikator encji SAML (\textit{EntityID}) to \nolinkurl{https://aai-logon.ethz.ch/idp/shibboleth}, natomiast główny punkt końcowy odbierający żądania uwierzytelniania poprzez wiązanie \code{HTTP-Redirect} znajduje się pod adresem \nolinkurl{https://aai-logon.ethz.ch/idp/profile/SAML2/Redirect/SSO}. System ten weryfikuje poświadczenia konta \code{nethz} (\textit{swissEduPersonHomeOrganization: ethz.ch}) i dla chronionych usług wymusza uwierzytelnianie wieloskładnikowe (MFA, najczęściej za pomocą kodów czasowych TOTP) poprzez przekazanie w żądaniu SAML kontekstu \nolinkurl{https://refeds.org/profile/mfa} \cite{switch_eduid}.
+    \item \textbf{Centralny dostawca tożsamości Switch edu-ID:} Dla usług międzyuczelnianych, bibliotek naukowych (\textit{swisscovery}) oraz zasobów połączonych z kontem ustawicznego kształcenia wykorzystywany jest centralny punkt końcowy \nolinkurl{https://eduid.ch/idp/profile/SAML2/Redirect/SSO} (EntityID: \nolinkurl{https://eduid.ch/idp/shibboleth}), spięty z kontem instytucjonalnym ETH \cite{switch_eduid}.
+    \item \textbf{Wydziałowe portale logowania bezpośredniego i zarządzania hasłami:} Poza klasycznym przepływem SAML zidentyfikowano dwa krytyczne punkty wejścia bezpośrednio powiązane z D-INFK:
+    \begin{enumerate}
+        \item \nolinkurl{https://gitlab.inf.ethz.ch/users/sign_in} - punkt logowania do wydziałowej instancji GitLab CE, przyjmujący w zakładce podstawowej nazwę użytkownika ETH (\code{nethz}) oraz hasło aplikacyjne (weryfikowane przez uczelniany katalog LDAP), a w zakładce zewnętrznej obsługujący uwierzytelnianie OAuth (Google, GitHub) dla współpracowników spoza ETH \cite{gitlab_dinfk}.
+        \item \nolinkurl{https://www.password.ethz.ch} (ETH Web Center / IAM) oraz wydziałowe odwołania do portalu haseł (\code{password.inf.ethz.ch} / \code{www.pw.inf.ethz.ch} widoczne w logach CT) \cite{eth_password_iam}. Dokumentacja ISG wskazuje jednoznacznie, że bieżący onboarding kont \code{nethz}, zmiana haseł dla usług LDAP/AD/RADIUS oraz parowanie drugiego składnika MFA/OTP odbywają się centralnie w ramach ETH Web Center pod adresem \code{password.ethz.ch}.
+    \end{enumerate}
+\end{itemize}
+
+Na listingu \ref{lst:saml-redirect-aai} przedstawiono kanoniczny schemat wymiany komunikatów HTTP w trakcie uwierzytelniania SAML 2.0 (wiązanie \code{HTTP-Redirect}) dla zmapowanych punktów końcowych \code{aai-logon.ethz.ch} oraz mechanizmu sesyjnego \code{Shibboleth SP}.
+
+\begin{lstlisting}[caption={Schemat wiązania SAML 2.0 HTTP-Redirect oraz ustanawiania sesji dla punktu końcowego aai-logon.ethz.ch}, label={lst:saml-redirect-aai}]
+# 1. Żądanie klienta do chronionej aplikacji (Service Provider - SP)
+GET /protected/resource HTTP/1.1
+Host: <service-provider>.ethz.ch
+
+# 2. Przekierowanie SP do uczelnianego IdP z żądaniem AuthnRequest i kontekstem MFA
+HTTP/1.1 302 Found
+Location: https://aai-logon.ethz.ch/idp/profile/SAML2/Redirect/SSO
+          ?SAMLRequest=fZJfb9owFMW%2FiuU3J7G...
+          &RelayState=ss%3Amem%3A9a4f8c2e...
+          # Wewnątrz XML AuthnRequest: RequestedAuthnContext ->
+          # https://refeds.org/profile/mfa
+
+# 3. Po weryfikacji nethz + hasło + TOTP na IdP, zwrot SAMLResponse do ACS SP
+POST /Shibboleth.sso/SAML2/POST HTTP/1.1
+Host: <service-provider>.ethz.ch
+Content-Type: application/x-www-form-urlencoded
+
+SAMLResponse=PHNhbWxwOlJlc3BvbnNl...&RelayState=ss%3Amem%3A9a4f8c2e...
+
+# 4. Ustanowienie uwierzytelnionej sesji HTTP po stronie Service Providera
+HTTP/1.1 302 Found
+Set-Cookie: _shibsession_64656661756c74=<token_sesyjny>; Path=/; Secure; HttpOnly
+\end{lstlisting}
+
+\lead{Actionable Intelligence dla rozdziału \ref{ch:socjotechnika} (Scenariusz 1)}
+Zidentyfikowanie ustandaryzowanych punktów logowania \code{aai-logon.ethz.ch}, \code{eduid.ch}, \code{gitlab.inf.ethz.ch/users/sign_in} oraz \code{password.ethz.ch} dostarcza kluczowych danych operacyjnych dla scenariusza ataku pośredniczącego \textit{Adversary-in-the-Middle} (AitM) z użyciem narzędzia \textbf{Evilginx2} (rozdział \ref{sec:scenariusz-1}). Ponieważ silne wymuszenie 2FA (\textit{REFEDS MFA}) na bramie Shibboleth AAI czyni klasyczne wyłudzanie samych haseł bezużytecznym, odwrotne proxy AitM posadowione na domenie typu \textit{lookalike} przejmuje ruch TLS pomiędzy ofiarą a prawdziwym punktem \code{aai-logon.ethz.ch}, przekazując w czasie rzeczywistym jednorazowy kod TOTP i przechwytując gotowe ciasteczko sesyjne (\code{_shibsession_*} lub \code{_gitlab_session}) natychmiast po pozytywnej weryfikacji. Mechanizm ten zobrazowano na rysunku \ref{fig:przeplyw-aai-evilginx}.
+
+\Figure[0.95]{ch4_przeplyw_aai_evilginx.png}{Przepływ uwierzytelniania federacyjnego SAML 2.0 (Shibboleth AAI / Switch edu-ID) oraz mechanizm przechwycenia sesji przez proxy AitM (Evilginx2)}{fig:przeplyw-aai-evilginx}
 
 \section{Eksploracja archiwów internetowych}\label{sec:archiwa-internetowe}
 
 \subsection{Archiwalne wersje stron w serwisie Wayback Machine}\label{subsec:wayback-machine}
-% TO-DO:
-% 1. Opisać metodykę zapytań do CDX Server API Wayback Machine:
-%    https://web.archive.org/cdx/search/cdx?url=*.inf.ethz.ch/*&output=json&fl=original,timestamp,mimetype.
-% 2. Przeanalizować etapy ewolucji: strony statyczne Solaris/Apache (1998-2006), Plone/Zope (2007-2015), konsolidacja na AEM.
+
+Rekonesans historyczny przeprowadzono całkowicie pasywnie poprzez odpytanie interfejsu \textbf{CDX Server API} projektu Internet Archive (Wayback Machine) \cite{wayback_cdx}. Zapytania skonstruowano z użyciem parametru \code{collapse=timestamp:4} (do analizy rocznych migawek portalu głównego w latach 1998-2026) oraz \code{collapse=urlkey} (do indeksowania historycznych ścieżek w strefie \code{*.inf.ethz.ch/*}), filtrując pola \code{original}, \code{timestamp}, \code{mimetype} oraz \code{statuscode}.
+
+Na listingu \ref{lst:wayback-cdx-api} zamieszczono zastosowane zapytania API oraz wybrane, autentyczne rekordy zwrócone z indeksu Wayback Machine, dokumentujące blisko trzy dekady obecności D-INFK w sieci Web (najstarsze migawki strony \code{http://www.inf.ethz.ch:80/} pochodzą z lutego 1997 r. i grudnia 1998 r.).
+
+\begin{lstlisting}[caption={Zapytanie do interfejsu CDX Server API serwisu Wayback Machine i próbka rekordów historycznych dla domeny inf.ethz.ch}, label={lst:wayback-cdx-api}]
+$ curl -s "https://web.archive.org/cdx/search/cdx?url=inf.ethz.ch/&output=json&fl=original,timestamp,mimetype,statuscode&from=1998&to=2026&collapse=timestamp:4"
+[
+  ["original", "timestamp", "mimetype", "statuscode"],
+  ["http://www.inf.ethz.ch:80/", "19981212025857", "text/html", "200"],
+  ["http://www.inf.ethz.ch:80/", "20070102051516", "text/html", "200"],
+  ["http://www.inf.ethz.ch/",    "20150202230349", "text/html", "200"],
+  ["http://www.inf.ethz.ch/",    "20160113072134", "text/html", "302"],
+  ["https://www.inf.ethz.ch/",   "20190101190410", "text/html", "200"],
+  ["https://inf.ethz.ch/",       "20200102213817", "text/html", "200"],
+  ["https://www.inf.ethz.ch/",   "20260101094453", "unk",       "301"]
+]
+
+# Próbka historycznych ścieżek katalogów osobowych (url=*.inf.ethz.ch/*, loginy zanonimizowano):
+["http://www.inf.ethz.ch:80/", "19970218092250", "text/html", "200"]
+["http://www.inf.ethz.ch:80/%20<Pracownik_A>/", "20141016030149", "text/html", "404"]
+["http://www.inf.ethz.ch:80/%20<Pracownik_B>/papers/sfi-distrib-intelligence/html", "20071020041928", "text/html", "404"]
+["https://www.inf.ethz.ch/$<Wykladowca_C>/teaching.html", "20240413211932", "unk", "301"]
+\end{lstlisting}
+
+Korelacja danych zwróconych przez CDX API z dokumentacją techniczną ETH Zürich pozwala wyodrębnić trzy wyraźne fazy ewolucji technologicznej witryny wydziałowej, podsumowane w tabeli \ref{tab:ewolucja-wayback}.
+
+\begin{table}[H]
+    \centering
+    \caption{Chronologiczna ewolucja architektury webowej D-INFK na podstawie archiwów Wayback Machine i dokumentacji ETH}\label{tab:ewolucja-wayback}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.15\linewidth} L{0.25\linewidth} Y L{0.23\linewidth}}
+        \toprule
+        \hcell{Okres} & \hcell{Dominująca platforma} & \hcell{Charakterystyka techniczna i ślady w archiwum} & \hcell{Znaczenie dla OSINT} \\
+        \midrule
+        1997-2006 (Faza I) &
+        Sun Solaris / SunOS, Apache 1.3, statyczny HTML &
+        Bezpośrednie serwowanie stron domowych pracowników pod prefiksami tyldy (\code{/~user/}, np. zarchiwizowane gałęzie katedr i dydaktyki), brak wymuszania HTTPS (port 80) oraz jawne listy publikacji i plików. &
+        Identyfikacja historycznych struktur katedr, dawnych konwencji loginów oraz publikacji bazowych. \\
+        \midrule
+        2007-2015 (Faza II) &
+        Serwer aplikacji Zope + Silva CMS; wdrożenie TWiki &
+        Migracja portali wydziałowych ETH na otwartoźródłowy system \textbf{Silva CMS} działający na serwerze \textbf{Zope} (obok rozwijanych równolegle w środowiskach akademickich rozwiązań w Pythonie, w tym Plone), a dla dokumentacji ISG wdrożenie platformy \textbf{TWiki / iiTWiki}. &
+        Utrwalenie historycznych schematów URL dokumentacji ISG i pojawienie się spójnej bazy wiedzy w CAB. \\
+        \midrule
+        2016-2026 (Faza III) &
+        Adobe Experience Manager (AEM / CQ5), HTTPS + 301 &
+        Widoczna w logach CDX z lat 2016-2019 konsolidacja domeny \code{inf.ethz.ch} na centralnym korporacyjnym AEM (\code{/etc.clientlibs/}), całkowite przejście na HTTPS z przekierowaniem 301 z \code{www.} oraz rozproszenie serwisów badawczych na GitLab Pages i klastry kontenerowe. &
+        Wyraźny podział na zunifikowany front korporacyjny (AEM) i zróżnicowane technicznie zaplecze badawcze. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 \subsection{Wycofane podstrony i archiwalne artefakty techniczne}\label{subsec:wycofane-zasoby}
-% TO-DO:
-% 1. Wyszukanie w Wayback Machine historycznych artefaktów (np. dawne konfiguracje VPN/SSH, archiwalne ścieżki udziałów sieciowych NFS/SMB, nazewnictwo stacji studenckich).
-% 2. Actionable Intelligence: wykorzystanie odnalezionych artefaktów do budowania wiarygodnych pretekstów technicznych w socjotechnice.
+
+Poza rekonstrukcją stosu CMS, analiza historycznych i zmigrowanych stron dokumentacji wydziałowej (\code{isg.inf.ethz.ch}) dostarcza szczegółowej wiedzy na temat ewolucji wewnętrznych ścieżek sieciowych i hostów dostępowych, które często pozostają utrwalone w skryptach pracowników oraz dawnych instrukcjach kursowych:
+\begin{itemize}
+    \item \textbf{Ścieżki sieciowych systemów plików (NFSv4 i SMB):} Historyczne oraz migracyjne przewodniki ISG ujawniają konwencję montowania katalogów domowych w systemach Linux poprzez protokół NFSv4 z uwierzytelnianiem Kerberos i mapowaniem tożsamości (\code{libnfsidmap-regex}), w tym ścieżki przejściowe z okresu migracji serwerów plików postaci \code{/net5/home.inf.ethz.ch/export/home/} obok standardowej struktury \code{/net/home.inf.ethz.ch/export/home/}. Dla klientów Windows, macOS i Linux udokumentowano ścieżki udziałów SMB postaci \code{\\home.inf.ethz.ch\<share>}, \code{smb://home.inf.ethz.ch/<share>} oraz zasobu studenckiego \code{\\student-files.inf.ethz.ch} (wymagającego tunelu VPN poza siecią kampusową) \cite{isg_dinfk_wiki}.
+    \item \textbf{Rotacja nazw hostów dostępowych SSH i bram VPN:} Archiwalne wpisy wskazują na ewolucję bram logowania zdalnego: ogólny host \code{login.inf.ethz.ch} (oraz dawne nazewnictwo stacji typu \code{slab}) został rozdzielony na wyspecjalizowane serwery \code{maximus.inf.ethz.ch} (dedykowany bastion Ubuntu Linux odwzorowujący środowisko publicznych laboratoriów studenckich) oraz \code{web-login.inf.ethz.ch} (serwer zarządzania stronami osobistymi i transferu SFTP) \cite{isg_dinfk_wiki}. Analogicznie, historyczne odniesienia do wydziałowego punktu \code{vpn.inf.ethz.ch} kierują obecnie użytkowników do centralnego koncentratora \code{sslvpn.ethz.ch} opartego na kliencie Cisco Secure Client.
+\end{itemize}
+
+\lead{Actionable Intelligence dla rozdziału \ref{ch:socjotechnika}}
+Znajomość historycznych ścieżek infrastrukturalnych (takich jak ścieżki migracji NFS \code{/net5/home.inf.ethz.ch}, przestarzały punkt \code{login.inf.ethz.ch} wyparty przez \code{maximus.inf.ethz.ch} oraz relacja pomiędzy \code{vpn.inf.ethz.ch} a \code{sslvpn.ethz.ch}) ułatwia konstruowanie wiarygodnych pretekstów socjotechnicznych. Powołanie się w wiadomości phishingowej lub rozmowie vishingowej na rzekomą pilną rekonfigurację mapowania udziałów \code{home.inf.ethz.ch} albo aktualizację profili VPN stanowi komunikat brzmiący w pełni naturalnie dla wieloletnich pracowników i doktorantów wydziału.
 
 \section{Zaawansowane wyszukiwanie zasobów (Google Dorking)}\label{sec:google-dorking}
 
 \subsection{Indeksowane katalogi i artefakty konfiguracyjne}\label{subsec:dorking-katalogi}
-% TO-DO:
-% 1. Tabela sprofilowanych operatorów Google Dorking dla domeny inf.ethz.ch (otwarte indeksy katalogów, dokumenty wewnętrzne, skrypty konfiguracyjne, komunikaty błędów).
-% 2. Ocena perymetru: wykryte potencjalne ekspozycje vs potwierdzenie High Security Posture (brak wycieków kluczy API, tokenów czy plików środowiskowych .env).
+
+W kolejnym etapie wykorzystano sprofilowane zapytania wyszukiwarek internetowych (\textit{Google Dorking}) w celu weryfikacji, jakie dokumenty wewnętrzne, katalogi plików i konfiguracje zostały publicznie zindeksowane w przestrzeni \code{*.inf.ethz.ch}. Zestawienie zastosowanych operatorów, wykrytych artefaktów oraz ocenę perymetru przedstawia tabela \ref{tab:google-dorking-macierz}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Macierz zapytań Google Dorking dla domeny inf.ethz.ch oraz ocena ekspozycji zasobów}\label{tab:google-dorking-macierz}
+    \tablefont
+    \shorthandoff{"}
+    \begin{tabularx}{\linewidth}{L{0.27\linewidth} L{0.21\linewidth} Y L{0.17\linewidth}}
+        \toprule
+        \hcell{Operator / Zapytanie} & \hcell{Cel rozpoznania} & \hcell{Zaobserwowane wyniki w indeksach} & \hcell{Ocena ryzyka} \\
+        \midrule
+        \nolinkurl{site:isg.inf.ethz.ch} \nolinkurl{inurl:bin/view/Main} &
+        Wewnętrzna dokumentacja operacyjna IT &
+        Pełna baza wiedzy \textit{iiTWiki} opisująca procedury onboardingowe, serwery \code{maximus}, narzędzie \code{Config5}, adresację NFS/SMB oraz godziny i kontakty Service Desk. &
+        Średnie (kopalnia pretekstów socjotech.) \\
+        \midrule
+        \nolinkurl{site:inf.ethz.ch} \code{filetype:pdf "isg" OR "CAB" OR "workstation"} &
+        Regulaminy, mapy i formularze wydziałowe &
+        Publiczne dokumenty z \nolinkurl{/pub/Main/WebHome/}: \code{lab-computer-usage-agreement.pdf}, \code{admin-rights-agreement.pdf}, \code{printers-cab-cnb.pdf}, \code{infk-car-info.pdf}. &
+        Średnie (metadane i topologia CAB) \\
+        \midrule
+        \nolinkurl{site:gitlab.inf.ethz.ch} &
+        Publiczne projekty i mechanika uwierzytelniania &
+        Zindeksowana strona główna GitLab CE, instrukcje logowania kontem ETH oraz zewnętrznym OAuth (Google/GitHub), limity 1 GB i Git LFS. &
+        Niskie / Informacyjne \\
+        \midrule
+        \nolinkurl{site:files.sri.inf.ethz.ch} OR \nolinkurl{site:spcl.inf.ethz.ch} &
+        Serwery dystrybucji plików laboratoriów badawczych &
+        Publicznie udostępnione zbiory badawcze i obrazy artefaktów naukowych (w tym sygnatura \code{Apache/2.4.62 (Debian)} na \code{spcl.inf.ethz.ch}). &
+        Niskie (celowe Open Science) \\
+        \midrule
+        \nolinkurl{site:people.inf.ethz.ch} &
+        Osobiste strony pracowników i doktorantów &
+        Indywidualne katalogi \code{public_html} pracowników, listy kursów, materiały dydaktyczne PDF (dane wejściowe do ekstrakcji ExifTool w rozdziale \ref{ch:personel-slady}). &
+        Średnie (źródło metadanych) \\
+        \midrule
+        \nolinkurl{site:inf.ethz.ch} \code{intitle:"index of"} &
+        Otwarte listowania katalogów HTTP &
+        Jedynie celowo publiczne repozytoria materiałów dydaktycznych i plików konferencyjnych; brak nieautoryzowanych listowań katalogów systemowych. &
+        Niskie \\
+        \midrule
+        \nolinkurl{site:inf.ethz.ch} \code{filetype:txt OR filetype:yml OR filetype:sh OR filetype:sql} &
+        Wycieki plików konfiguracyjnych i sekretów &
+        Brak zindeksowanych plików środowiskowych \code{.env}, kluczy prywatnych SSH, haseł czy surowych zrzutów baz SQL. &
+        \textit{High Security Posture} \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Rezultaty analizy potwierdzają wysoką higienę perymetru aplikacyjnego zgodnie z zasadą \textit{High Security Posture}: w publicznych indeksach wyszukiwarek nie odnotowano krytycznych wycieków technicznych (takich jak klucze API, pliki \code{.env} czy zrzuty baz danych). Jednocześnie jednak zasada otwartości akademickiej oraz przejrzystości procedur organizacyjnych powoduje, że publicznie dostępne dokumenty PDF z gałęzi \code{/pub/Main/WebHome/} oraz strony wiki ISG dostarczają kompletnego obrazu wewnętrznych procesów administracyjnych i topologii pomieszczeń budynku CAB.
 
 \subsection{Publiczna dokumentacja operacyjna helpdesku ISG}\label{subsec:dorking-isg}
-% TO-DO:
-% 1. Przeanalizować bazę wiedzy ISG (isg.inf.ethz.ch) i otwarte wiki:
-%    - Procedura onboardingu w CAB (pokój CAB E 41.1, odbiór karty ETH Card, przydział konta nethz).
-%    - Podział stacji roboczych: Fully Managed Workstations vs Self-Administered (uprawnienia sudo).
-%    - Oficjalne kanały wsparcia (helpdesk@inf.ethz.ch, telefon, system ticketowy).
-% 2. Actionable Intelligence: wykorzystanie terminologii ISG, procedur i numerów pokoi jako legendy w scenariuszu vishingu w Rozdziale 6.
+
+Szczegółowa lektura publicznej bazy wiedzy grupy wsparcia \textbf{ISG D-INFK} (\code{isg.inf.ethz.ch}) \cite{isg_dinfk_wiki} oraz powiązanych regulaminów PDF pozwala dokładnie odtworzyć procedury onboardingowe, strukturę kontaktową oraz modele zarządzania stacjami roboczymi wydziału:
+
+\begin{enumerate}
+    \item \textbf{Punkt obsługi, onboarding oraz karta ETH Card:}
+    \begin{itemize}
+        \item Główny punkt stacjonarnego wsparcia technicznego (\textit{isginf Service Desk}) znajduje się w budynku CAB (Universitätstrasse 6) w pokoju \textbf{CAB E 48} i przyjmuje interesantów od poniedziałku do piątku w godzinach 09:30-11:30 oraz 13:30-16:30 \cite{isg_dinfk_wiki}. Dodatkową przestrzeń zaplecza w tym samym skrzydle stanowi zautomatyzowany magazyn samoobsługowy dla koordynatorów ITC w pokoju \textbf{CAB E 42} (otwierany elektronicznie kartą \textbf{ETH Card}), a także pomieszczenia biurowo-administracyjne w obrębie piętra E budynku CAB (w tym strefa \textbf{CAB E 41.1} obsługująca sprawy organizacyjne i wdrożeniowe).
+        \item Oficjalna komunikacja zdalna realizowana jest za pośrednictwem portalu zgłoszeń \code{support.inf.ethz.ch}, poczty elektronicznej \code{support@inf.ethz.ch} (oraz tradycyjnego aliasu \code{helpdesk@inf.ethz.ch}, które automatycznie otwierają zgłoszenie w systemie ticketowym) oraz linii telefonicznej \code{+41 44 632 7210} (numer wewnętrzny \textbf{27210}) \cite{isg_dinfk_wiki}.
+        \item Nowi pracownicy i studenci przed uzyskaniem dostępu do zasobów wydziałowych przechodzą obowiązkową procedurę aktywacji konta \code{nethz} za pomocą hasła początkowego w portalu \code{password.ethz.ch} (konfiguracja hasła sieciowego, odzyskiwania dostępu oraz MFA) \cite{eth_password_iam}. Elektroniczna karta zbliżeniowa \textbf{ETH Card} służy zarówno do weryfikacji tożsamości przy resetowaniu zapomnianych haseł czy wypożyczaniu sprzętu w \textbf{CAB E 48}, jak i do autoryzacji wejścia do chronionych stref wydziału oraz laboratoriów studenckich (m.in. sal \textbf{CAB H 56} i \textbf{CAB H 57}, rezerwowanych poprzez \code{bookings.inf.ethz.ch}) \cite{isg_dinfk_wiki}.
+    \end{itemize}
+    \item \textbf{Podział modeli zarządzania stacjami roboczymi:}
+    Dokumentacja ISG rozróżnia dwa reżimy administracyjne dla komputerów stacjonarnych, serwerów obliczeniowych oraz laptopów wydziału D-INFK \cite{isg_dinfk_wiki}:
+    \begin{itemize}
+        \item \textbf{Stacje w pełni zarządzane (\textit{Fully Managed Workstations}):} Dla komputerów stacjonarnych i serwerów ISG zapewnia pełne wsparcie dla systemów Microsoft Windows, Ubuntu Linux (instalowanych automatycznie poprzez system \textit{OS-Kiosk}) oraz Apple macOS (na laptopach wsparcie obejmuje w pełni Windows i macOS, podczas gdy Ubuntu na laptopach wspierane jest w trybie \textit{best-effort} z kontami lokalnymi). Na zarządzanych systemach Linux konfiguracja jest dystrybuowana i cyklicznie egzekwowana z centralnego repozytorium przez autorskie narzędzie \textbf{Config5} (\code{/usr/supp/config5/bin/config5}), które przy restarcie lub co godzinę nadpisuje ręcznie zmodyfikowane pliki konfiguracyjne \cite{isg_dinfk_wiki}.
+        \item \textbf{Uprawnienia administracyjne i stacje \textit{Self-Administered / Self-Managed}:} Zgodnie z regulaminami \code{lab-computer-usage-agreement.pdf} oraz \code{admin-rights-agreement.pdf}, pracownicy naukowi, doktoranci i wskazani użytkownicy mogą uzyskać podwyższone uprawnienia na stacjach roboczych i przekazanych grupom serwerach (w systemie Linux poprzez \code{sudo /bin/bash}, klucze SSH dla konta \code{root} lub dedykowane hasło na serwerach oddanych grupie badawczej; w systemie Windows przez dodanie konta użytkownika i jego przełożonego do lokalnej grupy Administratorów). Dokumentacja jednoznacznie ostrzega przed modyfikacją systemowych pakietów RPM/APT, wyłączaniem mechanizmów SELinux czy tworzeniem kont bez hasła oraz zastrzega ograniczone wsparcie (\textit{limited warranty}) - w razie uszkodzenia systemu przez użytkownika działającego jako \code{root}, ISG wykonuje pełną reinstalację maszyny \cite{isg_dinfk_wiki}.
+    \end{itemize}
+\end{enumerate}
+
+\lead{Actionable Intelligence dla rozdziału \ref{ch:socjotechnika} (Scenariusz 3 - Vishing)}
+Zgromadzona wiedza o procedurach operacyjnych ISG tworzy kompletny zestaw artefaktów uwiarygodniających legendę operatora podszywającego się pod pracownika wsparcia technicznego (\anon{Inzynier_ISG_AB}) w scenariuszu vishingowym (rozdział \ref{sec:scenariusz-3}). Operator może posłużyć się wewnętrznym numerem centrali \textbf{27210} (\code{+41 44 632 7210}), precyzyjnie powołać się na fizyczną lokalizację punktu przyjęć w \textbf{CAB E 48} (lub zaplecza w skrzydle CAB E / \textbf{CAB E 41.1}), użyć autentycznej terminologii wewnętrznej (synchronizacja konta \code{nethz} z systemem \textbf{Config5}, weryfikacja statusu uprawnień \code{sudo} na stacji \textit{Self-Administered}, odwołanie do zamykania otwartego biletu w systemie \code{support@inf.ethz.ch}) oraz powiązać rozmowę z koniecznością potwierdzenia poświadczeń przed wygaśnięciem sesji lub blokadą dostępu do laboratoriów \textbf{CAB H 56} i zasobów \code{student-cluster.inf.ethz.ch}.

@@ -1,15 +1,18 @@
-# LaTeX build and auxiliary files
+# Pliki pomocnicze i wyjściowe LaTeX / BibTeX / latexmk
 *.aux
 *.bbl
-*.bbl-SAVE-ERROR
-*.bcf
 *.blg
-*.Brf
+*.bcf
+*.dvi
 *.fdb_latexmk
 *.fls
+*.glo
+*.gls
+*.glg
 *.idx
 *.ilg
 *.ind
+*.ist
 *.loa
 *.lof
 *.log
@@ -17,32 +20,22 @@
 *.lot
 *.nav
 *.out
+*.ps
 *.run.xml
 *.snm
 *.synctex
-*.synctex(busy)
 *.synctex.gz
-*.synctex.gz(busy)
+*.synctex(busy)
+*.thm
 *.toc
 *.vrb
 *.xdv
-*.acn
-*.acr
-*.alg
-*.glg
-*.glo
-*.gls
-*.ist
 
-# Compiled output in root
-/main.pdf
-/APNWA-OSINT.pdf
-/_site/
+# Skompilowane PDF-y w katalogu głównym (nie ignoruje grafik w images/ i appendices/)
+/*.pdf
 
-# OS / Editor files
+# Pliki systemowe i tymczasowe
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
-*.swp
+*.bak
 *~
