@@ -10,12 +10,49 @@
 
 \section{Struktura organizacyjna i zarządzanie wydziałem D-INFK}\label{sec:struktura-dinfk}
 
+Analiza struktury organizacyjnej instytucji akademickiej stanowi fundamentalny etap rekonesansu w ramach Filaru I przyjętej metodyki OSINT. Pozwala ona na zidentyfikowanie łańcucha decyzyjnego, podziału kompetencji, nieformalnych zależności oraz kluczowych punktów zaufania wewnątrz organizacji. W przypadku Wydziału Informatyki Politechniki Federalnej w Zurychu (\textit{Departement Informatik - D-INFK}) dekompozycja struktury zarządczej umożliwia nie tylko zrozumienie obiegu informacji formalnych, lecz przede wszystkim dostarcza danych niezbędnych do wiarygodnego modelowania wektorów socjotechnicznych opartych na autorytecie instytucjonalnym.
+
 \subsection{Władze wydziału i organy decyzyjne}\label{subsec:wladze-wydzialu}
-% TO-DO:
-% 1. Przedstawić formalne kierownictwo (Head of Department, Director of Studies).
-% 2. Opisać zależność D-INFK od Rady Uczelni ETH (Schulleitung) i ETH Board.
-% 3. Wymienić organy kolegialne: Departementskonferenz (DK) i Departementsausschuss (DA).
-% 4. Wyjaśnić znaczenie wywiadowcze autorytetu władz dla pretextingu socjotechnicznego.
+
+W strukturze akademickiej i administracyjnej Politechniki Federalnej w Zurychu Wydział Informatyki (\textit{D-INFK}) funkcjonuje jako jednostka o wysokim stopniu autonomii wykonawczej, podlegając bezpośrednio nadrzędnej Radzie Uczelni (\textit{Schulleitung}) oraz federalnej Radzie Politechnik (\textit{ETH-Rat}). Organem kierowniczym odpowiedzialnym za bieżące zarządzanie strategiczne, operacyjne i naukowe wydziału jest Rada Wydziału (\textit{Departementsleitung - DL}) \cite{eth_dinfk_org}. Działalność kierownictwa jest wspierana przez dwa kluczowe organy kolegialne:
+\begin{itemize}
+    \item \textbf{Konferencję Wydziału (\textit{Departementskonferenz - DK}):} Najwyższe ciało plenarne zrzeszające wszystkich profesorów zwyczajnych, przedstawicieli kadry naukowej, personelu techniczno-administracyjnego oraz studentów. Konferencja odpowiada za uchwalanie programów studiów, regulaminów wewnętrznych oraz opiniowanie wniosków nominacyjnych.
+    \item \textbf{Komitet Wydziałowy (\textit{Departementsausschuss - DA}):} Węższy komitet doradczo-wykonawczy, koordynujący realizację uchwał DK oraz opiniujący kluczowe decyzje finansowo-lokalowe przed ich wdrożeniem.
+\end{itemize}
+
+W ramach pasywnego rekonesansu OSINT przeprowadzono ekstrakcję danych ze struktury oficjalnego portalu wydziału (\file{inf.ethz.ch}), co pozwoliło na precyzyjną identyfikację imiennego składu Rady Wydziału (DL), zaprezentowanego na rysunku \ref{fig:dinfk-board} oraz w tabeli \ref{tab:wladze-dinfk}.
+
+\Figure[0.65]{dinfk_board.jpg}{Skład zarządu wydziału D-INFK (\textit{Departementsleitung}) opublikowany na oficjalnym portalu uczelni}{fig:dinfk-board}
+
+\begin{table}[H]
+    \centering
+    \caption{Skład Rady Wydziału Informatyki ETH Zürich (\textit{Departementsleitung - DL})}\label{tab:wladze-dinfk}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.28\linewidth} L{0.32\linewidth} Y}
+        \toprule
+        \hcell{Imię i nazwisko} & \hcell{Funkcja formalna (DL)} & \hcell{Rola operacyjna i znaczenie instytucjonalne} \\
+        \midrule
+        Prof. Thomas Hofmann & Head of Department & Strategiczne zarządzanie wydziałem, nadzór nad budżetem i reprezentacja zewnętrzna. \\
+        Prof. Srdjan Čapkun & Deputy Head of Department & Zastępca szefa wydziału, koordynacja inicjatyw badawczych w obszarze bezpieczeństwa. \\
+        Prof. Adrian Perrig & Director of Studies & Nadzór nad tokiem studiów, sprawami studenckimi, egzaminami i kadrą dydaktyczną. \\
+        Prof. Valentina Boeva & Deputy Director of Studies & Zastępca dyrektora ds. dydaktyki, koordynacja międzynarodowych programów studiów. \\
+        Prof. Stelian Coros & Członek zarządu (Board Member) & Reprezentacja instytutów interaktywnych systemów inteligentnych. \\
+        Prof. Siyu Tang & Członek zarządu (Board Member) & Reprezentacja instytutów obliczeń wizualnych i grafiki komputerowej. \\
+        Barbara Pfändner & Managing Director & Dyrektor zarządzająca; operacyjna administracja kadr, finansów i infrastruktury. \\
+        Stefan Walter & Head IT Services (ISGINF) & Szef wydziałowej grupy wsparcia teleinformatycznego (ISG D-INFK). \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Znaczenie wywiadowcze i modelowanie wektorów socjotechnicznych (Actionable Intelligence)}
+
+Identyfikacja ścisłego kierownictwa wydziału dostarcza kluczowych przesłanek dla konstrukcji realistycznych scenariuszy socjotechnicznych, opisanych szczegółowo w rozdziale \ref{ch:socjotechnika}. W inżynierii społecznej mechanizm uległości wobec autorytetu (\textit{Authority Bias}) stanowi jeden z najskuteczniejszych wektorów manipulacji w środowiskach akademickich i korporacyjnych:
+\begin{enumerate}
+    \item \textbf{Pretexting dziekański (Prof. Thomas Hofmann):} Wykorzystanie tożsamości szefa wydziału umożliwia formułowanie komunikatów o charakterze bezwzględnego priorytetu organizacyjnego (np. rzekome pilne ankiety akredytacyjne, zarządzenia kryzysowe czy wymogi sprawozdawczości federalnej). Ze względu na pozycję w hierarchii, odbiorcy niższego szczebla rzadko dokonują weryfikacji takich żądań kanałem zwrotnym.
+    \item \textbf{Pretexting dydaktyczny i studencki (Prof. Adrian Perrig):} Funkcja Dyrektora Studiów sprawia, że wezwania dotyczące weryfikacji zapisów na przedmioty, logowania do platform egzaminacyjnych czy potwierdzania tematów prac dyplomowych kierowane do studentów i doktorantów charakteryzują się niemal stuprocentową wiarygodnością operacyjną.
+    \item \textbf{Pretexting administracyjno-proceduralny (Barbara Pfändner):} Pozycja dyrektor zarządzającej stanowi idealny punkt wyjścia do kierowania zapytań o status rozliczeń, deklaracje podatkowe, audyty sprzętowe lub weryfikację uprawnień do gabinetów i laboratoriów do pracowników administracji i sekretariatów.
+    \item \textbf{Wektor wsparcia teleinformatycznego (Stefan Walter):} Zidentyfikowanie obecności szefa grupy IT (ISGINF) bezpośrednio w ścisłym zarządzie wydziału dowodzi wysokiej integracji procedur technicznych z procesami decyzyjnymi. Daje to podstawę do wysoce wiarygodnych ataków vishingowych i spear-phishingowych podszywających się pod bezpośrednie polecenia szefa IT (np. wymuszenie pilnej zmiany poświadczeń nethz lub aktualizacji kluczy SSH).
+\end{enumerate}
 
 \subsection{Instytuty badawcze i laboratoria wydziałowe}\label{subsec:instytuty-laboratoria}
 % TO-DO:
