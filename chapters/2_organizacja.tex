@@ -104,6 +104,8 @@ Powiązanie nazwisk kierowników instytutów z konkretnymi domenami badawczymi u
 Podczas gdy centralne usługi teleinformatyczne Politechniki są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia – \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
 
 Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \file{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}.
+
+\begin{table}[H]
     \centering
     \caption{Struktura ról technologicznych i alokacji fizycznej personelu ISG D-INFK w budynku CAB}\label{tab:isg-personel}
     \tablefont
@@ -126,7 +128,7 @@ Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezen
 
 \lead{Katalog usług i domen operacyjnych ISG D-INFK}
 
-Analiza publicznie dostępnego katalogu wsparcia technicznego ISG (\file{isg.inf.ethz.ch/Main/Help*}) pozwoliła na precyzyjne sklasyfikowanie 18 domen operacyjnych realizowanych przez wydziałowy zespół IT, które podzielono na cztery kluczowe filary technologiczne:
+Analiza publicznie dostępnego katalogu wsparcia technicznego ISG pozwoliła na precyzyjne sklasyfikowanie 18 domen operacyjnych realizowanych przez wydziałowy zespół IT, które podzielono na cztery kluczowe filary technologiczne:
 \begin{enumerate}
     \item \textbf{Infrastruktura obliczeniowa, orkiestracja i przechowywanie danych:}
     \begin{itemize}
@@ -135,9 +137,9 @@ Analiza publicznie dostępnego katalogu wsparcia technicznego ISG (\file{isg.inf
     \end{itemize}
     \item \textbf{Środowiska stacji roboczych i laboratoria studenckie:}
     \begin{itemize}
-        \item \textit{Desktops and Laptops:} Przygotowywanie, instalacja sieciowa i standaryzacja obrazów systemów operacyjnych (głównie Ubuntu LTS i Windows) na urządzeniach pracowników.
+        \item \textit{Desktops and Laptops:} Przygotowywanie, instalacja sieciowa i standaryzacja obrazów systemów operacyjnych na urządzeniach pracowników.
         \item \textit{Student Computer Labs:} Utrzymanie publicznych sal terminalowych i laboratoriów komputerowych zlokalizowanych w budynku CAB.
-        \item \textit{Software, Printing i Multimedia:} Repozytoria oprogramowania licencjonowanego, infrastruktura druku sieciowego oraz obsługa sal wykładowych.
+        \item \textit{Software, Printing i Multimedia:} Repozytoria oprogramowania licencjonowanego, infrastruktura druku sieciowego.
     \end{itemize}
     \item \textbf{Zarządzanie tożsamością, dostępem i bezpieczeństwem sieciowym:}
     \begin{itemize}
@@ -158,10 +160,10 @@ Analiza publicznie dostępnego katalogu wsparcia technicznego ISG (\file{isg.inf
 Struktura zespołu ISG oraz katalog świadczonych usług ujawniają kluczowe wektory wywiadowcze o krytycznym znaczeniu dla kolejnych etapów rekonesansu oraz modelowania scenariuszy socjotechnicznych:
 
 \begin{enumerate}
-    \item \textbf{Topologia fizycznego skrzydła IT w budynku CAB:} Pokoje administratorów tworzą zwarty kompleks na parterze budynku CAB w pokojach \code{CAB E 43}--\code{CAB E 48}, w bezpośrednim sąsiedztwie Helpdesku \code{CAB E 41.1}. Informacja ta ma fundamentalne znaczenie dla analizy ochrony obwodowej w podrozdziale \ref{sec:lokalizacja} oraz scenariuszy obecności fizycznej w rozdziale \ref{ch:socjotechnika}.
-    \item \textbf{Mapowanie wewnętrznej numeracji telefonicznej:} Bezpośrednie numery telefonów personelu należą do zwartej puli z prefiksem \code{+41 44 632 72 XX} oraz \code{+41 44 632 81/82 XX}. W scenariuszach vishingowych atakujący może wykorzystać techniki fałszowania tożsamości abonenta (\textit{Caller ID Spoofing}), podszywając się pod konkretny numer wewnętrzny administratora Windows (\anon{Admin_Win_DB}) lub szefa IT.
+    \item \textbf{Topologia fizycznego skrzydła IT w budynku CAB:} Pokoje administratorów tworzą zwarty kompleks na parterze budynku CAB w pokojach \code{CAB E 43}--\code{CAB E 48}, w bezpośrednim sąsiedztwie Helpdesku \code{CAB E 41.1}. Informacja ta ma fundamentalne znaczenie dla analizy ochrony obwodowej w podrozdziale \ref{sec:lokalizacja} i scenariuszy obecności fizycznej w rozdziale \ref{ch:socjotechnika}.
+    \item \textbf{Mapowanie wewnętrznej numeracji telefonicznej:} Bezpośrednie numery telefonów personelu należą do zwartej puli z prefiksem \code{+41 44 632 72 XX} oraz \code{+41 44 632 81/82 XX}. W scenariuszach vishingowych atakujący może wykorzystać techniki fałszowania tożsamości, podszywając się pod konkretny numer wewnętrzny administratora Windows.
     \item \textbf{Ujawnienie schematu nazw kont nethz:} Analiza adresów e-mail personelu (\code{walteste}, \code{baumanmo}, \code{copoff}) odsłania regułę generowania identyfikatorów kont użytkowników w usłudze \code{nethz} (zbitki literowe nazwiska i imienia do maksymalnie 8 znaków), co ułatwia enumerację kont i ataki typu \textit{password spraying}.
-    \item \textbf{Wektory pretextingu oparte na usługach (Remote Access, GitLab, Backup):} Udokumentowane procedury usług dają napastnikowi gotowe preteksty techniczne. Komunikat od \code{helpdesk@inf.ethz.ch} o rzekomym wygaśnięciu certyfikatu VPN (\textit{Remote Access}), konieczności ponownej autoryzacji klucza SSH w usłudze \code{gitlab.inf.ethz.ch} (\textit{Version Control}) lub przekroczeniu limitu dyskowego (\textit{Storage Quota}) nie wzbudza podejrzeń i wymusza natychmiastowe kliknięcie w link phishingowy.
+    \item \textbf{Wektory pretextingu oparte na usługach (Remote Access, GitLab, Backup):} Udokumentowane procedury usług dają napastnikowi gotowe preteksty techniczne. Komunikat od \code{helpdesk@inf.ethz.ch} o rzekomym wygaśnięciu certyfikatu VPN (\textit{Remote Access}), konieczności ponownej autoryzacji klucza SSH w usłudze \code{gitlab.inf.ethz.ch} lub przekroczeniu limitu dyskowego nie wzbudza podejrzeń i wymusza natychmiastowe kliknięcie w link phishingowy.
     \item \textbf{Punkt zaczepienia łańcucha dostaw (Supply Chain):} Zidentyfikowanie roli \anon{Purchase_TS} (pokój \code{CAB E 48}) odpowiadającej za zamówienia sprzętu wskazuje konkretny cel osobowy dla fałszywych faktur, ofert dostawców i złośliwych załączników pod pretekstem wyceny serwerów.
 \end{enumerate}
 
