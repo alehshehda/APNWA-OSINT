@@ -203,11 +203,39 @@ Struktura zespołu ISG oraz katalog świadczonych usług ujawniają kluczowe wek
 
 \section{Relacje gospodarcze i ekosystem innowacji}\label{sec:partnerstwa-gospodarcze}
 
+Wydział Informatyki ETH Zürich nie funkcjonuje jako wyizolowana jednostka akademicka, lecz stanowi centralne ogniwo szwajcarskiego ekosystemu innowacji technologicznych i finansowych (\textit{Greater Zurich Area}). Bliska symbioza środowiska naukowego z sektorem bankowym, ubezpieczeniowym oraz globalnymi centrami badawczo-rozwojowymi (R\&D) korporacji technologicznych generuje specyficzne uwarunkowania wywiadowcze. Z perspektywy analizy bezpieczeństwa i inżynierii społecznej wielowymiarowe relacje gospodarcze tworzą rozległą powierzchnię zaufania instytucjonalnego, charakteryzującą się stałą obecnością zewnętrznych podmiotów komercyjnych w infrastrukturze wydziału.
+
 \subsection{Partnerstwa technologiczne i konsorcjum ZISC}\label{subsec:partnerzy-przemyslowi}
-% TO-DO:
-% 1. Opisać współpracę z centrami R&D w Zurychu (np. Google Zurich, Microsoft Mixed Reality Lab, IBM Research).
-% 2. Wskazać konsorcjum ZISC (partnerzy bankowi i technologiczni).
-% 3. Wyjaśnić wpływ obecności gości biznesowych na obniżenie czujności personelu w CAB.
+
+Kluczową płaszczyzną instytucjonalnego transferu wiedzy i technologii w obszarze cyberbezpieczeństwa jest Centrum Bezpieczeństwa Informacji i Ochrony Prywatności w Zurychu (\textit{Zurich Information Security and Privacy Center - ZISC}) \cite{eth_zisc}. Zgodnie z oficjalną deklaracją jednostki, ZISC jest finansowane wspólnie przez ETH Zürich oraz partnerów komercyjnych, a pozyskiwane wkłady finansowe bezpośrednio wspierają programy badawcze i edukacyjne wydziału.
+
+Eksploracja oficjalnego portalu konsorcjum (\file{zisc.ethz.ch/partners}) pozwoliła na precyzyjne skatalogowanie zarówno bieżących partnerów strategicznych, jak i podmiotów współpracujących historycznie, co przedstawiono na rysunku \ref{fig:zisc-partners}.
+
+\Figure[0.65]{zisc_partners.jpg}{Struktura aktualnych i historycznych partnerów przemysłowych konsorcjum ZISC opublikowana na portalu jednostki}{fig:zisc-partners}
+
+Analiza zebranego materiału dowodzi wieloletniego, strategicznego powiązania wydziału z kluczowymi filarami szwajcarskiej infrastruktury krytycznej i sektora fintech:
+\begin{itemize}
+    \item \textbf{Aktualni partnerzy przemysłowi:}
+    \begin{itemize}
+        \item \textit{Konfederacja Szwajcarska (Schweizerische Eidgenossenschaft):} Partner założycielski wspierający centrum nieprzerwanie od 2003 roku, co podkreśla państwowy priorytet badań prowadzonych w D-INFK.
+        \item \textit{Zürcher Kantonalbank (ZKB):} Największy szwajcarski bank kantonalny (współpraca od 2015 roku), zaangażowany w projekty ochrony bankowości cyfrowej.
+        \item \textit{Poczta Szwajcarska (Die Post / Swiss Post):} Partner od 2016 roku, rozwijający wspólnie z naukowcami systemy bezpiecznego głosowania elektronicznego (\textit{E-Voting}) oraz cyfrowej tożsamości.
+        \item \textit{Dieter Schwarz Stiftung:} Fundacja wspierająca od 2023 roku inicjatywy z zakresu transformacji cyfrowej i sztucznej inteligencji.
+        \item \textit{Swissquote:} Czołowa szwajcarska grupa bankowości inwestycyjnej i handlu kryptowalutami, która dołączyła do konsorcjum w 2025 roku.
+    \end{itemize}
+    \item \textbf{Byli partnerzy konsorcjum:} Wśród wieloletnich partnerów ZISC zidentyfikowano operatora szwajcarskiej giełdy papierów wartościowych SIX Group (2016--2025), koncern ubezpieczeniowy Zurich Insurance (2015--2025), NEC (2014--2023), bank Credit Suisse (2003--2014) oraz gigantów technologicznych: Google (2011--2014), IBM (2003--2011) i Sun Microsystems.
+\end{itemize}
+
+Równolegle do konsorcjum ZISC pracownicy D-INFK utrzymują bezpośrednie powiązania z laboratoriami R\&D zlokalizowanymi w Zurychu. Szczególnym przykładem jest europejski hub badawczy \textbf{Google Zurich} (zlokalizowany w pobliżu dworca głównego przy Europaallee), z którym wydział prowadzi regularne programy stażowe i seminaria. Z kolei w obszarze grafiki i widzenia komputerowego unikalnym zjawiskiem jest podwójna afiliacja profesorów – przykładowo, prof. Marc Pollefeys pełni jednocześnie funkcję dyrektora naukowego w \textbf{Microsoft Mixed Reality \& AI Lab Zurich}, a prof. Markus Gross kierował przez lata współpracą z \textbf{Disney Research Studios}.
+
+\lead{Wnioski dla modelowania zagrożeń fizycznych i socjotechnicznych (Actionable Intelligence)}
+
+Ujawniona sieć powiązań gospodarczych dostarcza napastnikowi gotowych wzorców zachowań i wektorów manipulacyjnych:
+
+\begin{enumerate}
+    \item \textbf{Efekt kamuflażu biznesowego (Visitor Camouflage):} Intensywna współpraca z bankami (ZKB, Swissquote) i korporacjami technologicznymi sprawia, że obecność gości zewnętrznych w budynku CAB (w garniturach, z identyfikatorami gościa lub w swobodnym stylu biznesowym) jest zjawiskiem codziennym. Zjawisko to drastycznie obniża czujność personelu i studentów wobec osób obcych, umożliwiając niezauważone wejście do stref ograniczonego dostępu za pracownikiem (\textit{tailgating}) pod pretekstem udziału w warsztatach ZISC.
+    \item \textbf{Pretexting oparty na zaufaniu międzyinstytucjonalnym:} Atakujący może przygotować wysoce wiarygodny scenariusz spear-phishingu skierowany do badaczy Instytutu Bezpieczeństwa Informacji (InfSec), podszywając się pod oficjalne zaproszenie na zamknięte warsztaty robocze dotyczące bezpieczeństwa finansowego organizowane przez Swissquote lub Pocztę Szwajcarską. Załącznik rzekomo zawierający konspekt referatu lub formularz NDA stanowi idealny wektor dostarczenia złośliwego oprogramowania.
+\end{enumerate}
 
 \subsection{Spółki spin-off wywodzące się z D-INFK}\label{subsec:spinoffy}
 % TO-DO:
