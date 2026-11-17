@@ -101,11 +101,9 @@ Powiązanie nazwisk kierowników instytutów z konkretnymi domenami badawczymi u
 
 \subsection{Struktura i zadania grupy wsparcia IT (ISG D-INFK)}\label{subsec:administracja-isg}
 
-Podczas gdy centralne usługi teleinformatyczne Politechniki (takie jak styk z operatorem SWITCH, nadrzędne serwery pocztowe MX czy federacyjny system tożsamości) są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia – \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
+Podczas gdy centralne usługi teleinformatyczne Politechniki są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia – \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
 
-Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \file{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}. Zgodnie z przyjętą polityką minimalizacji danych osobowych, dane inżynierów i administratorów poddano anonimizacji przy użyciu ujednoliconych identyfikatorów semantycznych \latexcmd{anon\{...\}}.
-
-\begin{table}[H]
+Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \file{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}.
     \centering
     \caption{Struktura ról technologicznych i alokacji fizycznej personelu ISG D-INFK w budynku CAB}\label{tab:isg-personel}
     \tablefont
@@ -113,15 +111,15 @@ Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezen
         \toprule
         \hcell{Identyfikator roli} & \hcell{Specjalizacja operacyjna} & \hcell{Gabinet (CAB)} & \hcell{Zakres odpowiedzialności technologicznej} \\
         \midrule
-        Stefan Walter & Head IT Services / Team Leader & CAB E 46 & Strategiczne zarządzanie ISG, koordynacja projektów IT i polityki bezpieczeństwa. \\
+        Stefan Walter & Head IT Services / Team Leader & CAB E 46 & Strategiczne zarządzanie ISG, koordynacja projektów IT. \\
         \anon{Admin_Win_DB} & Windows Administrator & CAB E 45 & Zarządzanie stacjami Windows, domeną Active Directory i politykami GPO. \\
-        \anon{Admin_Mac_AK} & Windows / Mac Administrator & CAB E 45 & Wsparcie środowisk macOS i stacji roboczych Apple, integracja z siecią wydziałową. \\
-        \anon{Admin_Linux_MB} & Linux Administrator & CAB E 43 & Utrzymanie stacji Linux (Ubuntu LTS), repozytoriów pakietów i instalacji sieciowych. \\
+        \anon{Admin_Mac_AK} & Windows / Mac Administrator & CAB E 45 & Wsparcie środowisk macOS i stacji roboczych Apple. \\
+        \anon{Admin_Linux_MB} & Linux Administrator & CAB E 43 & Utrzymanie stacji Linux, repozytoriów pakietów i instalacji sieciowych. \\
         \anon{DevOps_Linux_MB} & Linux Admin / DevOps & CAB E 44.2 & Automatyzacja konfiguracji, utrzymanie serwerów wydziałowych i potoków CI/CD. \\
-        \anon{Dev_Web_MM} & Linux Admin / Web Developer & CAB E 44.1 & Rozwój i utrzymanie wewnętrznych portali WWW wydziału oraz skryptów administracyjnych. \\
+        \anon{Dev_Web_MM} & Linux Admin / Web Developer & CAB E 44.1 & Rozwój i utrzymanie wewnętrznych portali WWW wydziału. \\
         \anon{DevOps_K8s_MR} & Kubernetes / DevOps & CAB E 44.1 & Zarządzanie klastrami kontenerowymi Kubernetes i platformami chmurowymi. \\
         \anon{Admin_Edu_MS} & Linux Admin / Apprentice Teacher & CAB E 44.2 & Opieka nad laboratoriami studenckimi i szkolenie kadr technicznych. \\
-        \anon{Purchase_TS} & Purchase / Multimedia & CAB E 48 & Realizacja zamówień sprzętowych, logistyka IT i wsparcie systemów multimedialnych. \\
+        \anon{Purchase_TS} & Purchase / Multimedia & CAB E 48 & Realizacja zamówień sprzętowych, logistyka IT. \\
         \bottomrule
     \end{tabularx}
 \end{table}
