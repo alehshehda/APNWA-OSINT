@@ -55,17 +55,117 @@ Identyfikacja ścisłego kierownictwa wydziału dostarcza kluczowych przesłanek
 \end{enumerate}
 
 \subsection{Instytuty badawcze i laboratoria wydziałowe}\label{subsec:instytuty-laboratoria}
-% TO-DO:
-% 1. Wymienić i scharakteryzować instytuty D-INFK (np. Systems, InfSec, IML, Pervasive, TCS, IVC, IPL).
-% 2. Opisać centrum cyberbezpieczeństwa ZISC (współpraca z sektorem przemysłowym/bankowym).
-% 3. Zwrócić uwagę na autonomię instytutów w doborze narzędzi i serwerów.
+
+Struktura badawczo-dydaktyczna Wydziału Informatyki ETH Zürich charakteryzuje się wysokim stopniem decentralizacji naukowej. Działalność badawcza skupiona jest w siedmiu wyspecjalizowanych instytutach, obejmujących pełne spektrum współczesnej informatyki – od podstaw teoretycznych, przez inżynierię systemów i bezpieczeństwo, po zaawansowane systemy sztucznej inteligencji \cite{eth_dinfk_institutes}. Na czele każdego instytutu stoi mianowany kierownik (\textit{Head of Institute}), koordynujący pracę podległych laboratoriów i grup badawczych prowadzonych przez poszczególnych profesorów zwyczajnych i nadzwyczajnych.
+
+W ramach rekonesansu źródeł otwartych zmapowano strukturę instytutów D-INFK oraz ich aktualną kadrę kierowniczą, co zestawiono w tabeli \ref{tab:instytuty-dinfk}.
+
+\begin{table}[H]
+    \centering
+    \caption{Zestawienie instytutów badawczych D-INFK, kierownictwa i głównych obszarów badawczych}\label{tab:instytuty-dinfk}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.34\linewidth} L{0.26\linewidth} Y}
+        \toprule
+        \hcell{Instytut badawczy} & \hcell{Kierownik (Head)} & \hcell{Główny profil operacyjny i aktywa webowe} \\
+        \midrule
+        Institute for Theoretical Computer Science (TCS) & Prof. David Steurer & Teoria obliczeń, algorytmy aproksymacyjne, kryptografia teoretyczna i złożoność obliczeniowa. \\
+        Institute for Computing Platforms & Prof. Gustavo Alonso & Architektury sprzętowo-programowe, klastry wielordzeniowe, akceleracja FPGA/GPU i systemy bazodanowe. \\
+        Institute for Intelligent Interactive Systems (IIIS) & Prof. Stelian Coros & Robotyka obliczeniowa, fizyczna interakcja człowiek-komputer (HCI) oraz inteligentne systemy sensoryczne. \\
+        Institute for Visual Computing (IVC) & Prof. Siyu Tang & Widzenie komputerowe, przetwarzanie obrazu, rendering, grafika 3D oraz wirtualna rzeczywistość. \\
+        Institute for Information Security (InfSec) & Prof. Kenny Paterson & Kryptografia stosowana, bezpieczeństwo systemów sieciowych, weryfikacja formalna i ochrona prywatności. \\
+        Institute for Machine Learning (IML) & Prof. Gunnar Rätsch & Teoria uczenia maszynowego, sieci neuronowe, bioinformatyka obliczeniowa i medycyna precyzyjna. \\
+        Institute for Programming Languages and Systems (IPLS) & Prof. Zhendong Su & Języki programowania, optymalizacja kompilatorów, statyczna analiza kodu i automatyczna synteza programów (\code{pls.inf.ethz.ch}). \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Szczególną rolę w architekturze organizacyjnej wydziału odgrywa Centrum Bezpieczeństwa Informacji i Ochrony Prywatności w Zurychu (\textit{Zurich Information Security and Privacy Center - ZISC}) \cite{eth_zisc}. Założone w 2003 roku centrum stanowi platformę strategicznej współpracy pomiędzy badaczami Instytutu InfSec a wiodącymi partnerami przemysłowymi ze szwajcarskiego sektora finansowego, ubezpieczeniowego i technologicznego. W projektach ZISC biorą udział wybitni naukowcy wydziału, w tym prof. Adrian Perrig (twórca bezpiecznej architektury sieciowej SCION) oraz prof. Srdjan Čapkun.
+
+\lead{Autonomia technologiczna laboratoriów a ryzyko infrastrukturalne}
+
+Analiza struktury wykazała, że poszczególne instytuty i laboratoria cieszą się dużą swobodą operacyjną w zakresie doboru infrastruktury obliczeniowej. O ile podstawowe stacje robocze i centralne laboratoria studenckie są standaryzowane przez grupę wsparcia ISG D-INFK, o tyle specjalistyczne serwery obliczeniowe, klastry GPU dedykowane uczeniu maszynowemu oraz serwery deweloperskie są nierzadko konfigurowane i zarządzane bezpośrednio przez doktorantów i asystentów badawczych.
+
+Z perspektywy bezpieczeństwa IT prowadzi to do zjawiska tzw. \textit{Shadow IT} na poziomie akademickim:
+\begin{itemize}
+    \item Utrzymywanie odrębnych subdomen i dedykowanych serwisów WWW (np. \code{pls.inf.ethz.ch}), które mogą podlegać nieregularnym cyklom aktualizacji oprogramowania w porównaniu z głównym portalem uczelni.
+    \item Niejednolita polityka zarządzania uprawnieniami do lokalnych repozytoriów kodu źródłowego oraz testowych baz danych zawierających zbiory badawcze.
+\end{itemize}
+
+\lead{Wnioski operacyjne dla inżynierii społecznej (Actionable Intelligence)}
+
+Powiązanie nazwisk kierowników instytutów z konkretnymi domenami badawczymi umożliwia precyzyjne sprofilowanie ataków socjotechnicznych typu \textit{spear-phishing} i \textit{waterholing}:
+\begin{enumerate}
+    \item \textbf{Wertykalny pretexting laboratoryjny:} Młodzi badacze, doktoranci i asystenci wykazują wysoki stopień uległości wobec poleceń wydawanych przez bezpośrednich szefów swoich instytutów. Wiadomość podszywająca się pod prof. Kenny'ego Patersona (InfSec) lub prof. Zhendonga Su (IPLS) z prośbą o pilną ocenę artefaktu programistycznego (\textit{artifact evaluation}), uruchomienie kodu weryfikacyjnego na lokalnym serwerze lub uzupełnienie danych do publikacji konferencyjnej posiada wysoki wskaźnik otwarć i uruchomień załącznika.
+    \item \textbf{Pretexting grantowy i konferencyjny:} Zbieżność tematyczna ułatwia tworzenie fałszywych zaproszeń do komitetów programowych renomowanych konferencji (np. ACM CCS, IEEE S\&P, USENIX Security, NeurIPS) zawierających złośliwe formularze phishingu poświadczeń \code{nethz}.
+\end{enumerate}
 
 \subsection{Struktura i zadania grupy wsparcia IT (ISG D-INFK)}\label{subsec:administracja-isg}
-% TO-DO:
-% 1. Opisać rolę IT Service Group (ISG D-INFK) jako autonomicznego ośrodka IT wydziału.
-% 2. Wskazać zadania: zarządzanie serwerownią CAB, klastrami HPC, helpdeskiem (helpdesk@inf.ethz.ch),
-%    zarządzaniem stacjami roboczymi (Ubuntu LTS, Windows) i kontami nethz.
-% 3. Wskazać ISG jako centralny punkt zaufania technicznego (kluczowe dla vishingu w Rozdziale 6).
+
+Podczas gdy centralne usługi teleinformatyczne Politechniki (takie jak styk z operatorem SWITCH, nadrzędne serwery pocztowe MX czy federacyjny system tożsamości) są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia – \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
+
+Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \file{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}. Zgodnie z przyjętą polityką minimalizacji danych osobowych, dane inżynierów i administratorów poddano anonimizacji przy użyciu ujednoliconych identyfikatorów semantycznych \latexcmd{anon\{...\}}.
+
+\begin{table}[H]
+    \centering
+    \caption{Struktura ról technologicznych i alokacji fizycznej personelu ISG D-INFK w budynku CAB}\label{tab:isg-personel}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.22\linewidth} L{0.26\linewidth} C{0.14\linewidth} Y}
+        \toprule
+        \hcell{Identyfikator roli} & \hcell{Specjalizacja operacyjna} & \hcell{Gabinet (CAB)} & \hcell{Zakres odpowiedzialności technologicznej} \\
+        \midrule
+        Stefan Walter & Head IT Services / Team Leader & CAB E 46 & Strategiczne zarządzanie ISG, koordynacja projektów IT i polityki bezpieczeństwa. \\
+        \anon{Admin_Win_DB} & Windows Administrator & CAB E 45 & Zarządzanie stacjami Windows, domeną Active Directory i politykami GPO. \\
+        \anon{Admin_Mac_AK} & Windows / Mac Administrator & CAB E 45 & Wsparcie środowisk macOS i stacji roboczych Apple, integracja z siecią wydziałową. \\
+        \anon{Admin_Linux_MB} & Linux Administrator & CAB E 43 & Utrzymanie stacji Linux (Ubuntu LTS), repozytoriów pakietów i instalacji sieciowych. \\
+        \anon{DevOps_Linux_MB} & Linux Admin / DevOps & CAB E 44.2 & Automatyzacja konfiguracji, utrzymanie serwerów wydziałowych i potoków CI/CD. \\
+        \anon{Dev_Web_MM} & Linux Admin / Web Developer & CAB E 44.1 & Rozwój i utrzymanie wewnętrznych portali WWW wydziału oraz skryptów administracyjnych. \\
+        \anon{DevOps_K8s_MR} & Kubernetes / DevOps & CAB E 44.1 & Zarządzanie klastrami kontenerowymi Kubernetes i platformami chmurowymi. \\
+        \anon{Admin_Edu_MS} & Linux Admin / Apprentice Teacher & CAB E 44.2 & Opieka nad laboratoriami studenckimi i szkolenie kadr technicznych. \\
+        \anon{Purchase_TS} & Purchase / Multimedia & CAB E 48 & Realizacja zamówień sprzętowych, logistyka IT i wsparcie systemów multimedialnych. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Katalog usług i domen operacyjnych ISG D-INFK}
+
+Analiza publicznie dostępnego katalogu wsparcia technicznego ISG (\file{isg.inf.ethz.ch/Main/Help*}) pozwoliła na precyzyjne sklasyfikowanie 18 domen operacyjnych realizowanych przez wydziałowy zespół IT, które podzielono na cztery kluczowe filary technologiczne:
+\begin{enumerate}
+    \item \textbf{Infrastruktura obliczeniowa, orkiestracja i przechowywanie danych:}
+    \begin{itemize}
+        \item \textit{Cluster Computing i Kubernetes:} Utrzymanie wielowęzłowych klastrów obliczeniowych HPC oraz środowisk kontenerowych na potrzeby zaawansowanych symulacji naukowych.
+        \item \textit{Storage i Backup:} Zapewnianie wydziałowych zasobów dyskowych, sieciowych systemów plików (NFS/SMB) oraz regularnych migawek i kopii zapasowych danych badawczych.
+    \end{itemize}
+    \item \textbf{Środowiska stacji roboczych i laboratoria studenckie:}
+    \begin{itemize}
+        \item \textit{Desktops and Laptops:} Przygotowywanie, instalacja sieciowa i standaryzacja obrazów systemów operacyjnych (głównie Ubuntu LTS i Windows) na urządzeniach pracowników.
+        \item \textit{Student Computer Labs:} Utrzymanie publicznych sal terminalowych i laboratoriów komputerowych zlokalizowanych w budynku CAB.
+        \item \textit{Software, Printing i Multimedia:} Repozytoria oprogramowania licencjonowanego, infrastruktura druku sieciowego oraz obsługa sal wykładowych.
+    \end{itemize}
+    \item \textbf{Zarządzanie tożsamością, dostępem i bezpieczeństwem sieciowym:}
+    \begin{itemize}
+        \item \textit{User Accounts:} Zarządzanie uprawnieniami, atrybutami POSIX i grupami dostępowymi skorelowanymi z centralnymi kontami \code{nethz}.
+        \item \textit{Remote Access i Network:} Konfiguracja bezpiecznego dostępu zdalnego (wydziałowe tunele VPN, bramy bastionowe SSH) oraz lokalnej segmentacji sieci LAN i Wi-Fi.
+        \item \textit{Security:} Wdrażanie zaleceń bezpieczeństwa, obsługa incydentów we współpracy z ETH-CSIRT oraz egzekwowanie dobrych praktyk kryptograficznych.
+    \end{itemize}
+    \item \textbf{Komunikacja, rozwój oprogramowania i usługi WWW:}
+    \begin{itemize}
+        \item \textit{Collaboration Platforms, Mail i Mailing Lists:} Obsługa wydziałowych list dyskusyjnych i platform pracy grupowej uzupełniających centralną pocztę uczelnianą.
+        \item \textit{Version Control:} Utrzymanie instancji GitLab (\code{gitlab.inf.ethz.ch}) dedykowanej projektom dydaktycznym i badawczym wydziału.
+        \item \textit{Web:} Hosting witryn grup badawczych i konferencji naukowych pod domenami instytutowymi.
+    \end{itemize}
+\end{enumerate}
+
+\lead{Wnioski infrastrukturalne i analiza wektorów ataku (Actionable Intelligence)}
+
+Struktura zespołu ISG oraz katalog świadczonych usług ujawniają kluczowe wektory wywiadowcze o krytycznym znaczeniu dla kolejnych etapów rekonesansu oraz modelowania scenariuszy socjotechnicznych:
+
+\begin{enumerate}
+    \item \textbf{Topologia fizycznego skrzydła IT w budynku CAB:} Pokoje administratorów tworzą zwarty kompleks na parterze budynku CAB w pokojach \code{CAB E 43}--\code{CAB E 48}, w bezpośrednim sąsiedztwie Helpdesku \code{CAB E 41.1}. Informacja ta ma fundamentalne znaczenie dla analizy ochrony obwodowej w podrozdziale \ref{sec:lokalizacja} oraz scenariuszy obecności fizycznej w rozdziale \ref{ch:socjotechnika}.
+    \item \textbf{Mapowanie wewnętrznej numeracji telefonicznej:} Bezpośrednie numery telefonów personelu należą do zwartej puli z prefiksem \code{+41 44 632 72 XX} oraz \code{+41 44 632 81/82 XX}. W scenariuszach vishingowych atakujący może wykorzystać techniki fałszowania tożsamości abonenta (\textit{Caller ID Spoofing}), podszywając się pod konkretny numer wewnętrzny administratora Windows (\anon{Admin_Win_DB}) lub szefa IT.
+    \item \textbf{Ujawnienie schematu nazw kont nethz:} Analiza adresów e-mail personelu (\code{walteste}, \code{baumanmo}, \code{copoff}) odsłania regułę generowania identyfikatorów kont użytkowników w usłudze \code{nethz} (zbitki literowe nazwiska i imienia do maksymalnie 8 znaków), co ułatwia enumerację kont i ataki typu \textit{password spraying}.
+    \item \textbf{Wektory pretextingu oparte na usługach (Remote Access, GitLab, Backup):} Udokumentowane procedury usług dają napastnikowi gotowe preteksty techniczne. Komunikat od \code{helpdesk@inf.ethz.ch} o rzekomym wygaśnięciu certyfikatu VPN (\textit{Remote Access}), konieczności ponownej autoryzacji klucza SSH w usłudze \code{gitlab.inf.ethz.ch} (\textit{Version Control}) lub przekroczeniu limitu dyskowego (\textit{Storage Quota}) nie wzbudza podejrzeń i wymusza natychmiastowe kliknięcie w link phishingowy.
+    \item \textbf{Punkt zaczepienia łańcucha dostaw (Supply Chain):} Zidentyfikowanie roli \anon{Purchase_TS} (pokój \code{CAB E 48}) odpowiadającej za zamówienia sprzętu wskazuje konkretny cel osobowy dla fałszywych faktur, ofert dostawców i złośliwych załączników pod pretekstem wyceny serwerów.
+\end{enumerate}
 
 \section{Otoczenie fizyczne i infrastruktura kampusowa}\label{sec:lokalizacja}
 
