@@ -168,16 +168,185 @@ Struktura zespołu ISG oraz katalog świadczonych usług ujawniają kluczowe wek
 
 \section{Otoczenie fizyczne i infrastruktura kampusowa}\label{sec:lokalizacja}
 
-Rozpoznanie otoczenia fizycznego stanowi integralny komponent Filaru I metodyki OSINT. W analizie bezpieczeństwa teleinformatycznego warstwa fizyczna definiuje obwód zaufania organizacji, determinując bezpośredni dostęp do okablowania strukturalnego, gniazd sieciowych LAN, stacji roboczych personelu oraz serwerowni. Zgodnie z przyjętymi założeniami pasywnymi, analiza otoczenia fizycznego Wydziału Informatyki ETH Zürich została przeprowadzona wyłącznie w oparciu o publiczne plany kampusowe, oficjalne przewodniki nawigacyjne uczelni (\file{rauminfo.ethz.ch}) \cite{eth_rauminfo}, dane przestrzenne OpenStreetMap oraz zdjęcia satelitarne i panoramiczne Google Street View.
+Rozpoznanie otoczenia fizycznego stanowi integralny komponent filaru i metodyki OSINT. W analizie bezpieczeństwa teleinformatycznego warstwa fizyczna definiuje obwód zaufania organizacji, determinując bezpośredni dostęp do okablowania strukturalnego, gniazd sieciowych LAN, stacji roboczych personelu oraz serwerowni. Zgodnie z przyjętymi założeniami pasywnymi, analiza otoczenia fizycznego Wydziału Informatyki ETH Zürich została przeprowadzona wyłącznie w oparciu o publiczne plany kampusowe, oficjalne przewodniki nawigacyjne uczelni, dane przestrzenne OpenStreetMap oraz zdjęcia satelitarne i panoramiczne Google Street View.
 
-\subsection{Lokalizacja i topologia budynków wydziałowych}\label{subsec:budynki}
+\subsection{Lokalizacja i topologia obiektów wydziału}\label{subsec:budynki}
 
+Wydział Informatyki D-INFK nie stanowi zwartego, odizolowanego miasteczka akademickiego, lecz funkcjonuje w modelu rozproszonym w obrębie zurbanizowanej tkanki miejskiej Zurychu. Główna koncentracja zasobów wydziału przypada na historyczny kampus centralny (\textit{Campus Zentrum}), uzupełniony o zamiejscowe obiekty badawcze i budynki komercyjne, co zilustrowano na planie sytuacyjnym (rys. \ref{fig:campus-zentrum-map}).
+
+\Figure[0.80]{campus_zentrum_map.jpg}{Plan sytuacyjny kampusu ETH Zentrum z lokalizacją kompleksu budynków CAB, CNB i CHN oraz węzłów komunikacyjnych}{fig:campus-zentrum-map}
+
+\lead{Kompleks CAB/CNB jako operacyjne serce wydziału}
+
+Główną siedzibą i centrum operacyjnym D-INFK jest zabytkowy kompleks **CAB** zlokalizowany przy \textit{Universitätstrasse 6, 8092 Zürich}, bezpośrednio połączony przewiązką ze skrzydłem **CNB**. Budynek CAB (wzniesiony pierwotnie jako \textit{Chemisches Laboratorium}) łączy reprezentacyjny charakter z rozbudowaną infrastrukturą techniczną. Analiza planu poziomu E (rys. \ref{fig:cab-floor-plan}), portalu wejściowego (rys. \ref{fig:cab-portal}) oraz wnętrza holu (rys. \ref{fig:cab-hall}) pozwoliła na odtworzenie szczegółowej topologii wewnętrznej:
+\begin{itemize}
+    \item \textbf{Kondygnacje podziemne (poziomy C i D):} Mieszczą wydziałową serwerownię centralną zarządzaną przez grupę ISGINF, w tym węzły klastrów HPC, macierze dyskowe oraz główne punkty dystrybucyjne światłowodowego szkieletu sieciowego.
+    \item \textbf{Kondygnacja techniczna E (skrzydło ISG):} Jak uwidoczniono na planie \ref{fig:cab-floor-plan}, korytarz centralny mieści zwarty kompleks wsparcia IT: punkt bezpośredniej obsługi Helpdesk (\code{CAB E 41.1}) oraz gabinety administratorów (\code{CAB E 43}--\code{CAB E 48}). Na tym samym poziomie funkcjonują ogólnodostępna kawiarnia \textit{Irrational Coffee}, stowarzyszenie inżynierów \textit{AMIV} oraz kompleks sportowo-rekreacyjny \textit{ASVZ (Come And Be)}.
+    \item \textbf{Poziom wejściowy i reprezentacyjny F:} Obejmuje monumentalne wejście z dziedzińca z zabytkową bramą trójarkadową (\textit{Chemisches Laboratorium}, rys. \ref{fig:cab-portal}), reprezentacyjny hol centralny (rys. \ref{fig:cab-hall}), stołówkę studencką \textit{SV Restaurant CAB} oraz siedzibę stowarzyszenia studentów informatyki \textit{VIS}.
+    \item \textbf{Kondygnacje dydaktyczno-naukowe (poziomy G i H):} Mieszczą główne aule wykładowe (\code{CAB G 11}, \code{CAB G 61}), laboratoria terminalowe studentów (\code{CAB H 56}, \code{CAB H 57}), Bibliotekę Informatyczną (\textit{Computer Science Library}) oraz gabinety Dziekanatu i kluczowych profesorów instytutów InfSec, Machine Learning i IPLS.
+\end{itemize}
+
+\Figure[0.90]{cab_floor_plan.jpg}{Rzut poziomu E budynku CAB z zaznaczeniem korytarza ISG (pokoje 41--48), stref gastronomicznych oraz łącznika do budynku CNB}{fig:cab-floor-plan}
+
+\Figure[0.75]{cab_historic_portal.jpg}{Historyczna brama wejściowa i portal frontowy budynku CAB od strony Universitätstrasse 6}{fig:cab-portal}
+
+\Figure[0.75]{cab_interior_hall.jpg}{Wnętrze holu głównego budynku CAB demonstrujące brak fizycznych bramek kontroli dostępu w ciągu dnia}{fig:cab-hall}
+
+Szczególne znaczenie dla dynamiki ruchu pieszego na kondygnacji G mają dwie flagowe aule wykładowe: amfiteatralna aula \code{CAB G 11} (rys. \ref{fig:cab-g11}) oraz półkolista aula \code{CAB G 61} (rys. \ref{fig:cab-g61}), z których każda mieści dokładnie 193 słuchaczy. Zapewniają one łącznie blisko 400 miejsc audytoryjnych, generując intensywne fale przemieszczania się studentów w stałych cyklach godzinowych.
+
+\Figure[0.85]{cab_g11_hoersaal.jpg}{Wielopoziomowa aula wykładowa CAB G 11 o pojemności 193 miejsc ze stanowiskiem prelegenta i węzłami multimedialnymi}{fig:cab-g11}
+
+\Figure[0.85]{cab_g61_hoersaal.jpg}{Półkolista aula wykładowa CAB G 61 o pojemności 193 miejsc charakteryzująca się wysoką gęstością urządzeń bezprzewodowych}{fig:cab-g61}
+
+\lead{Charakterystyka obiektów satelitarnych D-INFK}
+
+Poza kompleksem CAB/CNB wydział wykorzystuje obiekty pomocnicze i zewnętrzne centra biurowe (\textit{Geschäftshäuser}), w których ulokowano wybrane grupy badawcze oraz centra współpracy przemysłowej, co zestawiono w tabeli \ref{tab:budynki-dinfk}.
+
+\begin{table}[H]
+    \centering
+    \caption{Kompleksowa taksonomia obiektów budowlanych Wydziału Informatyki (D-INFK)}\label{tab:budynki-dinfk}
+    \tablefont
+    \begin{tabularx}{\linewidth}{C{0.12\linewidth} L{0.24\linewidth} Y C{0.14\linewidth}}
+        \toprule
+        \hcell{Obiekt} & \hcell{Adres fizyczny} & \hcell{Alokowane jednostki, laboratoria i kluczowa kadra} & \hcell{Krytyczność} \\
+        \midrule
+        \textbf{CAB} & Universitätstr. 6 & Siedziba D-INFK, Dziekanat, ISG (E 41.1--48), serwerownie HPC, InfSec (Paterson, Perrig, Shinde, Tramèr), ML (Hofmann, Schölkopf, Rätsch), IPLS (Vechev, Müller), TCS (Hofheinz), kantyna SV. & Krytyczna \\
+        \textbf{CNB} & Universitätstr. 6 & Skrzydło przyległe do CAB, łącznik wewnętrzny. Rampa rozładunkowa, Media Technology Center (MTC), Game Technology Center (GTC). & Wysoka \\
+        \textbf{STD} & Stampfenbachstr. 48 & Budynek komercyjny (\textit{Geschäftshaus}). Instytut IIIS (Prof. Christian Holz) oraz komercyjna pracownia **Disney Research|Studios**. & Średnia \\
+        \textbf{STF} & Stampfenbachstr. 114 & Instytut Computing Platforms / Systems Group (Prof. Alonso, Chronis, Friedman, Klimovic, Roscoe, Venkataraman), Visual Computing (Prof. El-Assady), agencja kantonalna Hochbauamt. & Wysoka \\
+        \textbf{CHN} & Universitätstr. 16 & Budynek nauk o środowisku naprzeciwko CAB; aule i sale ćwiczeniowe. & Średnia \\
+        \textbf{WWA} & Wasserwerkstr. 10/12 & Pracownie techniczno-inżynieryjne. & Niska \\
+        \textbf{HEA} & Heinrichstr. 237 & Przestrzenie projektowe i pracownie studenckie. & Niska \\
+        \textbf{OAT} & Andreasstr. 5 (Oerlikon) & Ośrodek zaawansowanych badań nad sztuczną inteligencją. & Średnia \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\Figure[0.75]{cnb_delivery_entrance.jpg}{Strefa dostawcza i rampa rozładunkowa budynku CNB (brama towarowa z symbolem transportowym, zjazd do garażu oraz wejście personelu)}{fig:cnb-delivery}
+
+\Figure[0.75]{std_building_entrance.jpg}{Wejście do budynku komercyjnego STD (Stampfenbachstrasse 48) mieszczącego m.in. Disney Research|Studios}{fig:std-entrance}
+
+\Figure[0.75]{stf_building_entrance.jpg}{Fasada budynku STF (Stampfenbachstrasse 114) z widocznym oznakowaniem ETH Zürich oraz Hochbauamt Kanton Zürich}{fig:stf-entrance}
+
+\lead{Wnioski z analizy przestrzennej i otoczenia fizycznego (Actionable Intelligence)}
+
+Syntetyczna korelacja planów architektonicznych, fotografii satelitarnych i ujęć naziemnych pozwoliła na zidentyfikowanie fundamentalnych luk w fizycznym perymetrze jednostki:
+
+\begin{enumerate}
+    \item \textbf{Brak strefy buforowej i bramek w holu CAB (Zero-Checkpoint Entry):} Fotografia wnętrza (\ref{fig:cab-hall}) empirycznie dowodzi braku kołowrotów, bramek RFID czy stałego posterunku ochrony przy głównym wejściu do CAB w ciągu dnia. Osoba wchodząca z ulicy uzyskuje bezpośredni, niekontrolowany dostęp do reprezentacyjnego holu, otwartych klatek schodowych prowadzących na wszystkie kondygnacje oraz korytarzy z drzwiami gabinetów profesorskich.
+    \item \textbf{Współdzielenie infrastruktury w budynkach komercyjnych (STD, STF):} Lokowanie kluczowych laboratoriów w budynkach biurowych typu \textit{Geschäftshaus} (STD, rys. \ref{fig:std-entrance}) oraz współdzielenie obiektu STF (rys. \ref{fig:stf-entrance}) z instytucjami zewnętrznymi (\textit{Hochbauamt Kanton Zürich}) uniemożliwia wdrożenie jednolitego obwodu ochrony. Zewnętrzni petenci, kurierzy i pracownicy innych podmiotów swobodnie poruszają się po wspólnych klatkach schodowych i windach.
+    \item \textbf{Rampa dostawcza CNB jako wektor niekontrolowanego dostępu:} Zdjęcie strefy towarowej CNB (rys. \ref{fig:cnb-delivery}) ujawnia wydzieloną bramę rozładunkową oraz przyległe wejście personelu ze strefą dla palących. Podczas porannych dostaw do kantyny oraz rozładunku sprzętu laboratoryjnego drzwi bywają odryglowane, a obecność osób palących w bezpośrednim sąsiedztwie wejścia stanowi idealne warunki do ataku typu \textit{tailgating} (wejście za pracownikiem z pominięciem procedury autoryzacji).
+    \item \textbf{Ekspozycja bezprzewodowa na ciągi komunikacyjne:} Bezpośrednie przyleganie fasady CAB do ruchliwej Universitätstrasse i peronu tramwajowego \textit{ETH/Universitätsspital} umożliwia prowadzenie pasywnego nasłuchu ruchu bezprzewodowego (sieci \code{eduroam} i \code{eth-employee}) lub realizację ataku \textit{Rogue AP / Evil Twin} bezpośrednio z przystanku tramwajowego, bez przekraczania progu budynku.
+\end{enumerate}
 
 \subsection{Strefy dostępu i zabezpieczenia fizyczne budynków}\label{subsec:bezpieczenstwo-fizyczne}
-% TO-DO:
-% 1. Zestawić strefy ogólnodostępne w dzień (kantyna, korytarze, audytoria) vs strefy chronione (24/7).
-% 2. Opisać system kart zbliżeniowych ETH Card (np. technologie Legic / Mifare DESFire badane w dokumentacji kampusowej).
-% 3. Przeanalizować wektor fizyczny (wejście za pracownikiem, strefy dostawcze/kantyna CAB) vs procedury zamykania laboratoriów.
+
+Skuteczność ochrony teleinformatycznej organizacji jest nierozerwalnie związana z rygorem fizycznej kontroli dostępu do obiektów budowlanych. Analiza procedur bezpieczeństwa (\textit{Safety, Security, Health and Environment - SSHE / SGU}), oficjalnych instrukcji technicznych systemu zamykania (\textit{Schliessmanagement / eZuko}) oraz zebrany materiał fotograficzny pozwoliły na zrekonstruowanie zaawansowanego, hybrydowego modelu kontroli dostępu w kompleksie CAB/CNB.
+
+\lead{Harmonogram dostępu i podział na strefy bezpieczeństwa}
+
+Budynek CAB funkcjonuje w zróżnicowanym reżimie czasowym, dzieląc przestrzeń na strefy o odmiennym poziomie kontroli:
+\begin{itemize}
+    \item \textbf{Strefa publiczna (otwarta w dni robocze w godz. 07:00--19:00):} Główne wejścia od strony Universitätstrasse pozostają odryglowane w ciągu dnia. Obejmuje hol główny, reprezentacyjny atriowy korytarz (w którym, jak wykazano na rys. \ref{fig:cab-hall}, brak jest fizycznych kołowrotów i stałego posterunku straży), aule wykładowe \code{CAB G 11} i \code{G 61}, stołówkę \textit{SV Restaurant CAB}, kawiarnię \textit{Irrational Coffee} oraz kompleks sportowy \textit{ASVZ}. W tych godzinach wstęp do budynku nie wymaga okazywania żadnych poświadczeń tożsamości.
+    \item \textbf{Strefa chroniona 24/7 (całodobowa kontrola elektroniczna):} Skrzydło wsparcia IT (\code{CAB E 43}--\code{CAB E 48}), gabinety profesorskie, laboratoria badawcze instytutów (InfSec, Systems) oraz sale serwerowe podlegają bezwzględnej kontroli dostępu przez całą dobę.
+    \item \textbf{Reżim nocny i weekendowy:} Po godzinie 19:00 oraz w dni wolne od pracy zewnętrzne drzwi obwodowe budynku zostają zablokowane elektromagnetycznie. Wejście do obiektu staje się możliwe wyłącznie po zbliżeniu aktywnej karty uprawnionego pracownika lub studenta.
+\end{itemize}
+
+Strukturę stref bezpieczeństwa kompleksu CAB oraz mechanizmy autoryzacji zestawiono w tabeli \ref{tab:strefy-dostepu-cab}.
+
+\begin{table}[H]
+    \centering
+    \caption{Klasyfikacja stref bezpieczeństwa fizycznego i mechanizmów autoryzacji w budynku CAB}\label{tab:strefy-dostepu-cab}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.24\linewidth} C{0.20\linewidth} C{0.22\linewidth} Y}
+        \toprule
+        \hcell{Strefa obiektu} & \hcell{Godziny dzienne (07:00--19:00)} & \hcell{Poza godzinami i weekendy} & \hcell{Mechanizm kontroli i zabezpieczenia} \\
+        \midrule
+        Hol, kantyna SV, kawiarnia, aule G & Dostęp swobodny & Zablokowane & Drzwi automatyczne, brak weryfikacji tożsamości w dzień. \\
+        Pokoje ISG (\code{CAB E 41.1}--\code{E 48}) & Karta ETH Card / klucz & Karta ETH Card / klucz & Czytniki zbliżeniowe Kaba, okucia CardLink, klucze patentowe. \\
+        Laboratoria studenckie (\code{CAB H}) & Dostęp wg planu zajęć & Karta ETH Card (24/7) & Terminale nethz, autoryzacja uprawnień kierunkowych D-INFK. \\
+        Serwerownia główna (\code{CAB C/D}) & Ściśle ograniczony & Ściśle ograniczony & Dedykowana lista uprawnień ISGINF, monitoring CCTV, podwójna autoryzacja. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Architektura i charakterystyka wizualna karty kampusowej (ETH Card)}
+
+Głównym fizycznym poświadczeniem tożsamości oraz instrumentem kontroli dostępu (SKD) w obiektach Politechniki jest elektroniczna karta zbliżeniowa **ETH Card**. Karta pełni wielofunkcyjną rolę: cyfrowego klucza do drzwi (\textit{Access to buildings}), legitymacji bibliotecznej (\textit{ETH Library}), karty usług poligraficznych (\textit{Print Service}) oraz identyfikatora zniżkowego i sportowego (\textit{ASVZ}).
+
+Analiza oficjalnej dokumentacji wizualnej uczelni pozwoliła na precyzyjną dekompozycję układu graficznego oraz elementów zabezpieczających identyfikatora, co przedstawiono na rysunku \ref{fig:eth-card-anatomy}.
+
+\Figure[0.70]{eth_card_anatomy.jpg}{Anatomia karty identyfikacyjnej ETH Card: dekompozycja danych stałych, paska termoczułego TRW oraz rewersu z numerem SKD}{fig:eth-card-anatomy}
+
+Karta ETH charakteryzuje się dwudzielną konstrukcją warstwy wizualnej:
+\begin{itemize}
+    \item \textbf{Strefa danych niezmiennych (\textit{Unalterable data}):} Górna część karty z niebiesko-szarym paskiem tła zawiera naniesione fabrycznie logo \textit{ETH Zürich}, fotografię biometryczną posiadacza, nazwisko i imię (\textit{Muster Thomas}) oraz datę urodzenia w formacie \code{DD.MM.YYYY}. Dane te nie ulegają zmianie w toku eksploatacji karty.
+    \item \textbf{Strefa danych modyfikowalnych (\textit{Alterable data}):} Dolna, biała część awersu pokryta jest folią termoczułą wielokrotnego zapisu (\textit{Thermo-ReWrite - TRW}). Nadruk na pasku jest dynamicznie nanoszony i kasowany w dedykowanych terminalach walidacyjnych (\textit{Validation Terminals}) zlokalizowanych na kampusach Zentrum i Hönggerberg. Pole to zawiera:
+    \begin{itemize}
+        \item Rolę zawodową (\textit{Professional role}): \code{Studies}, \code{Continuing Education}, \code{Guest}, \code{Staff unlimited}, \code{Staff temporary} lub \code{Lecturers}.
+        \item Przypisanie organizacyjne (\textit{Organisational responsibility}): np. \code{D-INFK}, \code{D-MAVT} lub skrót programu studiów.
+        \item Numer identyfikacyjny studenta/pracownika oraz oznaczenie członkostwa w zrzeszeniu studentów (\code{VSETH}).
+        \item Wielką literę wyróżnika zniżkowego: \textbf{S} (dla studentów studiów podstawowych) lub \textbf{G} (dla gości akademickich, rys. \ref{fig:eth-card-variants}).
+        \item Datę ważności (\textit{Gültig bis / valid through}): określającą rygorystyczny termin wygaśnięcia uprawnień.
+        \item Logotyp \textbf{ASVZ}: potwierdzający automatyczne uprawnienie do obiektów sportowych (drukowany wyłącznie na kartach studentów i stażystów).
+    \end{itemize}
+    \item \textbf{Rewers karty i identyfikator budynkowy:} Rewers identyfikatora (rys. \ref{fig:eth-card-anatomy}) składa się z granatowego pola z paskiem na podpis odręczny oraz kodu kreskowego biblioteki wraz ze znacznikami kalibracyjnymi drukarki termicznej (\textit{card positioning marks}). Kluczowym elementem z punktu widzenia kontroli dostępu jest umieszczony w białej ramce \textbf{sześciocyfrowy numer ewidencyjny (\textit{Identity card number / access to buildings})}, jednoznacznie mapujący fizyczny blankiet do profilu uprawnień w centralnym systemie kontrolerów drzwiowych.
+\end{itemize}
+
+\Figure[0.70]{eth_card_variants.jpg}{Zróżnicowanie wizualne identyfikatora ETH Card w zależności od roli: student (litera S, logo ASVZ), studia podyplomowe (MAS) oraz gość akademicki (litera G, prefiks G99999)}{fig:eth-card-variants}
+
+\lead{System kontroli dostępu dormakaba-exos i dualizm architektoniczny}
+
+Infrastruktura kontroli dostępu Politechniki Federalnej w Zurychu opiera się na zintegrowanym systemie zarządzania bezpieczeństwem **dormakaba exos 9300** (\textit{Schliessmanagement ETH}). Analiza dokumentacji technicznej ujawnia istnienie dwóch równoległych podsystemów wykonawczych: komponentów sieciowych (\textit{Online}) oraz autonomicznych modułów mechatronicznych (\textit{Offline / CardLink}).
+
+\lead{Podsystem Online: czytniki ścienne i autoryzacja kodem PIN}
+
+Zewnętrzny perymetr budynków oraz główne węzły komunikacyjne zabezpieczone są czytnikami ściennymi Kaba połączonymi bezpośrednio ze szkieletem sieciowym ETH, co zilustrowano na rysunku \ref{fig:kaba-readers}.
+
+\Figure[0.70]{kaba_card_readers.jpg}{Sieciowe czytniki ścienne dormakaba stosowane na perymetrze budynków ETH: moduł z klawiaturą PIN oraz czytniki zbliżeniowe RFID}{fig:kaba-readers}
+
+Procedura autoryzacji w podsystemie online realizowana jest według następującego schematu:
+\begin{enumerate}
+    \item Zbliżenie karty ETH Card do czytnika na odległość roboczą rzędu **5--10 cm** (transmisja w standardzie zbliżeniowym LEGIC CTC / 13.56 MHz z szyfrowaniem sprzętowym).
+    \item W przypadku przejść o podwyższonym rygorze bezpieczeństwa lub w godzinach nocnych: wprowadzenie **sześciocyfrowego kodu PIN** na zintegrowanej klawiaturze numerycznej i zatwierdzenie klawiszem \code{E} (\textit{Enter}).
+\end{enumerate}
+
+Procedury zarządzania tożsamością ujawniają istotną cechę architektoniczną: kod PIN do karty jest w pełni konfigurowalny przez użytkownika za pośrednictwem dedykowanej aplikacji webowej \file{mycontact.ethz.ch}. Co kluczowe, zmiana lub zresetowanie zapomnianego kodu PIN w portalu nie wymaga znajomości dotychczasowego kodu, lecz opiera się wyłącznie na uwierzytelnieniu w uczelnianym systemie tożsamości cyfrowej \code{nethz}. Wnioskowanie o rozszerzenie fizycznych uprawnień budynkowych odbywa się drogą elektroniczną w portalu \file{immobilien-services.ethz.ch} (\textit{Meldeportal}), gdzie zgłoszenie jest zatwierdzane przez wydziałowego pełnomocnika ds. kluczy (\textit{Schlüsseldelegierter}) i aktywowane przez centralną jednostkę ISC (\textit{Info- und Service-Center}).
+
+\lead{Podsystem Offline i technologia CardLink (Data-on-Card)}
+
+W celu eliminacji kosztów prowadzenia okablowania strukturalnego do setek gabinetów profesorskich i laboratoriów w zabytkowych wnętrzach CAB, ETH wdrożyło zaawansowany podsystem komponentów autonomicznych **CardLink** w środowisku \textit{dormakaba-exos}.
+
+\Figure[0.45]{cardlink_door_fitting.png}{Autonomiczne okucie drzwiowe CardLink (Kaba c-lever) z wbudowanym czytnikiem RFID niewymagające połączenia z siecią}{fig:cardlink-fitting}
+
+Konstrukcja i zasada działania technologii CardLink opiera się na paradygmacie \textit{Data-on-Card}:
+\begin{itemize}
+    \item \textbf{Komponenty drzwiowe offline:} Drzwi wewnętrzne wyposażone są w bateryjne okucia elektroniczne (\textit{Kaba c-lever}, rys. \ref{fig:cardlink-fitting}) lub cyfrowe wkładki bębenkowe. Urządzenia te **nie posiadają żadnego fizycznego ani radiowego połączenia z siecią komputerową ETH**.
+    \item \textbf{Przenoszenie uprawnień przez kartę:} Karta ETH Card pełni rolę fizycznego nośnika uprawnień. Uprawnienia przyznane w portalu Meldeportal są zapisywane bezpośrednio w chronionej pamięci chipa karty podczas jej zbliżenia do specjalnego terminala aktualizacyjnego (**Update-Terminal**).
+    \item \textbf{Rygor 30-dniowego okna ważności (\textit{Updatefrist: 30 Tage}):} Z przyczyn bezpieczeństwa uprawnienia dostępowe zapisane na chipie karty dla komponentów offline posiadają sztywny limit czasowy wynoszący **30 dni**. Po upływie tego okresu okucie drzwiowe odrzuca kartę (sygnalizacja czerwonym podświetleniem LED i serią impulsów dźwiękowych). Użytkownik ma obowiązek regularnego odnawiania ważności uprawnień w terminalu Update-Terminal.
+\end{itemize}
+
+Należy podkreślić fundamentalne rozróżnienie dwóch typów urządzeń terminalowych funkcjonujących na uczelni:
+\begin{itemize}
+    \item \textbf{Validierungsterminal (Terminal walidacyjny):} Urządzenie wyposażone w mechaniczną szczelinę i termiczną głowicę drukującą, służące wyłącznie do fizycznego przepisywania nadruku daty na białym pasku TRW awersu karty.
+    \item \textbf{Update-Terminal (Terminal aktualizacyjny CardLink):} Naścienny czytnik RFID wyposażony w wyświetlacz LCD oraz pole zbliżeniowe (oznaczone białym prostokątem), służący do kryptograficznego zapisu uprawnień do stref offline w pamięci chipa karty (komunikat \textit{„Update erfolgreich”}).
+\end{itemize}
+
+Rozmieszczenie terminali aktualizacyjnych (\textit{Update-Terminals}) oraz sieciowych punktów dostępowych na obszarze kampusu centralnego przedstawiono na oficjalnej mapie dostępowej (rys. \ref{fig:campus-access-map}). Analiza planu potwierdza obecność dedykowanego terminala Update-Terminal bezpośrednio w budynku **CAB**, co zapewnia ciągłość odnawiania uprawnień dla pracowników D-INFK.
+
+\Figure[0.85]{campus_electronic_access_map.jpg}{Rozmieszczenie sieciowych punktów dostępu oraz terminali aktualizacyjnych Update-Terminal (oznaczonych symbolem T) na kampusie ETH Zentrum}{fig:campus-access-map}
+
+\lead{Wnioski dla inżynierii społecznej i fizycznych testów penetracyjnych (Actionable Intelligence)}
+
+Syntetyczna korelacja zebranej dokumentacji technicznej CardLink, fotografii identyfikatorów oraz mapy infrastruktury ujawnia krytyczne podatności proceduralne i architektoniczne:
+
+\begin{enumerate}
+    \item \textbf{30-dniowe okno podatności po unieważnieniu karty (\textit{CardLink Revocation Delay}):} Zgodnie z oficjalną instrukcją techniczną ETH (\textit{User Guide for CardLink}): \textit{„W przypadku zagubienia lub kradzieży karty (...) uprawnienia dostępowe dla komponentów CardLink/Offline pozostają aktywne do momentu upłynięcia 30-dniowego okresu ważności lub do czasu aktualizacji karty w terminalu”}. Ponieważ autonomiczne okucia drzwiowe w budynku CAB nie posiadają łączności z siecią, centralna blokada skradzionej karty w systemie exos **nie propaguje się natychmiastowo do drzwi gabinetów i laboratoriów**. Napastnik, który wszedł w posiadanie karty pracownika naukowego, dysponuje oknem czasowym (do 30 dni) na fizyczne otwarcie zabezpieczonych pomieszczeń offline, nawet jeśli prawowity właściciel zgłosił już utratę dokumentu w biurze obsługi.
+    \item \textbf{Wektor przejęcia fizycznego dostępu poprzez kompromitację tożsamości nethz:} Powiązanie procedury nadawania PIN-u z portalem \file{mycontact.ethz.ch} bez wymogu znajomości starego kodu PIN stanowi poważną lukę krzyżową (pivot logiczno-fizyczny). Atakujący, który pozyska poświadczenia domenowe \code{nethz} pracownika w wyniku kampanii spear-phishingowej, może zalogować się do portalu, zmienić kod PIN do drzwi na własny, a następnie posłużyć się fizycznie skradzioną lub znalezioną kartą na perymetrze nocnym CAB, obchodząc barierę dwuskładnikowego uwierzytelnienia (karta + PIN).
+    \item \textbf{Fabrykacja fizyczna identyfikatora gościa (\textit{Guest Badge Forgery}):} Zebrana dokumentacja fotograficzna (rys. \ref{fig:eth-card-variants}) ujawnia dokładny układ graficzny karty gościa akademickiego (\textit{Guest}). Karta ta cechuje się literą \textbf{G}, prefiksem numeru \code{G99999} oraz oznaczeniem wydziału (\code{D-INFK}). W ciągu dnia portierzy oraz pracownicy naukowi weryfikują obecność identyfikatora wyłącznie powierzchownie wzrokiem. Wykonanie wysokiej jakości atrapy identyfikatora gościa z przypisaniem do D-INFK zapewnia perfekcyjny kamuflaż podczas poruszania się po korytarzach CAB i STF pod pretekstem udziału w seminariach ZISC.
+    \item \textbf{Pozyskanie numeru dostępowego metodą Shoulder Surfingu:} Jawne nadrukowanie sześciocyfrowego numeru ewidencyjnego (\textit{identity card number}) na rewersie karty stanowi lukę proceduralną. W kawiarni \textit{Irrational Coffee} (poziom E CAB) lub stołówce pracownicy często odkładają karty na stoły rewersem do góry. Sfotografowanie rewersu karty pozwala napastnikowi na kontakt telefoniczny z Helpdeskiem ISG (\code{CAB E 41.1}) lub ochroną: podszywając się pod pracownika i podając poprawny numer identyfikacyjny z rewersu, atakujący może zgłosić problem techniczny i wyłudzić doraźne zdalne otwarcie drzwi.
+    \item \textbf{Wektor tailgatingu przy rampie towarowej CNB:} Zdjęcie strefy towarowej CNB (rys. \ref{fig:cnb-delivery}) potwierdza obecność wydzielonego miejsca dla palących tuż obok wejścia personelu i zjazdu do rampy podziemnej. W kulturze akademickiej powszechny jest nawyk przytrzymywania drzwi osobom wchodzącym z tyłu. Napastnik w stroju kuriera lub studenta może z łatwością wejść za pracownikiem powracającym z przerwy (\textit{piggybacking}), całkowicie omijając czytniki Kaba i procedurę autoryzacji CardLink.
+\end{enumerate}
 
 \section{Analiza finansowo-gospodarcza i przetargowa}\label{sec:finanse-gospodarka}
 
