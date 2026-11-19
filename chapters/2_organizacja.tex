@@ -461,10 +461,69 @@ Wiedza o tematyce i strukturze finansowania grantów stanowi kluczowy zasób dla
 \end{enumerate}
 
 \subsection{Zamówienia publiczne IT i dostawcy (simap.ch)}\label{subsec:zamowienia-simap}
-% TO-DO:
-% 1. Wskazówka: szukać na simap.ch zamówień IT powiązanych z ETH Zurich (sprzęt np. serwery obliczeniowe, macierze, przełączniki).
-% 2. Tabela 2-3 zidentyfikowanych postępowań przetargowych lub wykazanie centralizacji zakupów sprzętu przez jednostki nadrzędne ETH/BBL.
-% 3. Zidentyfikować dostawców technologii jako wektor ryzyka w łańcuchu dostaw (Supply Chain).
+
+Jako instytucja publiczna objęta szwajcarskim prawem zamówień publicznych (BöB/IVöB) oraz Porozumieniem w sprawie zamówień rządowych Światowej Organizacji Handlu (GPA/WTO), ETH Zürich jest zobowiązany do ogłaszania postępowań przetargowych o wartości przekraczającej próg unijny (ok.\ 230\,000\,CHF netto dla dostaw i usług IT) za pośrednictwem krajowej platformy \textit{simap.ch} oraz równolegle w Dzienniku Urzędowym Unii Europejskiej (TED\,--\,\textit{Tenders Electronic Daily}). Analiza ogłoszeń przetargowych ETH Zürich opublikowanych na platformach \file{simap.ch} i \file{ted.europa.eu} pozwala na pasywną rekonstrukcję architektury technologicznej uczelni: identyfikację kluczowych systemów, dostawców oraz kontaktowych jednostek zakupowych.
+
+W toku analizy OSINT zidentyfikowano cztery postępowania przetargowe bezpośrednio powiązane z infrastrukturą IT D-INFK/ETH, zestawione w tabeli~\ref{tab:zamowienia-it}.
+
+\begin{table}[htbp]
+\caption{Zidentyfikowane postępowania przetargowe ETH Zürich -- infrastruktura IT (simap.ch / TED)}
+\label{tab:zamowienia-it}
+\centering\tablefont
+\begin{tabularx}{\textwidth}{@{} l X l r l @{}}
+\toprule
+\hcell{Ref.} & \hcell{Przedmiot zamówienia} & \hcell{Zamawiający} & \hcell{Wartość (CHF)} & \hcell{Status} \\
+\midrule
+806887-2026 &
+  Framework Agreements for HPC Systems (LOT-0001: klastry HPC 19''/ORv3; LOT-0002: storage HPC/AI) &
+  ETH Procurement Services VPIN \newline\code{gatt-wto@ethz.ch} &
+  n/d &
+  Otwarty (deadline 18.01.2027) \\
+\midrule
+dd9b7c82 &
+  Procurement of an ITSM/ESM solution with self-service portal (LOT-0001) &
+  ETH Abt.\ Informatikdienste \newline\code{gatt-wto@id.ethz.ch} &
+  6\,000\,000 &
+  Udzielony 06.11.2026 \newline Wykonawca: DXC Technology Switzerland GmbH, Wallisellen \\
+\midrule
+CSCS-2025 &
+  CSCS Storage, Server, Switches and Software (LOT-0001: sprzęt data-center) &
+  ETH Zürich Informatikdienste, Corporate Centre, Procurement and Compliance \newline\code{gatt-wto@id.ethz.ch} &
+  n/d &
+  Ramowy 2025--2029 \\
+\midrule
+-- &
+  Hochauflösender Benchtop 3D-Biodrucker (CPV 30232100) &
+  ETH Zürich \newline\code{publictender@ethz.ch} &
+  n/d &
+  Udzielony (brak danych nt.\ wykonawcy) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection*{Ramowe umowy na systemy HPC i storage AI (ref.\ 806887-2026)}
+
+Ogłoszenie konkursowe nr 806887-2026, opublikowane równolegle na simap.ch oraz TED, dotyczy zawarcia wieloletnich umów ramowych na \textbf{klastry obliczeniowe HPC} (LOT-0001: serwery w standardzie 19-calowym i ORv3) oraz \textbf{macierze storage przeznaczone dla obliczeń HPC i sztucznej inteligencji} (LOT-0002). Zamawiającym jest centralna jednostka zakupowa uczelni -- \textit{ETH Zurich Procurement Services VPIN} (\code{gatt-wto@ethz.ch}). Termin składania ofert upływa 18 stycznia 2027, zatem postępowanie jest aktywne w momencie sporządzania niniejszego raportu. Wynik przetargu -- tj.\ ujawnienie dostawcy sprzętu i tym samym konkretnych systemów operacyjnych, firmware'u i interfejsów zarządzania -- stanie się publicznie dostępny po zawarciu umowy, co stanowi bezpośredni zasób wywiadowczy dla ataków na łańcuch dostaw (\textit{supply chain attack}).
+
+\Figure[0.80]{simap_hpc_lots.png}{Ogłoszenie przetargowe ETH Zürich na systemy HPC (LOT-0001: klastry, LOT-0002: storage AI) -- platforma simap.ch; termin składania ofert 18.01.2027}{fig:simap-hpc}
+
+\subsubsection*{System ITSM/ESM -- udzielenie zamówienia spółce DXC Technology (6\,mln\,CHF)}
+
+Postępowanie przetargowe na \textbf{zintegrowany system zarządzania usługami IT i przedsiębiorstwem} (ITSM/ESM) z funkcjonalnością portalu samoobsługowego zostało rozstrzygnięte 6 listopada 2026\,r.\ na korzyść spółki \textbf{DXC Technology Switzerland GmbH} z siedzibą w Wallisellen (kanton Zurych). Wartość umowy wynosi \textbf{6\,000\,000\,CHF}. Zamawiającym jest \textit{ETH Zürich -- Abt.\ Informatikdienste} (\code{gatt-wto@id.ethz.ch}).
+
+Z perspektywy analizy bezpieczeństwa system ITSM/ESM ma strategiczne znaczenie: jest centralnym węzłem obsługi zgłoszeń serwisowych, resetowania haseł, zarządzania dostępem do zasobów IT oraz komunikacji między pracownikami a działem IT. DXC Technology jako globalny dostawca usług IT (dawniej CSC/HP Enterprise Services) utrzymuje uprzywilejowany dostęp integracyjny do środowiska informatycznego ETH Zürich, co czyni go wektorem ryzyka dla ataków na łańcuch dostaw oraz pretekstingowych ataków inżynierii społecznej podszywających się pod pracowników serwisu DXC.
+
+\subsubsection*{CSCS -- infrastruktura Superkomputerowego Centrum Krajowego (2025--2029)}
+
+Odrębne postępowanie ramowe obejmuje \textbf{macierze storage, serwery, przełączniki sieciowe oraz oprogramowanie} dla Szwajcarskiego Narodowego Centrum Superkomputerowego (\textit{CSCS -- Swiss National Supercomputing Centre}) w Lugano. Zamawiającym jest \textit{ETH Zürich Informatikdienste, Corporate Centre, Procurement and Compliance} (\code{gatt-wto@id.ethz.ch}), co potwierdza scentralizowany model zakupów IT w ramach uczelni. Umowa ramowa obowiązuje w latach 2025--2029 i obejmuje pełne spektrum sprzętu centrum danych.
+
+\Figure[0.80]{simap_cscs_notice.png}{Ogłoszenie przetargowe CSCS: serwery, macierze, przełączniki i oprogramowanie dla Centrum Superkomputerowego ETH (umowa ramowa 2025--2029) -- platforma simap.ch}{fig:simap-cscs}
+
+\begin{itemize}
+  \item \textbf{Wektor 1 -- Preteksting dostawcy ITSM (DXC Technology):} Znajomość tożsamości wykonawcy systemu ITSM (DXC Technology Switzerland GmbH) umożliwia konstruowanie wiarogodnych scenariuszy inżynierii społecznej z wykorzystaniem pretekstu pracownika lub konsultanta DXC. Cel ataku: wyłudzenie danych uwierzytelniających do portalu ITSM lub zlecenie nieuprawnionej zmiany dostępu.
+  \item \textbf{Wektor 2 -- Atak na łańcuch dostaw HPC:} Aktywne postępowanie na sprzęt HPC (deadline 18.01.2027) jest publicznie dostępne; po ogłoszeniu wyników ujawniony zostanie konkretny dostawca. Pozwoli to na ukierunkowany atak na firmware lub oprogramowanie zarządzające klastrami HPC D-INFK i CSCS.
+  \item \textbf{Wektor 3 -- Impersonacja administratora helpdesk:} System ITSM/ESM obsługuje centralny helpdesk ETH Zürich. Atakujący znający procedury i terminologię systemu DXC ITSM (dostępną publicznie w dokumentacji produktowej) może skutecznie podszywać się pod pracownika wsparcia technicznego, inicjując ataki \textit{vishing} lub \textit{phishing} skierowane do pracowników wydziału.
+\end{itemize}
 
 \section{Relacje gospodarcze i ekosystem innowacji}\label{sec:partnerstwa-gospodarcze}
 
