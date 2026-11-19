@@ -418,10 +418,47 @@ Korelacja danych makroekonomicznych, kryzysu płynnościowego oraz procedur obie
 \end{enumerate}
 
 \subsection{Granty badawcze i finansowanie zewnętrzne (SNSF)}\label{subsec:granty-badawcze}
-% TO-DO:
-% 1. Kwerenda w bazie SNSF (data.snf.ch) dla dyscypliny Computer Science powiązana z profesorami D-INFK.
-% 2. Zestawienie 2-3 realnych grantów badawczych (tematyka np. TEE/SGX, obliczenia HPC, uczenie maszynowe, sieci; kwoty w CHF).
-% 3. Actionable Intelligence: powiązanie tematyki zidentyfikowanego grantu ze scenariuszem ataku w Rozdziale 6.
+
+Szwajcarska Narodowa Fundacja Nauki (\textit{Schweizerischer Nationalfonds zur Förderung der wissenschaftlichen Forschung -- SNSF / SNF}) stanowi główne źródło krajowego finansowania badań naukowych w Konfederacji Szwajcarskiej. Jak wykazano w podrozdziale \ref{subsec:budzet-sprawozdania}, uczelnia pozyskała ze środków krajowych SNSF i Innosuisse łącznie **225 mln CHF** w 2024 roku, stanowiących ponad jedną trzecią wszystkich zewnętrznych przychodów projektowych. Wydziałowi Informatyki ETH Zürich (D-INFK) przysługuje nieproporcjonalnie wysoki udział w tej puli finansowania, wynikający z koncentracji strategicznie priorytetowych tematyk badawczych: bezpieczeństwa cyfrowego, architektury sieci, weryfikacji oprogramowania i uczenia maszynowego.
+
+Publiczna baza danych SNSF (\file{data.snf.ch}) umożliwia pasywną eksplorację aktywnych i zakończonych projektów według instytucji goszczącej, dyscypliny naukowej oraz kierownika projektu (\textit{Principal Investigator}). Analiza rekordów dla Wydziału Informatyki ETH Zürich pozwoliła na zidentyfikowanie trzech reprezentatywnych projektów o szczególnym znaczeniu wywiadowczym, zestawionych w tabeli \ref{tab:granty-snsf}.
+
+\lead{Mechanizm przejściowego finansowania SNSF w zastępstwie grantów ERC}
+
+Kluczowym kontekstem instytucjonalnym jest fakt, iż w latach 2022--2023 Szwajcaria -- ze względu na nierozwiązany spór polityczny dotyczący jej statusu stowarzyszonego z programem ramowym \textit{Horizon Europe} -- została tymczasowo wykluczona z bezpośredniego udziału w naborach Europejskiej Rady ds. Badań Naukowych (ERC). W odpowiedzi SNSF -- na zlecenie Państwowego Sekretariatu ds. Edukacji, Badań i Innowacji (SERI) -- uruchomił krajowe programy przejściowe (\textit{SNSF Transitional Grants}: odpowiedniki \textit{Starting / Consolidator / Advanced Grants}), finansowane bezpośrednio ze środków federalnych według identycznych kryteriów ewaluacyjnych jak ERC. Programy te pozwoliły zachować ciągłość finansowania dla najwybitniejszych badaczy D-INFK, przyznając granty w wysokości do **2 mln CHF na projekt**.
+
+\begin{table}[H]
+    \centering
+    \caption{Wybrane projekty badawcze profesorów D-INFK finansowane ze środków SNSF (2021--2024)}\label{tab:granty-snsf}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.22\linewidth} L{0.32\linewidth} C{0.14\linewidth} C{0.12\linewidth} L{0.12\linewidth}}
+        \toprule
+        \hcell{Kierownik projektu (PI)} & \hcell{Tytuł projektu i tematyka} & \hcell{Program SNSF} & \hcell{Kwota [CHF]} & \hcell{Okres} \\
+        \midrule
+        Prof. Martin Vechev (SRI Lab) & \textit{Elegant and Efficient Quantum Programming: Compilation, Optimization, Analysis} -- weryfikacja i kompilacja języków kwantowych & SNSF / ERC Transition Consolidator & \textasciitilde{}750\,000 & 2022--2025 \\
+        Prof. Florian Tramèr (SPY Lab) & \textit{Privacy-Preserving Machine Learning and Adversarial Robustness} (grant nr 214838) -- ataki i obrona modeli ML pod kątem prywatności & SNSF Project Funding & \textasciitilde{}600\,000 & 2023--2026 \\
+        Prof. Adrian Perrig (NSG) & \textit{Centre for Cyber Trust -- Next-Generation Secure Internet (SCION)} -- kryptograficzne zabezpieczenie tras BGP i odporny na ataki DRDoS protokół routingu & Werner Siemens Stiftung / SNSF-linked & 9\,830\,000 & 2019--2027 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Charakterystyka zidentyfikowanych projektów i ich podatności wywiadowcze}
+
+\begin{itemize}
+    \item \textbf{Projekt SCION / Centre for Cyber Trust (Prof. Adrian Perrig, NSG -- \code{CAB H 03}):} Flagowy projekt badawczy Wydziału realizowany pod przewodnictwem twórcy architektury SCION (\textit{Scalability, Control, and Isolation On Next-Generation Networks}) -- bezpiecznej alternatywy dla protokołu BGP. Projekt dofinansowany przez Fundację Wernera Siemensa (\textit{Werner Siemens Stiftung}) kwotą **9,83 mln CHF** (2019--2027). Równolegle, katedra Perringa zainicjowana została funduszem celowym od operatora Swisscom w wysokości **10 mln CHF**. Projekt SCION posiada komercyjnego spin-offa w postaci spółki \textit{Anapaya Systems} (2017) oraz jest wdrożony w sieci Szwajcarskiego Banku Narodowego (SNB) i giełdy SIX Group.
+    \item \textbf{Projekt Privacy-Preserving ML (Prof. Florian Tramèr, SPY Lab):} Badania nad atakami \textit{membership inference}, ochroną prywatności modeli dużej skali i adversarialnym uczeniem maszynowym, finansowane grantem SNSF nr \textbf{214838} (2023--2026). Laboratorum SPY Lab prowadzi intensywną współpracę z prof. Thomasem Hofmannem (ML Lab) oraz zewnętrznymi partnerami przemysłowymi z sektora fintech zainteresowanymi prywatnością modeli bankowych.
+    \item \textbf{Projekt Quantum Programming (Prof. Martin Vechev, SRI Lab):} Grant SNSF / przejściowy ERC Consolidator na kwotę \textasciitilde{}750 tys. CHF za weryfikację i kompilację oprogramowania kwantowego. Laboratorum SRI prowadzi równolegle projekt \textit{LatticeFlow AI} (spin-off 2020) zajmujący się certyfikacją modeli uczenia maszynowego, co tworzy organiczne powiązanie między finansowaniem publicznym a komercjalizacją.
+\end{itemize}
+
+\lead{Wnioski dla inżynierii społecznej i Actionable Intelligence}
+
+Wiedza o tematyce i strukturze finansowania grantów stanowi kluczowy zasób dla konstruowania wysoce wiarygodnych scenariuszy pretextingowych w Rozdziale 6:
+
+\begin{enumerate}
+    \item \textbf{Spear-phishing pod pretekstem recenzji grantowej SNSF:} Każdy projekt SNSF podlega obowiązkowemu raportowaniu pośredniemu i końcowemu w portalu \textit{mySNF} (\file{my.snf.ch}). Sfabrykowane powiadomienie o konieczności złożenia sprawozdania z projektu nr 214838 (Tramèr) lub zaproszenie do udziału w panelu ekspertów recenzujących projekt z zakresu kwantowego bezpieczeństwa sieci stanowi doskonały pretext, gdyż obaj profesorowie angażują się w tego rodzaju działalność recenzencką dla SNSF i ERC.
+    \item \textbf{Pretexting oparty na zaufaniu do finansowania SCION i SNB:} Fakt wdrożenia architektury SCION w sieci Szwajcarskiego Banku Narodowego (SNB) i giełdy SIX Group umożliwia konstruowanie przynęty podszywającej się pod koordynatora projektu ze strony SNB z prośbą o udostępnienie specyfikacji kryptograficznej lub protokołu konfiguracyjnego dla nowego węzła routingowego.
+    \item \textbf{Ataki ukierunkowane na platformę mySNF:} Portal \file{my.snf.ch} służy do składania wniosków, raportów i zarządzania płatnościami grantowymi przez kierowników projektów. Phishingowa strona imitująca logowanie do mySNF, rozsyłana do kierowników aktywnych projektów SNSF w D-INFK, może prowadzić do masowej kompromitacji kont badaczy i wyłudzenia danych finansowych projektów.
+\end{enumerate}
 
 \subsection{Zamówienia publiczne IT i dostawcy (simap.ch)}\label{subsec:zamowienia-simap}
 % TO-DO:
