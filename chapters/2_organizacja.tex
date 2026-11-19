@@ -168,7 +168,7 @@ Struktura zespołu ISG oraz katalog świadczonych usług ujawniają kluczowe wek
 
 \section{Otoczenie fizyczne i infrastruktura kampusowa}\label{sec:lokalizacja}
 
-Rozpoznanie otoczenia fizycznego stanowi integralny komponent filaru i metodyki OSINT. W analizie bezpieczeństwa teleinformatycznego warstwa fizyczna definiuje obwód zaufania organizacji, determinując bezpośredni dostęp do okablowania strukturalnego, gniazd sieciowych LAN, stacji roboczych personelu oraz serwerowni. Zgodnie z przyjętymi założeniami pasywnymi, analiza otoczenia fizycznego Wydziału Informatyki ETH Zürich została przeprowadzona wyłącznie w oparciu o publiczne plany kampusowe, oficjalne przewodniki nawigacyjne uczelni, dane przestrzenne OpenStreetMap oraz zdjęcia satelitarne i panoramiczne Google Street View.
+Rozpoznanie otoczenia fizycznego stanowi integralny komponent filaru i metodyki OSINT. W analizie bezpieczeństwa teleinformatycznego warstwa fizyczna definiuje obwód zaufania organizacji, determinując bezpośredni dostęp do okablowania strukturalnego, gniazd sieciowych LAN, stacji roboczych personelu oraz serwerowni. Zgodnie z przyjętymi założeniami pasywnymi, analiza otoczenia fizycznego Wydziału Informatyki ETH Zürich została przeprowadzona wyłącznie w oparciu o publiczne plany kampusowe, oficjalne przewodniki nawigacyjne uczelni oraz zdjęcia satelitarne i panoramiczne Google Street View.
 
 \subsection{Lokalizacja i topologia obiektów wydziału}\label{subsec:budynki}
 
@@ -178,7 +178,7 @@ Wydział Informatyki D-INFK nie stanowi zwartego, odizolowanego miasteczka akade
 
 \lead{Kompleks CAB/CNB jako operacyjne serce wydziału}
 
-Główną siedzibą i centrum operacyjnym D-INFK jest zabytkowy kompleks **CAB** zlokalizowany przy \textit{Universitätstrasse 6, 8092 Zürich}, bezpośrednio połączony przewiązką ze skrzydłem **CNB**. Budynek CAB (wzniesiony pierwotnie jako \textit{Chemisches Laboratorium}) łączy reprezentacyjny charakter z rozbudowaną infrastrukturą techniczną. Analiza planu poziomu E (rys. \ref{fig:cab-floor-plan}), portalu wejściowego (rys. \ref{fig:cab-portal}) oraz wnętrza holu (rys. \ref{fig:cab-hall}) pozwoliła na odtworzenie szczegółowej topologii wewnętrznej:
+Główną siedzibą i centrum operacyjnym D-INFK jest zabytkowy kompleks CAB zlokalizowany przy \textit{Universitätstrasse 6, 8092 Zürich}, bezpośrednio połączony przewiązką ze skrzydłem CNB. Budynek CAB łączy reprezentacyjny charakter z rozbudowaną infrastrukturą techniczną. Analiza planu poziomu E (rys. \ref{fig:cab-floor-plan}), portalu wejściowego (rys. \ref{fig:cab-portal}) oraz wnętrza holu (rys. \ref{fig:cab-hall}) pozwoliła na odtworzenie szczegółowej topologii wewnętrznej:
 \begin{itemize}
     \item \textbf{Kondygnacje podziemne (poziomy C i D):} Mieszczą wydziałową serwerownię centralną zarządzaną przez grupę ISGINF, w tym węzły klastrów HPC, macierze dyskowe oraz główne punkty dystrybucyjne światłowodowego szkieletu sieciowego.
     \item \textbf{Kondygnacja techniczna E (skrzydło ISG):} Jak uwidoczniono na planie \ref{fig:cab-floor-plan}, korytarz centralny mieści zwarty kompleks wsparcia IT: punkt bezpośredniej obsługi Helpdesk (\code{CAB E 41.1}) oraz gabinety administratorów (\code{CAB E 43}--\code{CAB E 48}). Na tym samym poziomie funkcjonują ogólnodostępna kawiarnia \textit{Irrational Coffee}, stowarzyszenie inżynierów \textit{AMIV} oraz kompleks sportowo-rekreacyjny \textit{ASVZ (Come And Be)}.
@@ -272,7 +272,7 @@ Strukturę stref bezpieczeństwa kompleksu CAB oraz mechanizmy autoryzacji zesta
 
 \lead{Architektura i charakterystyka wizualna karty kampusowej (ETH Card)}
 
-Głównym fizycznym poświadczeniem tożsamości oraz instrumentem kontroli dostępu (SKD) w obiektach Politechniki jest elektroniczna karta zbliżeniowa **ETH Card**. Karta pełni wielofunkcyjną rolę: cyfrowego klucza do drzwi (\textit{Access to buildings}), legitymacji bibliotecznej (\textit{ETH Library}), karty usług poligraficznych (\textit{Print Service}) oraz identyfikatora zniżkowego i sportowego (\textit{ASVZ}).
+Głównym fizycznym poświadczeniem tożsamości oraz instrumentem kontroli dostępu (SKD) w obiektach Politechniki jest elektroniczna karta zbliżeniowa ETH Card. Karta pełni wielofunkcyjną rolę: cyfrowego klucza do drzwi, legitymacji bibliotecznej (\textit{ETH Library}), karty usług poligraficznych (\textit{Print Service}) oraz identyfikatora zniżkowego i sportowego (\textit{ASVZ}).
 
 Analiza oficjalnej dokumentacji wizualnej uczelni pozwoliła na precyzyjną dekompozycję układu graficznego oraz elementów zabezpieczających identyfikatora, co przedstawiono na rysunku \ref{fig:eth-card-anatomy}.
 
@@ -281,7 +281,7 @@ Analiza oficjalnej dokumentacji wizualnej uczelni pozwoliła na precyzyjną deko
 Karta ETH charakteryzuje się dwudzielną konstrukcją warstwy wizualnej:
 \begin{itemize}
     \item \textbf{Strefa danych niezmiennych (\textit{Unalterable data}):} Górna część karty z niebiesko-szarym paskiem tła zawiera naniesione fabrycznie logo \textit{ETH Zürich}, fotografię biometryczną posiadacza, nazwisko i imię (\textit{Muster Thomas}) oraz datę urodzenia w formacie \code{DD.MM.YYYY}. Dane te nie ulegają zmianie w toku eksploatacji karty.
-    \item \textbf{Strefa danych modyfikowalnych (\textit{Alterable data}):} Dolna, biała część awersu pokryta jest folią termoczułą wielokrotnego zapisu (\textit{Thermo-ReWrite - TRW}). Nadruk na pasku jest dynamicznie nanoszony i kasowany w dedykowanych terminalach walidacyjnych (\textit{Validation Terminals}) zlokalizowanych na kampusach Zentrum i Hönggerberg. Pole to zawiera:
+    \item \textbf{Strefa danych modyfikowalnych (\textit{Alterable data}):} Dolna, biała część awersu pokryta jest folią termoczułą wielokrotnego zapisu (\textit{Thermo-ReWrite - TRW}). Nadruk na pasku jest dynamicznie nanoszony i kasowany w dedykowanych terminalach walidacyjnych zlokalizowanych na kampusach Zentrum i Hönggerberg. Pole to zawiera:
     \begin{itemize}
         \item Rolę zawodową (\textit{Professional role}): \code{Studies}, \code{Continuing Education}, \code{Guest}, \code{Staff unlimited}, \code{Staff temporary} lub \code{Lecturers}.
         \item Przypisanie organizacyjne (\textit{Organisational responsibility}): np. \code{D-INFK}, \code{D-MAVT} lub skrót programu studiów.
@@ -307,23 +307,23 @@ Zewnętrzny perymetr budynków oraz główne węzły komunikacyjne zabezpieczone
 
 Procedura autoryzacji w podsystemie online realizowana jest według następującego schematu:
 \begin{enumerate}
-    \item Zbliżenie karty ETH Card do czytnika na odległość roboczą rzędu **5--10 cm** (transmisja w standardzie zbliżeniowym LEGIC CTC / 13.56 MHz z szyfrowaniem sprzętowym).
-    \item W przypadku przejść o podwyższonym rygorze bezpieczeństwa lub w godzinach nocnych: wprowadzenie **sześciocyfrowego kodu PIN** na zintegrowanej klawiaturze numerycznej i zatwierdzenie klawiszem \code{E} (\textit{Enter}).
+    \item Zbliżenie karty ETH Card do czytnika na odległość roboczą rzędu 5--10 cm (transmisja w standardzie zbliżeniowym LEGIC CTC / 13.56 MHz z szyfrowaniem sprzętowym).
+    \item W przypadku przejść o podwyższonym rygorze bezpieczeństwa lub w godzinach nocnych: wprowadzenie sześciocyfrowego kodu PIN na zintegrowanej klawiaturze numerycznej i zatwierdzenie klawiszem \code{E} (\textit{Enter}).
 \end{enumerate}
 
 Procedury zarządzania tożsamością ujawniają istotną cechę architektoniczną: kod PIN do karty jest w pełni konfigurowalny przez użytkownika za pośrednictwem dedykowanej aplikacji webowej \file{mycontact.ethz.ch}. Co kluczowe, zmiana lub zresetowanie zapomnianego kodu PIN w portalu nie wymaga znajomości dotychczasowego kodu, lecz opiera się wyłącznie na uwierzytelnieniu w uczelnianym systemie tożsamości cyfrowej \code{nethz}. Wnioskowanie o rozszerzenie fizycznych uprawnień budynkowych odbywa się drogą elektroniczną w portalu \file{immobilien-services.ethz.ch} (\textit{Meldeportal}), gdzie zgłoszenie jest zatwierdzane przez wydziałowego pełnomocnika ds. kluczy (\textit{Schlüsseldelegierter}) i aktywowane przez centralną jednostkę ISC (\textit{Info- und Service-Center}).
 
 \lead{Podsystem Offline i technologia CardLink (Data-on-Card)}
 
-W celu eliminacji kosztów prowadzenia okablowania strukturalnego do setek gabinetów profesorskich i laboratoriów w zabytkowych wnętrzach CAB, ETH wdrożyło zaawansowany podsystem komponentów autonomicznych **CardLink** w środowisku \textit{dormakaba-exos}.
+W celu eliminacji kosztów prowadzenia okablowania strukturalnego do setek gabinetów profesorskich i laboratoriów w zabytkowych wnętrzach CAB, ETH wdrożyło zaawansowany podsystem komponentów autonomicznych CardLink w środowisku \textit{dormakaba-exos}.
 
 \Figure[0.45]{cardlink_door_fitting.png}{Autonomiczne okucie drzwiowe CardLink (Kaba c-lever) z wbudowanym czytnikiem RFID niewymagające połączenia z siecią}{fig:cardlink-fitting}
 
 Konstrukcja i zasada działania technologii CardLink opiera się na paradygmacie \textit{Data-on-Card}:
 \begin{itemize}
-    \item \textbf{Komponenty drzwiowe offline:} Drzwi wewnętrzne wyposażone są w bateryjne okucia elektroniczne (\textit{Kaba c-lever}, rys. \ref{fig:cardlink-fitting}) lub cyfrowe wkładki bębenkowe. Urządzenia te **nie posiadają żadnego fizycznego ani radiowego połączenia z siecią komputerową ETH**.
-    \item \textbf{Przenoszenie uprawnień przez kartę:} Karta ETH Card pełni rolę fizycznego nośnika uprawnień. Uprawnienia przyznane w portalu Meldeportal są zapisywane bezpośrednio w chronionej pamięci chipa karty podczas jej zbliżenia do specjalnego terminala aktualizacyjnego (**Update-Terminal**).
-    \item \textbf{Rygor 30-dniowego okna ważności (\textit{Updatefrist: 30 Tage}):} Z przyczyn bezpieczeństwa uprawnienia dostępowe zapisane na chipie karty dla komponentów offline posiadają sztywny limit czasowy wynoszący **30 dni**. Po upływie tego okresu okucie drzwiowe odrzuca kartę (sygnalizacja czerwonym podświetleniem LED i serią impulsów dźwiękowych). Użytkownik ma obowiązek regularnego odnawiania ważności uprawnień w terminalu Update-Terminal.
+    \item \textbf{Komponenty drzwiowe offline:} Drzwi wewnętrzne wyposażone są w bateryjne okucia elektroniczne (\textit{Kaba c-lever}, rys. \ref{fig:cardlink-fitting}) lub cyfrowe wkładki bębenkowe. Urządzenia te nie posiadają żadnego fizycznego ani radiowego połączenia z siecią komputerową ETH.
+    \item \textbf{Przenoszenie uprawnień przez kartę:} Karta ETH Card pełni rolę fizycznego nośnika uprawnień. Uprawnienia przyznane w portalu Meldeportal są zapisywane bezpośrednio w chronionej pamięci chipa karty podczas jej zbliżenia do specjalnego terminala aktualizacyjnego (Update-Terminal).
+    \item \textbf{Rygor 30-dniowego okna ważności (\textit{Updatefrist: 30 Tage}):} Z przyczyn bezpieczeństwa uprawnienia dostępowe zapisane na chipie karty dla komponentów offline posiadają sztywny limit czasowy wynoszący 30 dni. Po upływie tego okresu okucie drzwiowe odrzuca kartę (sygnalizacja czerwonym podświetleniem LED i serią impulsów dźwiękowych). Użytkownik ma obowiązek regularnego odnawiania ważności uprawnień w terminalu Update-Terminal.
 \end{itemize}
 
 Należy podkreślić fundamentalne rozróżnienie dwóch typów urządzeń terminalowych funkcjonujących na uczelni:
@@ -332,7 +332,7 @@ Należy podkreślić fundamentalne rozróżnienie dwóch typów urządzeń termi
     \item \textbf{Update-Terminal (Terminal aktualizacyjny CardLink):} Naścienny czytnik RFID wyposażony w wyświetlacz LCD oraz pole zbliżeniowe (oznaczone białym prostokątem), służący do kryptograficznego zapisu uprawnień do stref offline w pamięci chipa karty (komunikat \textit{„Update erfolgreich”}).
 \end{itemize}
 
-Rozmieszczenie terminali aktualizacyjnych (\textit{Update-Terminals}) oraz sieciowych punktów dostępowych na obszarze kampusu centralnego przedstawiono na oficjalnej mapie dostępowej (rys. \ref{fig:campus-access-map}). Analiza planu potwierdza obecność dedykowanego terminala Update-Terminal bezpośrednio w budynku **CAB**, co zapewnia ciągłość odnawiania uprawnień dla pracowników D-INFK.
+Rozmieszczenie terminali aktualizacyjnych (\textit{Update-Terminals}) oraz sieciowych punktów dostępowych na obszarze kampusu centralnego przedstawiono na oficjalnej mapie dostępowej (rys. \ref{fig:campus-access-map}). Analiza planu potwierdza obecność dedykowanego terminala Update-Terminal bezpośrednio w budynku CAB, co zapewnia ciągłość odnawiania uprawnień dla pracowników D-INFK.
 
 \Figure[0.85]{campus_electronic_access_map.jpg}{Rozmieszczenie sieciowych punktów dostępu oraz terminali aktualizacyjnych Update-Terminal (oznaczonych symbolem T) na kampusie ETH Zentrum}{fig:campus-access-map}
 
@@ -341,7 +341,7 @@ Rozmieszczenie terminali aktualizacyjnych (\textit{Update-Terminals}) oraz sieci
 Syntetyczna korelacja zebranej dokumentacji technicznej CardLink, fotografii identyfikatorów oraz mapy infrastruktury ujawnia krytyczne podatności proceduralne i architektoniczne:
 
 \begin{enumerate}
-    \item \textbf{30-dniowe okno podatności po unieważnieniu karty (\textit{CardLink Revocation Delay}):} Zgodnie z oficjalną instrukcją techniczną ETH (\textit{User Guide for CardLink}): \textit{„W przypadku zagubienia lub kradzieży karty (...) uprawnienia dostępowe dla komponentów CardLink/Offline pozostają aktywne do momentu upłynięcia 30-dniowego okresu ważności lub do czasu aktualizacji karty w terminalu”}. Ponieważ autonomiczne okucia drzwiowe w budynku CAB nie posiadają łączności z siecią, centralna blokada skradzionej karty w systemie exos **nie propaguje się natychmiastowo do drzwi gabinetów i laboratoriów**. Napastnik, który wszedł w posiadanie karty pracownika naukowego, dysponuje oknem czasowym (do 30 dni) na fizyczne otwarcie zabezpieczonych pomieszczeń offline, nawet jeśli prawowity właściciel zgłosił już utratę dokumentu w biurze obsługi.
+    \item \textbf{30-dniowe okno podatności po unieważnieniu karty (\textit{CardLink Revocation Delay}):} Zgodnie z oficjalną instrukcją techniczną ETH (\textit{User Guide for CardLink}): \textit{„W przypadku zagubienia lub kradzieży karty (...) uprawnienia dostępowe dla komponentów CardLink/Offline pozostają aktywne do momentu upłynięcia 30-dniowego okresu ważności lub do czasu aktualizacji karty w terminalu”}. Ponieważ autonomiczne okucia drzwiowe w budynku CAB nie posiadają łączności z siecią, centralna blokada skradzionej karty w systemie exos nie propaguje się natychmiastowo do drzwi gabinetów i laboratoriów. Napastnik, który wszedł w posiadanie karty pracownika naukowego, dysponuje oknem czasowym (do 30 dni) na fizyczne otwarcie zabezpieczonych pomieszczeń offline, nawet jeśli prawowity właściciel zgłosił już utratę dokumentu w biurze obsługi.
     \item \textbf{Wektor przejęcia fizycznego dostępu poprzez kompromitację tożsamości nethz:} Powiązanie procedury nadawania PIN-u z portalem \file{mycontact.ethz.ch} bez wymogu znajomości starego kodu PIN stanowi poważną lukę krzyżową (pivot logiczno-fizyczny). Atakujący, który pozyska poświadczenia domenowe \code{nethz} pracownika w wyniku kampanii spear-phishingowej, może zalogować się do portalu, zmienić kod PIN do drzwi na własny, a następnie posłużyć się fizycznie skradzioną lub znalezioną kartą na perymetrze nocnym CAB, obchodząc barierę dwuskładnikowego uwierzytelnienia (karta + PIN).
     \item \textbf{Fabrykacja fizyczna identyfikatora gościa (\textit{Guest Badge Forgery}):} Zebrana dokumentacja fotograficzna (rys. \ref{fig:eth-card-variants}) ujawnia dokładny układ graficzny karty gościa akademickiego (\textit{Guest}). Karta ta cechuje się literą \textbf{G}, prefiksem numeru \code{G99999} oraz oznaczeniem wydziału (\code{D-INFK}). W ciągu dnia portierzy oraz pracownicy naukowi weryfikują obecność identyfikatora wyłącznie powierzchownie wzrokiem. Wykonanie wysokiej jakości atrapy identyfikatora gościa z przypisaniem do D-INFK zapewnia perfekcyjny kamuflaż podczas poruszania się po korytarzach CAB i STF pod pretekstem udziału w seminariach ZISC.
     \item \textbf{Pozyskanie numeru dostępowego metodą Shoulder Surfingu:} Jawne nadrukowanie sześciocyfrowego numeru ewidencyjnego (\textit{identity card number}) na rewersie karty stanowi lukę proceduralną. W kawiarni \textit{Irrational Coffee} (poziom E CAB) lub stołówce pracownicy często odkładają karty na stoły rewersem do góry. Sfotografowanie rewersu karty pozwala napastnikowi na kontakt telefoniczny z Helpdeskiem ISG (\code{CAB E 41.1}) lub ochroną: podszywając się pod pracownika i podając poprawny numer identyfikacyjny z rewersu, atakujący może zgłosić problem techniczny i wyłudzić doraźne zdalne otwarcie drzwi.
@@ -350,10 +350,72 @@ Syntetyczna korelacja zebranej dokumentacji technicznej CardLink, fotografii ide
 
 \section{Analiza finansowo-gospodarcza i przetargowa}\label{sec:finanse-gospodarka}
 
+Zdolność operacyjna, potencjał technologiczny oraz odporność organizacyjna instytucji akademickiej są bezpośrednio uwarunkowane jej stabilnością finansową oraz strukturą strumieni kapitałowych. W ramach wywiadu gospodarczego OSINT przeprowadzono dekompozycję budżetu Politechniki Federalnej w Zurychu (ETH Zürich) oraz mechanizmów alokacji zasobów w Wydziale Informatyki (D-INFK). Eksploracja oficjalnego sprawozdania finansowego uczelni sporządzonego zgodnie z międzynarodowymi standardami rachunkowości sektora publicznego (\textit{Jahresrechnung / Financial Report in accordance with IPSAS}) \cite{eth_financial_report_2024}, rejestrów dotacji federalnych oraz dokumentacji systemów planowania zasobów (ERP) pozwoliła na zidentyfikowanie krytycznych wektorów ryzyka związanych z obiegiem środków i rozliczeniami projektowymi.
+
 \subsection{Budżet operacyjny i struktura finansowania}\label{subsec:budzet-sprawozdania}
-% TO-DO:
-% 1. Zwięźle podsumować budżet ETH (>1.8 mld CHF) i mechanizm alokacji federalnej dla D-INFK.
-% 2. Wskazać podział na środki podstawowe, granty zewnętrzne i kontrakty przemysłowe.
+
+Politechnika Federalna w Zurychu jako autonomiczna federalna instytucja prawa publicznego (\textit{öffentlich-rechtliche Anstalt des Bundes}) dysponuje jednym z największych budżetów operacyjnych wśród europejskich uczelni technicznych. Zgodnie ze skonsolidowanym sprawozdaniem finansowym za 2024 rok, łączne przychody operacyjne uczelni (\textit{Gesamteinnahmen}) przekroczyły historyczny próg **2 miliardów franków szwajcarskich**, osiągając wartość **2\,051 mln CHF**.
+
+Struktura przychodowa Politechniki opiera się na dwóch fundamentalnych filarach, których szczegółową dekompozycję przedstawiono na oficjalnym diagramie finansowym uczelni (rys. \ref{fig:eth-revenue-composition}).
+
+\Figure[0.90]{eth_revenue_composition_2024.jpg}{Skonsolidowana struktura przychodów ETH Zürich (2\,051 mln CHF) w podziale na wkład federalny oraz źródła zewnętrzne wg standardu IPSAS}{fig:eth-revenue-composition}
+
+\lead{Mechanizm dualizmu finansowania: Globalbudget vs. Drittmittel}
+
+Analiza bilansu ujawnia wyraźny podział na finansowanie statutowe oraz fundusze konkurencyjne:
+\begin{itemize}
+    \item \textbf{Wkład podstawowy Konfederacji (\textit{Federal financial contribution / Globalbudget}):} Wynosi **1\,385 mln CHF** i stanowi trzon budżetu (**67,5\% łącznych przychodów**). Środki te są przekazywane corocznie przez Radę ETH (\textit{ETH-Rat}) z budżetu federalnego Konfederacji Szwajcarskiej w ramach kredytów operacyjnych (\textit{Aufwandkredit}) oraz inwestycyjnych (\textit{Investitionskredit}).
+    \item \textbf{Finansowanie ze źródeł trzecich (\textit{Third-party funding / Drittmittel}):} Osiąga łączną wartość **666 mln CHF** (**32,5\% przychodów** uczelni, uwzględniając nadwyżkę podmiotów powiązanych). Kwota ta stanowi sumę czterech kluczowych strumieni kapitałowych:
+    \begin{itemize}
+        \item \textbf{Wkłady na projekty badawcze (\textit{Research contributions} -- 406 mln CHF):} Najważniejszy komponent zewnętrzny, obejmujący:
+        \begin{itemize}
+            \item \textit{Krajowe wkłady badawcze (225 mln CHF):} finanse ze Szwajcarskiej Narodowej Fundacji Nauki (\textit{SNSF}) oraz agencji innowacji \textit{Innosuisse}.
+            \item \textit{Europejskie programy ramowe (64 mln CHF):} m.in. prestiżowe granty \textit{Horizon Europe} oraz ERC.
+            \item \textit{Badania ukierunkowane przemysłowo (67 mln CHF):} bezpośrednie kontrakty R\&D z korporacjami (w tym partnerstwa technologiczne ZISC, banki ZKB, Swissquote, Google, Disney).
+            \item \textit{Inne badania projektowe (49 mln CHF):} wyspecjalizowane subwencje celowe.
+        \end{itemize}
+        \item \textbf{Przychody wygenerowane własną działalnością (\textit{Self-generated revenue} -- 115 mln CHF):} w tym czesne studenckie (\textit{Tuition fees} -- 44 mln CHF, stanowiące zaledwie 2,1\% budżetu uczelni), wynik z operacji finansowych (27 mln CHF) oraz pozostałe przychody operacyjne (44 mln CHF).
+        \item \textbf{Donacje, darowizny i zapisy celowe (\textit{Donations and bequests} -- 105 mln CHF):} pozyskiwane głównie przez powołaną w 2003 roku dedykowaną fundację uniwersytecką \textit{ETH Zurich Foundation}.
+        \item \textbf{Udział w wynikach podmiotów stowarzyszonych (40 mln CHF):} przychody kapitałowe z podmiotów powiązanych i komercjalizacji.
+    \end{itemize}
+\end{itemize}
+
+\lead{Presja makroekonomiczna, erozja rezerw i deficyt wolnych przepływów pieniężnych}
+
+Szczegółowa lektura sprawozdania zarządu odsłania bezprecedensowe zjawisko erozji rezerw finansowych uczelni, co zilustrowano na rysunku \ref{fig:eth-cash-flow}.
+
+\Figure[0.85]{eth_free_cash_flow.png}{Dynamika ujemnego wolnego przepływu pieniężnego (\textit{Free Cash Flow}) ETH Zürich w latach 2020--2025 w mln CHF}{fig:eth-cash-flow}
+
+Oficjalny raport finansowy uczelni bezpośrednio wskazuje na narastające ryzyka płynnościowe:
+\begin{itemize}
+    \item \textbf{Załamanie poziomu rezerw płynnych:} Rezerwy finansowe ETH Zürich uległy drastycznemu uszczupleniu o **55\% w stosunku do poziomu z 2019 roku**. Uczelnia posiada obecnie zaledwie **110 mln CHF rezerw wolnych** (\textit{reserves without dedication}), które mogą zostać użyte na pokrycie nieprzewidzianych wydatków, co stanowi mniej niż 10\% sumy aktywów.
+    \item \textbf{Zobowiązania wewnętrzne i płynność:} Rezerwy z wewnętrzną dedykacją celową (203 mln CHF) odzwierciedlają twarde zobowiązania kontraktowe i gwarantowany odpływ gotówki. Aktualna płynność pokrywa jedynie 83\% tych rezerw, nie uwzględniając przyszłych zobowiązań emerytalnych w funduszu \textit{PUBLICA}.
+    \item \textbf{Przewlekły ujemny wolny przepływ gotówki (\textit{Negative Free Cash Flow}):} Jak wynika z rysunku \ref{fig:eth-cash-flow}, uczelnia notuje deficyt gotówkowy nieprzerwanie od 2020 roku (-91 mln w 2021 r., -39 mln w 2023 r., -27 mln w 2024 r. oraz prognozowane -70 mln CHF w 2025 r.).
+    \item \textbf{Zapowiedziane cięcia federalne:} W obliczu planowanych przez rząd federalny redukcji finansowania podstawowego od 2025 roku, Politechnika zmuszona jest do agresywnego poszukiwania prywatnych donacji (\textit{ETH Zurich Foundation}) oraz priorytetyzacji i cięcia kosztów wewnątrz wydziałów.
+\end{itemize}
+
+\lead{Decentralizacja alokacji w D-INFK i system finansowy ETHIS}
+
+Wydział Informatyki (D-INFK) należy do najbardziej kapitałochłonnych jednostek uczelni. Wynika to z konieczności utrzymywania kosztownej infrastruktury serwerowej HPC (serwerownie w podziemiach CAB, farmy GPU dla Instytutów Uczenia Maszynowego i Systemów Komputerowych) oraz agresywnego konkurowania o kadrę naukową.
+
+Zarządzanie operacyjne finansami wydziału spoczywa w rękach Dyrektor Zarządzającej (\textit{Managing Director}) D-INFK -- Barbary Pf{\"a}ndner (\code{dept-admin@inf.ethz.ch}), która koordynuje budżet, przestrzeń lokalową oraz etaty profesorskie. 
+
+Na poziomie operacyjnym zarządzanie strumieniami finansowymi odbywa się za pośrednictwem zintegrowanego portalu ERP **ETHIS** (\textit{ETH Information and Support System} -- \file{ethis.ethz.ch}), bazującego na rozwiązaniu SAP:
+\begin{itemize}
+    \item \textbf{Autonomia centrów kosztowych (\textit{Kostenstellen}):} Każdy z profesorów D-INFK zarządza własnym centrum kosztowym powiązanym z indywidualnymi subkontami projektowymi (\textit{Projektabrechnungen}) dla grantów SNSF czy zleceń komercyjnych.
+    \item \textbf{Autoryzacja zakupów IT:} Za pośrednictwem ETHIS profesorowie oraz sekretariaty zatwierdzają zamówienia sprzętowe (\textit{Hardware Orders}) realizowane przez sekcję zakupową ISGINF (pokój \code{CAB E 48}, rola \anon{Purchase_TS}).
+\end{itemize}
+
+\lead{Wnioski dla inżynierii społecznej i modelowania wektorów ataków (Actionable Intelligence)}
+
+Korelacja danych makroekonomicznych, kryzysu płynnościowego oraz procedur obiegu dokumentów dostarcza wysoce skutecznych wektorów ataku socjotechnicznego:
+
+\begin{enumerate}
+    \item \textbf{Pretexting oparty na prywatnych donacjach i grantach (\textit{Donation / Endowment Lure}):} W warunkach 55-procentowego spadku rezerw i cięć w budżecie federalnym, presja na pozyskiwanie środków od prywatnych darczyńców i fundacji (\textit{ETH Zurich Foundation}, generującej aż 105 mln CHF rocznie) jest bezprecedensowa. Sfabrykowana oferta nawiązania współpracy, ufundowania stypendium lub przekazania wielomilionowej darowizny celowej na badania nad sztuczną inteligencją lub cyberbezpieczeństwem (np. rzekomo od szwajcarskiej fundacji rodzinnej lub funduszu powierniczego z Liechtensteinu) stanowi doskonałą przynętę. Dziekanat oraz profesorowie D-INFK bez wahania podejmą korespondencję i otworzą załączone konspekty programowe lub formularze intencyjne zawierające złośliwy kod.
+    \item \textbf{Pretexting cięć budżetowych i audytu kosztów (\textit{Austerity Audit Scam}):} Wobec chronicznego deficytu wolnych przepływów pieniężnych (-70 mln CHF w 2025 r.) i wymuszonej redukcji usług, personel naukowy jest wyczulony na komunikaty o zamrożeniu funduszy. Kampania spear-phishingowa podszywająca się pod Dział Finansów ETH (\textit{Abteilung Finanzen}) lub Szwajcarską Federalną Kontrolę Finansów (\textit{EFK}) z żądaniem pilnego uzasadnienia kosztów projektu pod rygorem zablokowania centrum kosztowego (\textit{Kostenstelle}) w systemie ETHIS wywoła pośpiech i bezkrytyczne wprowadzenie poświadczeń domenowych \code{nethz}.
+    \item \textbf{Infiltracja procedur grantowych SNSF (225 mln CHF skali rocznej):} Wolumen 225 mln CHF w krajowych grantach badawczych oznacza, że niemal każda katedra w CAB prowadzi jednocześnie kilka projektów finansowanych przez SNSF. Fałszywe powiadomienie o konieczności akceptacji raportu okresowego w portalu ETHIS idealnie wpisuje się w rutynowe obowiązki kierowników grup badawczych.
+    \item \textbf{Oszustwo na fakturę w łańcuchu dostaw IT (\textit{Invoice Fraud / BEC}):} Zidentyfikowanie roli \anon{Purchase_TS} w pokoju \code{CAB E 48} koordynującej zakupy sprzętu umożliwia atak podszywający się pod stałego dostawcę serwerów HPC lub licencji (np. Dell, HPE, Switch) z prośbą o realizację płatności na zaktualizowany rachunek bankowy.
+\end{enumerate}
 
 \subsection{Granty badawcze i finansowanie zewnętrzne (SNSF)}\label{subsec:granty-badawcze}
 % TO-DO:
