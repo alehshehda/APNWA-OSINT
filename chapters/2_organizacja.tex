@@ -20,7 +20,7 @@ W strukturze akademickiej i administracyjnej Politechniki Federalnej w Zurychu W
     \item \textbf{Komitet Wydziałowy (\textit{Departementsausschuss - DA}):} Węższy komitet doradczo-wykonawczy, koordynujący realizację uchwał DK oraz opiniujący kluczowe decyzje finansowo-lokalowe przed ich wdrożeniem.
 \end{itemize}
 
-W ramach pasywnego rekonesansu OSINT przeprowadzono ekstrakcję danych ze struktury oficjalnego portalu wydziału (\file{inf.ethz.ch}), co pozwoliło na precyzyjną identyfikację imiennego składu Rady Wydziału (DL), zaprezentowanego na rysunku \ref{fig:dinfk-board} oraz w tabeli \ref{tab:wladze-dinfk}.
+W ramach pasywnego rekonesansu OSINT przeprowadzono ekstrakcję danych ze struktury oficjalnego portalu wydziału (\code{inf.ethz.ch}), co pozwoliło na precyzyjną identyfikację imiennego składu Rady Wydziału (DL), zaprezentowanego na rysunku \ref{fig:dinfk-board} oraz w tabeli \ref{tab:wladze-dinfk}.
 
 \Figure[0.65]{dinfk_board.jpg}{Skład zarządu wydziału D-INFK (\textit{Departementsleitung}) opublikowany na oficjalnym portalu uczelni}{fig:dinfk-board}
 
@@ -102,7 +102,7 @@ Powiązanie nazwisk kierowników instytutów z konkretnymi domenami badawczymi u
 
 Podczas gdy centralne usługi teleinformatyczne Politechniki są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia – \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
 
-Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \file{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}.
+Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \code{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}.
 
 \begin{table}[H]
     \centering
@@ -212,7 +212,7 @@ Poza kompleksem CAB/CNB wydział wykorzystuje obiekty pomocnicze i zewnętrzne c
         \midrule
         \textbf{CAB} & Universitätstr. 6 & Siedziba D-INFK, Dziekanat, ISG (E 41.1--48), serwerownie HPC, InfSec (Paterson, Perrig, Shinde, Tramèr), ML (Hofmann, Schölkopf, Rätsch), IPLS (Vechev, Müller), TCS (Hofheinz), kantyna SV. & Krytyczna \\
         \textbf{CNB} & Universitätstr. 6 & Skrzydło przyległe do CAB, łącznik wewnętrzny. Rampa rozładunkowa, Media Technology Center (MTC), Game Technology Center (GTC). & Wysoka \\
-        \textbf{STD} & Stampfenbachstr. 48 & Budynek komercyjny (\textit{Geschäftshaus}). Instytut IIIS (Prof. Christian Holz) oraz komercyjna pracownia **Disney Research|Studios**. & Średnia \\
+        \textbf{STD} & Stampfenbachstr. 48 & Budynek komercyjny (\textit{Geschäftshaus}). Instytut IIIS (Prof. Christian Holz) oraz komercyjna pracownia \textbf{Disney Research\textbar{}Studios}. & Średnia \\
         \textbf{STF} & Stampfenbachstr. 114 & Instytut Computing Platforms / Systems Group (Prof. Alonso, Chronis, Friedman, Klimovic, Roscoe, Venkataraman), Visual Computing (Prof. El-Assady), agencja kantonalna Hochbauamt. & Wysoka \\
         \textbf{CHN} & Universitätstr. 16 & Budynek nauk o środowisku naprzeciwko CAB; aule i sale ćwiczeniowe. & Średnia \\
         \textbf{WWA} & Wasserwerkstr. 10/12 & Pracownie techniczno-inżynieryjne. & Niska \\
@@ -224,7 +224,7 @@ Poza kompleksem CAB/CNB wydział wykorzystuje obiekty pomocnicze i zewnętrzne c
 
 \Figure[0.75]{cnb_delivery_entrance.jpg}{Strefa dostawcza i rampa rozładunkowa budynku CNB (brama towarowa z symbolem transportowym, zjazd do garażu oraz wejście personelu)}{fig:cnb-delivery}
 
-\Figure[0.75]{std_building_entrance.jpg}{Wejście do budynku komercyjnego STD (Stampfenbachstrasse 48) mieszczącego m.in. Disney Research|Studios}{fig:std-entrance}
+\Figure[0.75]{std_building_entrance.jpg}{Wejście do budynku komercyjnego STD (Stampfenbachstrasse 48) mieszczącego m.in. Disney Research\textbar{}Studios}{fig:std-entrance}
 
 \Figure[0.75]{stf_building_entrance.jpg}{Fasada budynku STF (Stampfenbachstrasse 114) z widocznym oznakowaniem ETH Zürich oraz Hochbauamt Kanton Zürich}{fig:stf-entrance}
 
@@ -297,7 +297,7 @@ Karta ETH charakteryzuje się dwudzielną konstrukcją warstwy wizualnej:
 
 \lead{System kontroli dostępu dormakaba-exos i dualizm architektoniczny}
 
-Infrastruktura kontroli dostępu Politechniki Federalnej w Zurychu opiera się na zintegrowanym systemie zarządzania bezpieczeństwem **dormakaba exos 9300** (\textit{Schliessmanagement ETH}). Analiza dokumentacji technicznej ujawnia istnienie dwóch równoległych podsystemów wykonawczych: komponentów sieciowych (\textit{Online}) oraz autonomicznych modułów mechatronicznych (\textit{Offline / CardLink}).
+Infrastruktura kontroli dostępu Politechniki Federalnej w Zurychu opiera się na zintegrowanym systemie zarządzania bezpieczeństwem \textbf{dormakaba exos 9300} (\textit{Schliessmanagement ETH}). Analiza dokumentacji technicznej ujawnia istnienie dwóch równoległych podsystemów wykonawczych: komponentów sieciowych (\textit{Online}) oraz autonomicznych modułów mechatronicznych (\textit{Offline / CardLink}).
 
 \lead{Podsystem Online: czytniki ścienne i autoryzacja kodem PIN}
 
@@ -311,7 +311,7 @@ Procedura autoryzacji w podsystemie online realizowana jest według następując
     \item W przypadku przejść o podwyższonym rygorze bezpieczeństwa lub w godzinach nocnych: wprowadzenie sześciocyfrowego kodu PIN na zintegrowanej klawiaturze numerycznej i zatwierdzenie klawiszem \code{E} (\textit{Enter}).
 \end{enumerate}
 
-Procedury zarządzania tożsamością ujawniają istotną cechę architektoniczną: kod PIN do karty jest w pełni konfigurowalny przez użytkownika za pośrednictwem dedykowanej aplikacji webowej \file{mycontact.ethz.ch}. Co kluczowe, zmiana lub zresetowanie zapomnianego kodu PIN w portalu nie wymaga znajomości dotychczasowego kodu, lecz opiera się wyłącznie na uwierzytelnieniu w uczelnianym systemie tożsamości cyfrowej \code{nethz}. Wnioskowanie o rozszerzenie fizycznych uprawnień budynkowych odbywa się drogą elektroniczną w portalu \file{immobilien-services.ethz.ch} (\textit{Meldeportal}), gdzie zgłoszenie jest zatwierdzane przez wydziałowego pełnomocnika ds. kluczy (\textit{Schlüsseldelegierter}) i aktywowane przez centralną jednostkę ISC (\textit{Info- und Service-Center}).
+Procedury zarządzania tożsamością ujawniają istotną cechę architektoniczną: kod PIN do karty jest w pełni konfigurowalny przez użytkownika za pośrednictwem dedykowanej aplikacji webowej \code{mycontact.ethz.ch}. Co kluczowe, zmiana lub zresetowanie zapomnianego kodu PIN w portalu nie wymaga znajomości dotychczasowego kodu, lecz opiera się wyłącznie na uwierzytelnieniu w uczelnianym systemie tożsamości cyfrowej \code{nethz}. Wnioskowanie o rozszerzenie fizycznych uprawnień budynkowych odbywa się drogą elektroniczną w portalu \code{immobilien-services.ethz.ch} (\textit{Meldeportal}), gdzie zgłoszenie jest zatwierdzane przez wydziałowego pełnomocnika ds. kluczy (\textit{Schlüsseldelegierter}) i aktywowane przez centralną jednostkę ISC (\textit{Info- und Service-Center}).
 
 \lead{Podsystem Offline i technologia CardLink (Data-on-Card)}
 
@@ -342,7 +342,7 @@ Syntetyczna korelacja zebranej dokumentacji technicznej CardLink, fotografii ide
 
 \begin{enumerate}
     \item \textbf{30-dniowe okno podatności po unieważnieniu karty (\textit{CardLink Revocation Delay}):} Zgodnie z oficjalną instrukcją techniczną ETH (\textit{User Guide for CardLink}): \textit{„W przypadku zagubienia lub kradzieży karty (...) uprawnienia dostępowe dla komponentów CardLink/Offline pozostają aktywne do momentu upłynięcia 30-dniowego okresu ważności lub do czasu aktualizacji karty w terminalu”}. Ponieważ autonomiczne okucia drzwiowe w budynku CAB nie posiadają łączności z siecią, centralna blokada skradzionej karty w systemie exos nie propaguje się natychmiastowo do drzwi gabinetów i laboratoriów. Napastnik, który wszedł w posiadanie karty pracownika naukowego, dysponuje oknem czasowym (do 30 dni) na fizyczne otwarcie zabezpieczonych pomieszczeń offline, nawet jeśli prawowity właściciel zgłosił już utratę dokumentu w biurze obsługi.
-    \item \textbf{Wektor przejęcia fizycznego dostępu poprzez kompromitację tożsamości nethz:} Powiązanie procedury nadawania PIN-u z portalem \file{mycontact.ethz.ch} bez wymogu znajomości starego kodu PIN stanowi poważną lukę krzyżową (pivot logiczno-fizyczny). Atakujący, który pozyska poświadczenia domenowe \code{nethz} pracownika w wyniku kampanii spear-phishingowej, może zalogować się do portalu, zmienić kod PIN do drzwi na własny, a następnie posłużyć się fizycznie skradzioną lub znalezioną kartą na perymetrze nocnym CAB, obchodząc barierę dwuskładnikowego uwierzytelnienia (karta + PIN).
+    \item \textbf{Wektor przejęcia fizycznego dostępu poprzez kompromitację tożsamości nethz:} Powiązanie procedury nadawania PIN-u z portalem \code{mycontact.ethz.ch} bez wymogu znajomości starego kodu PIN stanowi poważną lukę krzyżową (pivot logiczno-fizyczny). Atakujący, który pozyska poświadczenia domenowe \code{nethz} pracownika w wyniku kampanii spear-phishingowej, może zalogować się do portalu, zmienić kod PIN do drzwi na własny, a następnie posłużyć się fizycznie skradzioną lub znalezioną kartą na perymetrze nocnym CAB, obchodząc barierę dwuskładnikowego uwierzytelnienia (karta + PIN).
     \item \textbf{Fabrykacja fizyczna identyfikatora gościa (\textit{Guest Badge Forgery}):} Zebrana dokumentacja fotograficzna (rys. \ref{fig:eth-card-variants}) ujawnia dokładny układ graficzny karty gościa akademickiego (\textit{Guest}). Karta ta cechuje się literą \textbf{G}, prefiksem numeru \code{G99999} oraz oznaczeniem wydziału (\code{D-INFK}). W ciągu dnia portierzy oraz pracownicy naukowi weryfikują obecność identyfikatora wyłącznie powierzchownie wzrokiem. Wykonanie wysokiej jakości atrapy identyfikatora gościa z przypisaniem do D-INFK zapewnia perfekcyjny kamuflaż podczas poruszania się po korytarzach CAB i STF pod pretekstem udziału w seminariach ZISC.
     \item \textbf{Pozyskanie numeru dostępowego metodą Shoulder Surfingu:} Jawne nadrukowanie sześciocyfrowego numeru ewidencyjnego (\textit{identity card number}) na rewersie karty stanowi lukę proceduralną. W kawiarni \textit{Irrational Coffee} (poziom E CAB) lub stołówce pracownicy często odkładają karty na stoły rewersem do góry. Sfotografowanie rewersu karty pozwala napastnikowi na kontakt telefoniczny z Helpdeskiem ISG (\code{CAB E 41.1}) lub ochroną: podszywając się pod pracownika i podając poprawny numer identyfikacyjny z rewersu, atakujący może zgłosić problem techniczny i wyłudzić doraźne zdalne otwarcie drzwi.
     \item \textbf{Wektor tailgatingu przy rampie towarowej CNB:} Zdjęcie strefy towarowej CNB (rys. \ref{fig:cnb-delivery}) potwierdza obecność wydzielonego miejsca dla palących tuż obok wejścia personelu i zjazdu do rampy podziemnej. W kulturze akademickiej powszechny jest nawyk przytrzymywania drzwi osobom wchodzącym z tyłu. Napastnik w stroju kuriera lub studenta może z łatwością wejść za pracownikiem powracającym z przerwy (\textit{piggybacking}), całkowicie omijając czytniki Kaba i procedurę autoryzacji CardLink.
@@ -400,7 +400,7 @@ Wydział Informatyki (D-INFK) należy do najbardziej kapitałochłonnych jednost
 
 Zarządzanie operacyjne finansami wydziału spoczywa w rękach Dyrektor Zarządzającej D-INFK -- Barbary Pf{\"a}ndner (\code{dept-admin@inf.ethz.ch}), która koordynuje budżet, przestrzeń lokalową oraz etaty profesorskie. 
 
-Na poziomie operacyjnym zarządzanie strumieniami finansowymi odbywa się za pośrednictwem zintegrowanego portalu ERP ETHIS (\textit{ETH Information and Support System} -- \file{ethis.ethz.ch}), bazującego na rozwiązaniu SAP:
+Na poziomie operacyjnym zarządzanie strumieniami finansowymi odbywa się za pośrednictwem zintegrowanego portalu ERP ETHIS (\textit{ETH Information and Support System} -- \code{ethis.ethz.ch}), bazującego na rozwiązaniu SAP:
 \begin{itemize}
     \item \textbf{Autonomia centrów kosztowych (\textit{Kostenstellen}):} Każdy z profesorów D-INFK zarządza własnym centrum kosztowym powiązanym z indywidualnymi subkontami projektowymi (\textit{Projektabrechnungen}) dla grantów SNSF czy zleceń komercyjnych.
     \item \textbf{Autoryzacja zakupów IT:} Za pośrednictwem ETHIS profesorowie oraz sekretariaty zatwierdzają zamówienia sprzętowe (\textit{Hardware Orders}) realizowane przez sekcję zakupową ISGINF (pokój \code{CAB E 48}, rola \anon{Purchase_TS}).
@@ -421,7 +421,7 @@ Korelacja danych makroekonomicznych, kryzysu płynnościowego oraz procedur obie
 
 Szwajcarska Narodowa Fundacja Nauki (\textit{Schweizerischer Nationalfonds zur Förderung der wissenschaftlichen Forschung -- SNSF / SNF}) stanowi główne źródło krajowego finansowania badań naukowych w Konfederacji Szwajcarskiej. Jak wykazano w podrozdziale \ref{subsec:budzet-sprawozdania}, uczelnia pozyskała ze środków krajowych SNSF i Innosuisse łącznie 225 mln CHF w 2024 roku, stanowiących ponad jedną trzecią wszystkich zewnętrznych przychodów projektowych. Wydziałowi Informatyki ETH Zürich (D-INFK) przysługuje nieproporcjonalnie wysoki udział w tej puli finansowania, wynikający z koncentracji strategicznie priorytetowych tematyk badawczych: bezpieczeństwa cyfrowego, architektury sieci, weryfikacji oprogramowania i uczenia maszynowego.
 
-Publiczna baza danych SNSF (\file{data.snf.ch}) umożliwia pasywną eksplorację aktywnych i zakończonych projektów według instytucji goszczącej, dyscypliny naukowej oraz kierownika projektu (\textit{Principal Investigator}). Analiza rekordów dla Wydziału Informatyki ETH Zürich pozwoliła na zidentyfikowanie trzech reprezentatywnych projektów o szczególnym znaczeniu wywiadowczym, zestawionych w tabeli \ref{tab:granty-snsf}.
+Publiczna baza danych SNSF (\code{data.snf.ch}) umożliwia pasywną eksplorację aktywnych i zakończonych projektów według instytucji goszczącej, dyscypliny naukowej oraz kierownika projektu (\textit{Principal Investigator}). Analiza rekordów dla Wydziału Informatyki ETH Zürich pozwoliła na zidentyfikowanie trzech reprezentatywnych projektów o szczególnym znaczeniu wywiadowczym, zestawionych w tabeli \ref{tab:granty-snsf}.
 
 \lead{Mechanizm przejściowego finansowania SNSF w zastępstwie grantów ERC}
 
@@ -455,14 +455,14 @@ Kluczowym kontekstem instytucjonalnym jest fakt, iż w latach 2022--2023 Szwajca
 Wiedza o tematyce i strukturze finansowania grantów stanowi kluczowy zasób dla konstruowania wysoce wiarygodnych scenariuszy pretextingowych w Rozdziale 6:
 
 \begin{enumerate}
-    \item \textbf{Spear-phishing pod pretekstem recenzji grantowej SNSF:} Każdy projekt SNSF podlega obowiązkowemu raportowaniu pośredniemu i końcowemu w portalu \textit{mySNF} (\file{my.snf.ch}). Sfabrykowane powiadomienie o konieczności złożenia sprawozdania z projektu nr 214838 (Tramèr) lub zaproszenie do udziału w panelu ekspertów recenzujących projekt z zakresu kwantowego bezpieczeństwa sieci stanowi doskonały pretext, gdyż obaj profesorowie angażują się w tego rodzaju działalność recenzencką dla SNSF i ERC.
+    \item \textbf{Spear-phishing pod pretekstem recenzji grantowej SNSF:} Każdy projekt SNSF podlega obowiązkowemu raportowaniu pośredniemu i końcowemu w portalu \textit{mySNF} (\code{my.snf.ch}). Sfabrykowane powiadomienie o konieczności złożenia sprawozdania z projektu nr 214838 (Tramèr) lub zaproszenie do udziału w panelu ekspertów recenzujących projekt z zakresu kwantowego bezpieczeństwa sieci stanowi doskonały pretext, gdyż obaj profesorowie angażują się w tego rodzaju działalność recenzencką dla SNSF i ERC.
     \item \textbf{Pretexting oparty na zaufaniu do finansowania SCION i SNB:} Fakt wdrożenia architektury SCION w sieci Szwajcarskiego Banku Narodowego (SNB) i giełdy SIX Group umożliwia konstruowanie przynęty podszywającej się pod koordynatora projektu ze strony SNB z prośbą o udostępnienie specyfikacji kryptograficznej lub protokołu konfiguracyjnego dla nowego węzła routingowego.
-    \item \textbf{Ataki ukierunkowane na platformę mySNF:} Portal \file{my.snf.ch} służy do składania wniosków, raportów i zarządzania płatnościami grantowymi przez kierowników projektów. Phishingowa strona imitująca logowanie do mySNF, rozsyłana do kierowników aktywnych projektów SNSF w D-INFK, może prowadzić do masowej kompromitacji kont badaczy i wyłudzenia danych finansowych projektów.
+    \item \textbf{Ataki ukierunkowane na platformę mySNF:} Portal \code{my.snf.ch} służy do składania wniosków, raportów i zarządzania płatnościami grantowymi przez kierowników projektów. Phishingowa strona imitująca logowanie do mySNF, rozsyłana do kierowników aktywnych projektów SNSF w D-INFK, może prowadzić do masowej kompromitacji kont badaczy i wyłudzenia danych finansowych projektów.
 \end{enumerate}
 
 \subsection{Zamówienia publiczne IT i dostawcy (simap.ch)}\label{subsec:zamowienia-simap}
 
-Jako federalna instytucja publiczna objęta szwajcarskim prawem zamówień publicznych (\textit{Bundesgesetz über das öffentliche Beschaffungswesen -- BöB / IVöB}) oraz porozumieniem GPA/WTO (\textit{Government Procurement Agreement}), ETH Zürich ma prawny obowiązek publikowania postępowań przetargowych przekraczających progi traktatowe (ok.\ 230\,000\,CHF netto dla dostaw sprzętu i usług IT). Ogłoszenia te są publikowane w szwajcarskim portalu federalnym \file{simap.ch} oraz równolegle w Dzienniku Urzędowym Unii Europejskiej (\textit{TED -- Tenders Electronic Daily}).
+Jako federalna instytucja publiczna objęta szwajcarskim prawem zamówień publicznych (\textit{Bundesgesetz über das öffentliche Beschaffungswesen -- BöB / IVöB}) oraz porozumieniem GPA/WTO (\textit{Government Procurement Agreement}), ETH Zürich ma prawny obowiązek publikowania postępowań przetargowych przekraczających progi traktatowe (ok.\ 230\,000\,CHF netto dla dostaw sprzętu i usług IT). Ogłoszenia te są publikowane w szwajcarskim portalu federalnym \code{simap.ch} oraz równolegle w Dzienniku Urzędowym Unii Europejskiej (\textit{TED -- Tenders Electronic Daily}).
 
 Eksploracja ogłoszeń przetargowych stanowi pasywne źródło wywiadowcze o najwyższej wiarygodności, ujawniając nie tylko plany modernizacyjne i architekturę sprzętowo-programową uczelni, ale również podział kompetencyjny wewnątrz administracji ETH, nazwy konkretnych wykonawców oraz dedykowane adresy e-mail komórek przetargowych.
 
@@ -577,7 +577,7 @@ Wydział Informatyki ETH Zürich nie funkcjonuje jako wyizolowana jednostka akad
 
 Kluczową płaszczyzną instytucjonalnego transferu wiedzy i technologii w obszarze cyberbezpieczeństwa jest Centrum Bezpieczeństwa Informacji i Ochrony Prywatności w Zurychu (\textit{Zurich Information Security and Privacy Center - ZISC}) \cite{eth_zisc}. Zgodnie z oficjalną deklaracją jednostki, ZISC jest finansowane wspólnie przez ETH Zürich oraz partnerów komercyjnych, a pozyskiwane wkłady finansowe bezpośrednio wspierają programy badawcze i edukacyjne wydziału.
 
-Eksploracja oficjalnego portalu konsorcjum (\file{zisc.ethz.ch/partners}) pozwoliła na precyzyjne skatalogowanie zarówno bieżących partnerów strategicznych, jak i podmiotów współpracujących historycznie, co przedstawiono na rysunku \ref{fig:zisc-partners}.
+Eksploracja oficjalnego portalu konsorcjum (\code{zisc.ethz.ch/partners}) pozwoliła na precyzyjne skatalogowanie zarówno bieżących partnerów strategicznych, jak i podmiotów współpracujących historycznie, co przedstawiono na rysunku \ref{fig:zisc-partners}.
 
 \Figure[0.65]{zisc_partners.jpg}{Struktura aktualnych i historycznych partnerów przemysłowych konsorcjum ZISC opublikowana na portalu jednostki}{fig:zisc-partners}
 
