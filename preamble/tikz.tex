@@ -9,7 +9,8 @@
   fit,
   backgrounds,
   shapes.geometric,
-  shapes.symbols
+  shapes.symbols,
+  shapes.multipart
 }
 
 \usepackage{pgfplots}
@@ -19,42 +20,103 @@
 \definecolor{acadInk}{HTML}{1A1A1A}
 \definecolor{acadMuted}{HTML}{595959}
 \definecolor{acadFill}{HTML}{F7F7F8}
-\definecolor{acadZone}{HTML}{FAFAFA}
 \definecolor{acadBlue}{HTML}{1F4E79}
 \definecolor{acadBlueFill}{HTML}{EDF3F8}
 \definecolor{acadRed}{HTML}{9B2C2C}
 \definecolor{acadTeal}{HTML}{236B6E}
 
-% --- Bazowe style węzłów, przepływów i ikon sieciowych (/tikz-diagrams) ---
+% \AffIcon[rozmiar]{nazwa_ikony_bez_pdf}
+% Wstawia wektorową ikonę Affinity (square_gray) z katalogu images/icons/<nazwa>.pdf.
+\newcommand{\AffIcon}[2][1.15cm]{%
+  \IfFileExists{images/icons/#2.pdf}{%
+    \includegraphics[width=#1, height=#1, keepaspectratio]{images/icons/#2.pdf}%
+  }{%
+    \PackageWarning{report-template}{Brak pliku ikony images/icons/#2.pdf}%
+    \fbox{\parbox[c][#1][c]{#1}{\centering\tiny\texttt{#2}}}%
+  }%
+}
+
+% --- Bazowe style węzłów, kart podzielnych, linii życia i przepływów (/tikz-diagrams) ---
 \tikzset{
   every picture/.append style = {
     execute at begin picture = {\shorthandoff{"}}
   },
   >= {Stealth[length=2.2mm, width=1.5mm]},
+  % Ostre narożniki (0pt) i białe tło (styl publikacji IEEE / USENIX / ACM)
   block/.style = {
     rectangle,
     draw=acadInk,
     semithick,
-    fill=acadFill,
-    rounded corners=1.5pt,
-    minimum width=2.2cm,
+    fill=white,
+    minimum width=2.4cm,
     minimum height=0.85cm,
+    inner sep=5pt,
     align=center,
-    font=\small
+    font=\scriptsize
   },
   accent/.style = {
     block,
     draw=acadBlue,
     fill=acadBlueFill
   },
+  % Karta z oddzielonym nagłówkiem (jak klasa UML / karta architektury)
+  splitcard/.style = {
+    rectangle split,
+    rectangle split parts=2,
+    draw=acadInk,
+    semithick,
+    fill=white,
+    inner sep=5pt,
+    text width=5.0cm,
+    align=flush left,
+    rectangle split part align={center, left},
+    rectangle split part fill={acadFill, white},
+    font=\scriptsize
+  },
+  splitcard_accent/.style = {
+    splitcard,
+    draw=acadBlue,
+    rectangle split part fill={acadBlueFill, white}
+  },
+  % Węzeł ikony Affinity (bez ramki i bez wewnętrznego odstępu - sama grafika PDF)
+  iconnode/.style = {
+    inner sep=0pt,
+    outer sep=2pt
+  },
+  % Czysty podpis pod ikoną urządzenia (bez ramki wokół tekstu)
+  iconlabel/.style = {
+    align=center,
+    font=\scriptsize,
+    inner sep=2pt,
+    text=acadInk
+  },
+  % Nagłówek uczestnika i pionowa linia życia w diagramach sekwencji (Sequence Diagrams)
+  seqactor/.style = {
+    rectangle,
+    draw=acadInk,
+    semithick,
+    fill=white,
+    minimum width=3.4cm,
+    minimum height=0.95cm,
+    inner sep=5pt,
+    align=center,
+    font=\scriptsize
+  },
+  lifeline/.style = {
+    semithick,
+    densely dashed,
+    draw=acadMuted
+  },
+  % Granica strefy bezpieczeństwa (tylko obrys, zawsze bez szarego tła)
   zone/.style = {
     rectangle,
     draw=acadMuted,
+    semithick,
     densely dashed,
-    fill=acadZone,
-    rounded corners=2pt,
-    inner sep=10pt
+    fill=none,
+    inner sep=8pt
   },
+  % Krawędzie przepływów
   flow/.style = {
     ->,
     thick,
@@ -79,85 +141,13 @@
   },
   step/.style = {
     circle,
-    draw=acadBlue,
+    draw=acadInk,
     fill=white,
     inner sep=1pt,
     font=\tiny\bfseries,
-    text=acadBlue
+    text=acadInk
   },
-  step/.default = {},
-  netcloud/.style = {
-    cloud,
-    cloud puffs=11,
-    cloud puff arc=110,
-    aspect=2.0,
-    draw=acadMuted,
-    semithick,
-    fill=acadZone,
-    minimum width=2.2cm,
-    minimum height=1.1cm,
-    align=center,
-    font=\small
-  },
-  datastore/.style = {
-    cylinder,
-    shape border rotate=90,
-    aspect=0.25,
-    draw=acadInk,
-    semithick,
-    fill=acadFill,
-    minimum width=1.4cm,
-    minimum height=1.1cm,
-    align=center,
-    font=\small
-  },
-  pics/router/.style = {
-    code = {
-      \draw[semithick, draw=acadInk, fill=acadFill] (0,0) circle (0.36cm);
-      \draw[->, thin, >=Stealth, draw=acadInk] (-0.24, 0.08) -- (-0.06, 0.08);
-      \draw[->, thin, >=Stealth, draw=acadInk] ( 0.24,-0.08) -- ( 0.06,-0.08);
-      \draw[->, thin, >=Stealth, draw=acadInk] (-0.08,-0.24) -- (-0.08,-0.06);
-      \draw[->, thin, >=Stealth, draw=acadInk] ( 0.08, 0.24) -- ( 0.08, 0.06);
-      \node[fit={(-0.36,-0.36)(0.36,0.36)}, inner sep=0pt] (-box) {};
-    }
-  },
-  pics/switch/.style = {
-    code = {
-      \draw[semithick, draw=acadInk, fill=acadFill, rounded corners=1pt] (-0.42,-0.22) rectangle (0.42,0.22);
-      \draw[->, thin, >=Stealth, draw=acadInk] (-0.28, 0.07) -- (0.28, 0.07);
-      \draw[<-, thin, >=Stealth, draw=acadInk] (-0.28,-0.07) -- (0.28,-0.07);
-      \node[fit={(-0.42,-0.22)(0.42,0.22)}, inner sep=0pt] (-box) {};
-    }
-  },
-  pics/firewall/.style = {
-    code = {
-      \draw[semithick, draw=acadRed, fill=white, rounded corners=1pt] (-0.32,-0.34) rectangle (0.32,0.34);
-      \draw[thin, draw=acadRed] (-0.32,-0.11) -- (0.32,-0.11);
-      \draw[thin, draw=acadRed] (-0.32, 0.11) -- (0.32, 0.11);
-      \draw[thin, draw=acadRed] ( 0.00,-0.34) -- ( 0.00,-0.11);
-      \draw[thin, draw=acadRed] (-0.14,-0.11) -- (-0.14, 0.11);
-      \draw[thin, draw=acadRed] ( 0.14,-0.11) -- ( 0.14, 0.11);
-      \draw[thin, draw=acadRed] ( 0.00, 0.11) -- ( 0.00, 0.34);
-      \node[fit={(-0.32,-0.34)(0.32,0.34)}, inner sep=0pt] (-box) {};
-    }
-  },
-  pics/server/.style = {
-    code = {
-      \draw[semithick, draw=acadInk, fill=acadFill, rounded corners=1pt] (-0.26,-0.36) rectangle (0.26,0.36);
-      \draw[thin, draw=acadInk] (-0.17, 0.18) -- (0.17, 0.18);
-      \draw[thin, draw=acadInk] (-0.17, 0.06) -- (0.17, 0.06);
-      \fill[acadBlue] (-0.15,-0.20) circle (0.035cm);
-      \node[fit={(-0.26,-0.36)(0.26,0.36)}, inner sep=0pt] (-box) {};
-    }
-  },
-  pics/host/.style = {
-    code = {
-      \draw[semithick, draw=acadInk, fill=acadFill, rounded corners=1pt] (-0.32,-0.14) rectangle (0.32,0.28);
-      \draw[semithick, draw=acadInk] (0,-0.14) -- (0,-0.26);
-      \draw[semithick, draw=acadInk] (-0.18,-0.26) -- (0.18,-0.26);
-      \node[fit={(-0.32,-0.26)(0.32,0.28)}, inner sep=0pt] (-box) {};
-    }
-  }
+  step/.default = {}
 }
 
 % --- Domyślny styl wykresów pgfplots spójny z paletą acad* ---

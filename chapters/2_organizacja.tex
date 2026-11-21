@@ -56,7 +56,7 @@ Identyfikacja ścisłego kierownictwa wydziału dostarcza kluczowych przesłanek
 
 \subsection{Instytuty badawcze i laboratoria wydziałowe}\label{subsec:instytuty-laboratoria}
 
-Struktura badawczo-dydaktyczna Wydziału Informatyki ETH Zürich charakteryzuje się wysokim stopniem decentralizacji naukowej. Działalność badawcza skupiona jest w siedmiu wyspecjalizowanych instytutach, obejmujących pełne spektrum współczesnej informatyki – od podstaw teoretycznych, przez inżynierię systemów i bezpieczeństwo, po zaawansowane systemy sztucznej inteligencji \cite{eth_dinfk_institutes}. Na czele każdego instytutu stoi mianowany kierownik (\textit{Head of Institute}), koordynujący pracę podległych laboratoriów i grup badawczych prowadzonych przez poszczególnych profesorów zwyczajnych i nadzwyczajnych.
+Struktura badawczo-dydaktyczna Wydziału Informatyki ETH Zürich charakteryzuje się wysokim stopniem decentralizacji naukowej. Działalność badawcza skupiona jest w siedmiu wyspecjalizowanych instytutach, obejmujących pełne spektrum współczesnej informatyki - od podstaw teoretycznych, przez inżynierię systemów i bezpieczeństwo, po zaawansowane systemy sztucznej inteligencji \cite{eth_dinfk_institutes}. Na czele każdego instytutu stoi mianowany kierownik (\textit{Head of Institute}), koordynujący pracę podległych laboratoriów i grup badawczych prowadzonych przez poszczególnych profesorów zwyczajnych i nadzwyczajnych.
 
 W ramach rekonesansu źródeł otwartych zmapowano strukturę instytutów D-INFK oraz ich aktualną kadrę kierowniczą, co zestawiono w tabeli \ref{tab:instytuty-dinfk}.
 
@@ -100,7 +100,7 @@ Powiązanie nazwisk kierowników instytutów z konkretnymi domenami badawczymi u
 
 \subsection{Struktura i zadania grupy wsparcia IT (ISG D-INFK)}\label{subsec:administracja-isg}
 
-Podczas gdy centralne usługi teleinformatyczne Politechniki są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia – \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
+Podczas gdy centralne usługi teleinformatyczne Politechniki są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia - \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
 
 Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \code{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}.
 
@@ -329,7 +329,7 @@ Konstrukcja i zasada działania technologii CardLink opiera się na paradygmacie
 Należy podkreślić fundamentalne rozróżnienie dwóch typów urządzeń terminalowych funkcjonujących na uczelni:
 \begin{itemize}
     \item \textbf{Validierungsterminal (Terminal walidacyjny):} Urządzenie wyposażone w mechaniczną szczelinę i termiczną głowicę drukującą, służące wyłącznie do fizycznego przepisywania nadruku daty na białym pasku TRW awersu karty.
-    \item \textbf{Update-Terminal (Terminal aktualizacyjny CardLink):} Naścienny czytnik RFID wyposażony w wyświetlacz LCD oraz pole zbliżeniowe (oznaczone białym prostokątem), służący do kryptograficznego zapisu uprawnień do stref offline w pamięci chipa karty (komunikat \textit{„Update erfolgreich”}).
+    \item \textbf{Update-Terminal (Terminal aktualizacyjny CardLink):} Naścienny czytnik RFID wyposażony w wyświetlacz LCD oraz pole zbliżeniowe (oznaczone białym prostokątem), służący do kryptograficznego zapisu uprawnień do stref offline w pamięci chipa karty (komunikat \textit{\enquote{Update erfolgreich}}).
 \end{itemize}
 
 Rozmieszczenie terminali aktualizacyjnych (\textit{Update-Terminals}) oraz sieciowych punktów dostępowych na obszarze kampusu centralnego przedstawiono na oficjalnej mapie dostępowej (rys. \ref{fig:campus-access-map}). Analiza planu potwierdza obecność dedykowanego terminala Update-Terminal bezpośrednio w budynku CAB, co zapewnia ciągłość odnawiania uprawnień dla pracowników D-INFK.
@@ -341,7 +341,7 @@ Rozmieszczenie terminali aktualizacyjnych (\textit{Update-Terminals}) oraz sieci
 Syntetyczna korelacja zebranej dokumentacji technicznej CardLink, fotografii identyfikatorów oraz mapy infrastruktury ujawnia krytyczne podatności proceduralne i architektoniczne:
 
 \begin{enumerate}
-    \item \textbf{30-dniowe okno podatności po unieważnieniu karty (\textit{CardLink Revocation Delay}):} Zgodnie z oficjalną instrukcją techniczną ETH (\textit{User Guide for CardLink}): \textit{„W przypadku zagubienia lub kradzieży karty (...) uprawnienia dostępowe dla komponentów CardLink/Offline pozostają aktywne do momentu upłynięcia 30-dniowego okresu ważności lub do czasu aktualizacji karty w terminalu”}. Ponieważ autonomiczne okucia drzwiowe w budynku CAB nie posiadają łączności z siecią, centralna blokada skradzionej karty w systemie exos nie propaguje się natychmiastowo do drzwi gabinetów i laboratoriów. Napastnik, który wszedł w posiadanie karty pracownika naukowego, dysponuje oknem czasowym (do 30 dni) na fizyczne otwarcie zabezpieczonych pomieszczeń offline, nawet jeśli prawowity właściciel zgłosił już utratę dokumentu w biurze obsługi.
+    \item \textbf{30-dniowe okno podatności po unieważnieniu karty (\textit{CardLink Revocation Delay}):} Zgodnie z oficjalną instrukcją techniczną ETH (\textit{User Guide for CardLink}): \textit{\enquote{W przypadku zagubienia lub kradzieży karty (...) uprawnienia dostępowe dla komponentów CardLink/Offline pozostają aktywne do momentu upłynięcia 30-dniowego okresu ważności lub do czasu aktualizacji karty w terminalu}}. Ponieważ autonomiczne okucia drzwiowe w budynku CAB nie posiadają łączności z siecią, centralna blokada skradzionej karty w systemie exos nie propaguje się natychmiastowo do drzwi gabinetów i laboratoriów. Napastnik, który wszedł w posiadanie karty pracownika naukowego, dysponuje oknem czasowym (do 30 dni) na fizyczne otwarcie zabezpieczonych pomieszczeń offline, nawet jeśli prawowity właściciel zgłosił już utratę dokumentu w biurze obsługi.
     \item \textbf{Wektor przejęcia fizycznego dostępu poprzez kompromitację tożsamości nethz:} Powiązanie procedury nadawania PIN-u z portalem \code{mycontact.ethz.ch} bez wymogu znajomości starego kodu PIN stanowi poważną lukę krzyżową (pivot logiczno-fizyczny). Atakujący, który pozyska poświadczenia domenowe \code{nethz} pracownika w wyniku kampanii spear-phishingowej, może zalogować się do portalu, zmienić kod PIN do drzwi na własny, a następnie posłużyć się fizycznie skradzioną lub znalezioną kartą na perymetrze nocnym CAB, obchodząc barierę dwuskładnikowego uwierzytelnienia (karta + PIN).
     \item \textbf{Fabrykacja fizyczna identyfikatora gościa (\textit{Guest Badge Forgery}):} Zebrana dokumentacja fotograficzna (rys. \ref{fig:eth-card-variants}) ujawnia dokładny układ graficzny karty gościa akademickiego (\textit{Guest}). Karta ta cechuje się literą \textbf{G}, prefiksem numeru \code{G99999} oraz oznaczeniem wydziału (\code{D-INFK}). W ciągu dnia portierzy oraz pracownicy naukowi weryfikują obecność identyfikatora wyłącznie powierzchownie wzrokiem. Wykonanie wysokiej jakości atrapy identyfikatora gościa z przypisaniem do D-INFK zapewnia perfekcyjny kamuflaż podczas poruszania się po korytarzach CAB i STF pod pretekstem udziału w seminariach ZISC.
     \item \textbf{Pozyskanie numeru dostępowego metodą Shoulder Surfingu:} Jawne nadrukowanie sześciocyfrowego numeru ewidencyjnego (\textit{identity card number}) na rewersie karty stanowi lukę proceduralną. W kawiarni \textit{Irrational Coffee} (poziom E CAB) lub stołówce pracownicy często odkładają karty na stoły rewersem do góry. Sfotografowanie rewersu karty pozwala napastnikowi na kontakt telefoniczny z Helpdeskiem ISG (\code{CAB E 41.1}) lub ochroną: podszywając się pod pracownika i podając poprawny numer identyfikacyjny z rewersu, atakujący może zgłosić problem techniczny i wyłudzić doraźne zdalne otwarcie drzwi.
@@ -398,7 +398,7 @@ Oficjalny raport finansowy uczelni bezpośrednio wskazuje na narastające ryzyka
 
 Wydział Informatyki (D-INFK) należy do najbardziej kapitałochłonnych jednostek uczelni. Wynika to z konieczności utrzymywania kosztownej infrastruktury serwerowej HPC oraz agresywnego konkurowania o kadrę naukową.
 
-Zarządzanie operacyjne finansami wydziału spoczywa w rękach Dyrektor Zarządzającej D-INFK -- Barbary Pf{\"a}ndner (\code{dept-admin@inf.ethz.ch}), która koordynuje budżet, przestrzeń lokalową oraz etaty profesorskie. 
+Zarządzanie operacyjne finansami wydziału spoczywa w rękach Dyrektor Zarządzającej D-INFK -- Barbary Pf{\"a}ndner (\code{dept-admin@inf.ethz.ch}), która koordynuje budżet, przestrzeń lokalową oraz etaty profesorskie.
 
 Na poziomie operacyjnym zarządzanie strumieniami finansowymi odbywa się za pośrednictwem zintegrowanego portalu ERP ETHIS (\textit{ETH Information and Support System} -- \code{ethis.ethz.ch}), bazującego na rozwiązaniu SAP:
 \begin{itemize}
@@ -466,7 +466,7 @@ Jako federalna instytucja publiczna objęta szwajcarskim prawem zamówień publi
 
 Eksploracja ogłoszeń przetargowych stanowi pasywne źródło wywiadowcze o najwyższej wiarygodności, ujawniając nie tylko plany modernizacyjne i architekturę sprzętowo-programową uczelni, ale również podział kompetencyjny wewnątrz administracji ETH, nazwy konkretnych wykonawców oraz dedykowane adresy e-mail komórek przetargowych.
 
-W toku przeprowadzonej kwerendy zidentyfikowano cztery kluczowe postępowania przetargowe powiązane z infrastrukturą technologiczną uczelni i D-INFK, zestawione w tabeli~\ref{tab:zamowienia-it}.
+W toku przeprowadzonej kwerendy zidentyfikowano cztery kluczowe postępowania przetargowe powiązane z infrastrukturą technologiczną uczelni i D-INFK, zestawione w tabeli \ref{tab:zamowienia-it}.
 
 \begin{table}[H]
 \caption{Zidentyfikowane postępowania przetargowe ETH Zürich -- infrastruktura IT i badawcza (simap.ch / TED)}
@@ -522,7 +522,7 @@ Postępowanie konkursowe nr 806887-2026, ogłoszone w reżimie standardowym (OJ 
     \item \textbf{LOT-0001 (HPC clusters and components):} Dostawa serwerów i węzłów obliczeniowych kompatybilnych ze standardowymi szafami rack 19-calowymi oraz otwartym standardem \textit{Open Rack v3 (ORv3)}. Wskazuje to na wdrażanie rozwiązań hiperskalowalnych o wysokiej gęstości upakowania i zaawansowanym chłodzeniu cieczą.
     \item \textbf{LOT-0002 (High-Performance Storage for HPC and AI Applications):} Pamięci masowe dużej przepustowości dedykowane modelom sztucznej inteligencji i równoległym obliczeniom numerycznym.
 \end{itemize}
-Jednostką zamawiającą jest centralny pion zakupów ETH (\textit{Procurement Services VPIN}) korzystający z dedykowanego kanału pocztowego \code{gatt-wto@ethz.ch}. Termin składania ofert wyznaczono na \textbf{18 stycznia 2027 roku}. 
+Jednostką zamawiającą jest centralny pion zakupów ETH (\textit{Procurement Services VPIN}) korzystający z dedykowanego kanału pocztowego \code{gatt-wto@ethz.ch}. Termin składania ofert wyznaczono na \textbf{18 stycznia 2027 roku}.
 
 \Figure[0.80]{simap_hpc_lots.png}{Ogłoszenie konkursowe na klastry HPC i storage AI opublikowane na simap.ch -- termin składania ofert 18.01.2027}{fig:simap-hpc}
 
@@ -538,7 +538,7 @@ Wdrożenie nowego systemu ITSM/ESM wraz z portalem samoobsługowym stanowi kryty
 
 \subsubsection*{3. Infrastruktura Narodowego Centrum Superkomputerowego CSCS (2025--2029)}
 
-Ogłoszenie ramowe na platformie simap.ch obejmuje pełen cykl zaopatrzenia w maszyny przetwarzania danych, macierze dyskowe, przełączniki sieciowe wysokiej przepustowości (Infiniband / high-speed Ethernet) oraz oprogramowanie dla Szwajcarskiego Narodowego Centrum Superkomputerowego (CSCS w Lugano), podlegającego bezpośrednio ETH Zürich. Kontrakt zaplanowano na lata 2025--2029. 
+Ogłoszenie ramowe na platformie simap.ch obejmuje pełen cykl zaopatrzenia w maszyny przetwarzania danych, macierze dyskowe, przełączniki sieciowe wysokiej przepustowości (Infiniband / high-speed Ethernet) oraz oprogramowanie dla Szwajcarskiego Narodowego Centrum Superkomputerowego (CSCS w Lugano), podlegającego bezpośrednio ETH Zürich. Kontrakt zaplanowano na lata 2025--2029.
 
 \Figure[0.80]{simap_cscs_notice.png}{Ogłoszenie ramowe na serwery, przełączniki i macierze dyskowe CSCS na lata 2025--2029 -- simap.ch}{fig:simap-cscs}
 
@@ -564,7 +564,7 @@ Analiza zamówień publicznych obnaża podział organizacyjny procesów zakupowy
 
 Na podstawie zebranych danych zdefiniowano następujące wektory zagrożeń:
 \begin{enumerate}
-    \item \textbf{Preteksting w oparciu o wdrożenie ITSM (DXC Technology):} Kwota 6 milionów CHF i data zawarcia umowy (listopad 2026) oznaczają, że ETH jest w fazie intensywnej integracji lub pilotażu nowego portalu helpdeskowego. Napastnik podszywający się pod zespół wdrożeniowy DXC Technology Switzerland może prowadzić wysoce wiarygodny \textit{spear-phishing} lub \textit{vishing} do pracowników D-INFK pod pretekstem „migracji do nowego portalu samoobsługowego ITSM” z wezwaniem do weryfikacji konta.
+    \item \textbf{Preteksting w oparciu o wdrożenie ITSM (DXC Technology):} Kwota 6 milionów CHF i data zawarcia umowy (listopad 2026) oznaczają, że ETH jest w fazie intensywnej integracji lub pilotażu nowego portalu helpdeskowego. Napastnik podszywający się pod zespół wdrożeniowy DXC Technology Switzerland może prowadzić wysoce wiarygodny \textit{spear-phishing} lub \textit{vishing} do pracowników D-INFK pod pretekstem \enquote{migracji do nowego portalu samoobsługowego ITSM} z wezwaniem do weryfikacji konta.
     \item \textbf{Rozpoznanie dostawców HPC przed dostawą (Supply Chain):} Monitorowanie rozstrzygnięcia przetargu 806887-2026 (po 18.01.2027) pozwoli na poznanie konkretnych marek i modeli węzłów obliczeniowych oraz macierzy AI. Umożliwia to wcześniejsze wyszukiwanie podatności 0-day/N-day w oprogramowaniu układowym (firmware BMC/IPMI) przed ich wdrożeniem w szafach serwerowych ETH.
     \item \textbf{Podszywanie się pod dział wsparcia technicznego:} Wykorzystanie oficjalnej terminologii formularzy i workflow nowego portalu samoobsługowego ITSM pozwala na generowanie fałszywych ticketów serwisowych żądających instalacji rzekomego certyfikatu bezpieczeństwa lub agenta monitorującego.
 \end{enumerate}
@@ -594,7 +594,7 @@ Analiza zebranego materiału dowodzi wieloletniego, strategicznego powiązania w
     \item \textbf{Byli partnerzy konsorcjum:} Wśród wieloletnich partnerów ZISC zidentyfikowano operatora szwajcarskiej giełdy papierów wartościowych SIX Group (2016--2025), koncern ubezpieczeniowy Zurich Insurance (2015--2025), NEC (2014--2023), bank Credit Suisse (2003--2014) oraz gigantów technologicznych: Google (2011--2014), IBM (2003--2011) i Sun Microsystems.
 \end{itemize}
 
-Równolegle do konsorcjum ZISC pracownicy D-INFK utrzymują bezpośrednie powiązania z laboratoriami R\&D zlokalizowanymi w Zurychu. Szczególnym przykładem jest europejski hub badawczy \textbf{Google Zurich}, z którym wydział prowadzi regularne programy stażowe i seminaria. Z kolei w obszarze grafiki i widzenia komputerowego unikalnym zjawiskiem jest podwójna afiliacja profesorów – przykładowo, prof. Marc Pollefeys pełni jednocześnie funkcję dyrektora naukowego w \textbf{Microsoft Mixed Reality \& AI Lab Zurich}, a prof. Markus Gross kierował przez lata współpracą z \textbf{Disney Research Studios}.
+Równolegle do konsorcjum ZISC pracownicy D-INFK utrzymują bezpośrednie powiązania z laboratoriami R\&D zlokalizowanymi w Zurychu. Szczególnym przykładem jest europejski hub badawczy \textbf{Google Zurich}, z którym wydział prowadzi regularne programy stażowe i seminaria. Z kolei w obszarze grafiki i widzenia komputerowego unikalnym zjawiskiem jest podwójna afiliacja profesorów - przykładowo, prof. Marc Pollefeys pełni jednocześnie funkcję dyrektora naukowego w \textbf{Microsoft Mixed Reality \& AI Lab Zurich}, a prof. Markus Gross kierował przez lata współpracą z \textbf{Disney Research Studios}.
 
 \lead{Wnioski dla modelowania zagrożeń fizycznych i socjotechnicznych (Actionable Intelligence)}
 
@@ -607,7 +607,7 @@ Ujawniona sieć powiązań gospodarczych dostarcza napastnikowi gotowych wzorcó
 
 \subsection{Spółki spin-off wywodzące się z D-INFK}\label{subsec:spinoffy}
 
-Kolejnym kluczowym wskaźnikiem pozycji rynkowej i stopnia komercjalizacji badań prowadzonych w Wydziale Informatyki ETH Zürich jest dynamiczny rozwój przedsiębiorstw akademickich typu \textit{spin-off}. Od 1993 roku pracownicy naukowi, doktoranci oraz absolwenci D-INFK założyli łącznie 62 spółki technologiczne, transferując innowacje z laboratoriów uniwersyteckich bezpośrednio na rynek globalny. 
+Kolejnym kluczowym wskaźnikiem pozycji rynkowej i stopnia komercjalizacji badań prowadzonych w Wydziale Informatyki ETH Zürich jest dynamiczny rozwój przedsiębiorstw akademickich typu \textit{spin-off}. Od 1993 roku pracownicy naukowi, doktoranci oraz absolwenci D-INFK założyli łącznie 62 spółki technologiczne, transferując innowacje z laboratoriów uniwersyteckich bezpośrednio na rynek globalny.
 
 Chronologię powstawania wydziałowych spółek spin-off na przestrzeni ponad trzech dekad przedstawiono na rysunku \ref{fig:spinoffs-timeline}.
 

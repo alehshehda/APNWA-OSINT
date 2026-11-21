@@ -16,7 +16,7 @@ Przestrzeń nazw Wydziału Informatyki ETH Zürich nie stanowi odizolowanego drz
 
 Na styku tych trzech warstw funkcjonują ponadwydziałowe usługi centralne ETH Zürich, takie jak brama federacji tożsamości \code{aai-logon.ethz.ch} \cite{switch_eduid}, centralny portal zarządzania poświadczeniami \code{password.ethz.ch} \cite{eth_password_iam}, system oceny kodu \code{expert.ethz.ch}, platforma e-learningowa \code{moodle-app2.let.ethz.ch}, centralny klaster obliczeniowy \code{euler.ethz.ch} oraz wydziałowa przestrzeń SharePoint \code{inf.sp.ethz.ch}. Rozgraniczenie to ma fundamentalne znaczenie dla zachowania reguł zaangażowania (\textit{RoE}): pełnemu rozpoznaniu podlega strefa \code{*.inf.ethz.ch} oraz powiązane zasoby instytutów wydziałowych, natomiast systemy centralne ETH analizowane są wyłącznie jako punkty styku uwierzytelniania i usług dydaktycznych. Zależności te zobrazowano na rysunku \ref{fig:architektura-domen}.
 
-\Figure[0.95]{ch4_architektura_domen.png}{Trójwarstwowa architektura przestrzeni nazw DNS związanej z wydziałem D-INFK}{fig:architektura-domen}
+\TikzFigure[1.0]{ch4_architektura_domen.tex}{Trójwarstwowa architektura przestrzeni nazw DNS związanej z wydziałem D-INFK}{fig:architektura-domen}
 
 \subsection{Pasywna enumeracja i taksonomia subdomen}\label{subsec:wyniki-enumeracji}
 
@@ -195,7 +195,7 @@ Set-Cookie: _shibsession_64656661756c74=<token_sesyjny>; Path=/; Secure; HttpOnl
 \lead{Actionable Intelligence dla rozdziału \ref{ch:socjotechnika} (Scenariusz 1)}
 Zidentyfikowanie ustandaryzowanych punktów logowania \code{aai-logon.ethz.ch}, \code{eduid.ch}, \code{gitlab.inf.ethz.ch/users/sign_in} oraz \code{password.ethz.ch} dostarcza kluczowych danych operacyjnych dla scenariusza ataku pośredniczącego \textit{Adversary-in-the-Middle} (AitM) z użyciem narzędzia \textbf{Evilginx2} (rozdział \ref{sec:scenariusz-1}). Ponieważ silne wymuszenie 2FA (\textit{REFEDS MFA}) na bramie Shibboleth AAI czyni klasyczne wyłudzanie samych haseł bezużytecznym, odwrotne proxy AitM posadowione na domenie typu \textit{lookalike} przejmuje ruch TLS pomiędzy ofiarą a prawdziwym punktem \code{aai-logon.ethz.ch}, przekazując w czasie rzeczywistym jednorazowy kod TOTP i przechwytując gotowe ciasteczko sesyjne (\code{_shibsession_*} lub \code{_gitlab_session}) natychmiast po pozytywnej weryfikacji. Mechanizm ten zobrazowano na rysunku \ref{fig:przeplyw-aai-evilginx}.
 
-\Figure[0.95]{ch4_przeplyw_aai_evilginx.png}{Przepływ uwierzytelniania federacyjnego SAML 2.0 (Shibboleth AAI / Switch edu-ID) oraz mechanizm przechwycenia sesji przez proxy AitM (Evilginx2)}{fig:przeplyw-aai-evilginx}
+\TikzFigure[0.95]{ch4_przeplyw_aai_evilginx.tex}{Przepływ uwierzytelniania federacyjnego SAML 2.0 (Shibboleth AAI / Switch edu-ID) oraz mechanizm przechwycenia sesji przez proxy AitM (Evilginx2)}{fig:przeplyw-aai-evilginx}
 
 \section{Eksploracja archiwów internetowych}\label{sec:archiwa-internetowe}
 

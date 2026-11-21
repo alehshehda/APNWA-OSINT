@@ -1,0 +1,159 @@
+% !tikz-libs: babel,positioning,arrows.meta,calc,shapes.multipart
+% Trójwarstwowa architektura przestrzeni nazw DNS związanej z wydziałem D-INFK (ETH Zürich).
+\begin{tikzpicture}[
+  >= {Stealth[length=2.2mm, width=1.5mm]},
+  card/.style = {
+    splitcard,
+    text width=5.25cm
+  },
+  card_accent/.style = {
+    splitcard_accent,
+    text width=5.25cm
+  },
+  card_dashed/.style = {
+    card,
+    draw=acadMuted,
+    densely dashed
+  },
+  layerhdr/.style = {
+    rectangle,
+    draw=acadInk,
+    semithick,
+    fill=acadFill,
+    text width=5.25cm,
+    minimum height=0.95cm,
+    inner sep=4pt,
+    align=center,
+    font=\scriptsize\bfseries
+  }
+]
+
+  % =========================================================================
+  % POZIOM 1: STREFA NADRZĘDNA ETH ZÜRICH (SHARED INFRASTRUCTURE TOUCHPOINTS)
+  % =========================================================================
+  \node[card] (eth_root) {%
+    \textbf{Domena macierzysta \texttt{ethz.ch}}
+    \nodepart{second}
+    Centralne serwery nazw \texttt{NS} i poczty \texttt{MX},\\
+    strefa podpisana \texttt{DNSSEC} oraz\\
+    polityki \texttt{SPF} / \texttt{DMARC} (AS559)%
+  };
+
+  \node[card, right=0.55cm of eth_root] (eth_idp) {%
+    \textbf{Federacja tożsamości (IdP / IAM)}
+    \nodepart{second}
+    \texttt{aai-logon.ethz.ch} (Shibboleth)\\
+    \texttt{eduid.ch} (Switch edu-ID)\\
+    \texttt{password.ethz.ch} $\cdot$ \texttt{sslvpn.ethz.ch}%
+  };
+
+  \node[card, right=0.55cm of eth_idp] (eth_shared) {%
+    \textbf{Usługi ogólnouczelniane i HPC}
+    \nodepart{second}
+    \texttt{moodle-app2.let.ethz.ch} (LET)\\
+    \texttt{expert.ethz.ch} (Code Expert)\\
+    \texttt{euler.ethz.ch} (HPC) $\cdot$ \texttt{vseth.ethz.ch}%
+  };
+
+  % =========================================================================
+  % POZIOM 2: GŁÓWNA PODSTREFA WYDZIAŁOWA (*.inf.ethz.ch)
+  % =========================================================================
+  \node[splitcard_accent, text width=11.0cm, align=center, below=1.15cm of eth_idp] (dinfk_core) {%
+    \textbf{\textcolor{acadBlue}{Podstrefa wydziałowa \texttt{*.inf.ethz.ch} \quad (Zakres bezpośredni / D-INFK In-Scope)}}
+    \nodepart{second}
+    Główna przestrzeń nazw Wydziału Informatyki ETH Zürich (795 unikalnych FQDN w logach CT, budynek CAB)%
+  };
+
+  \draw[flow, draw=acadBlue] (eth_root.south) -- ++(0,-0.45cm) -|
+    node[flowlabel, pos=0.25, above=1pt] {Delegacja podstrefy DNS (\texttt{NS})}
+    ([xshift=-2.6cm]dinfk_core.north);
+
+  \draw[ctrl] (eth_idp.south) --
+    node[flowlabel, right=3pt] {Federacja SSO (SAML 2.0)}
+    (dinfk_core.north);
+
+  % =========================================================================
+  % POZIOM 3: TRZY WARSTWY LOGICZNE ZASOBÓW D-INFK (BEZ SZARYCH TEŁ)
+  % =========================================================================
+  \node[layerhdr, below=0.95cm of dinfk_core] (hdr_l2) {WARSTWA 2: INSTYTUTY\\I LABORATORIA (HYBRYDOWA)};
+  \node[layerhdr, left=0.55cm of hdr_l2] (hdr_l1) {WARSTWA 1: PORTAL CENTRALNY\\I INFRASTRUKTURA ISG};
+  \node[layerhdr, right=0.55cm of hdr_l2] (hdr_l3) {WARSTWA 3: KLASTRY,\\DYDAKTYKA I SPOŁECZNOŚĆ};
+
+  \coordinate (split_bus) at ($(dinfk_core.south)+(0,-0.42cm)$);
+  \draw[thick, draw=acadInk] (dinfk_core.south) -- (split_bus);
+  \draw[flow] (split_bus) -| (hdr_l1.north);
+  \draw[flow] (split_bus) -- (hdr_l2.north);
+  \draw[flow] (split_bus) -| (hdr_l3.north);
+
+  % --- Kolumna 1 (ISG) ---
+  \node[card, below=0.3cm of hdr_l1] (l1_portal) {%
+    \textbf{Portal wydziałowy i wsparcie}
+    \nodepart{second}
+    \texttt{www.inf.ethz.ch} / \texttt{inf.ethz.ch} (AEM)\\
+    \texttt{isg.inf.ethz.ch} (iiTwiki / baza wiedzy)\\
+    \texttt{support.inf.ethz.ch} $\cdot$ \texttt{bookings.inf.ethz.ch}%
+  };
+
+  \node[card_accent, below=0.3cm of l1_portal] (l1_auth) {%
+    \textbf{\textcolor{acadBlue}{Bramy dostępowe, IAM i DevOps}}
+    \nodepart{second}
+    \texttt{gitlab.inf.ethz.ch} (GitLab CE + LDAP)\\
+    \texttt{password.inf.ethz.ch} (hasła wydziałowe)\\
+    \texttt{vpn.inf.ethz.ch} (brama VPN)\\
+    \texttt{maximus.inf.ethz.ch} (bastion SSH)\\
+    \texttt{web-login.inf.ethz.ch} (SFTP / WWW)%
+  };
+
+  \node[card, below=0.3cm of l1_auth] (l1_files) {%
+    \textbf{Zasoby plikowe i strony personelu}
+    \nodepart{second}
+    \texttt{people.inf.ethz.ch} (Apache 2.4)\\
+    \texttt{home.inf.ethz.ch} (udziały NFSv4 / SMB)\\
+    \texttt{inf.sp.ethz.ch} (SharePoint D-INFK)%
+  };
+
+  % --- Kolumna 2 (Instytuty) ---
+  \node[card, below=0.3cm of hdr_l2] (l2_direct) {%
+    \textbf{Poddomeny w strefie \texttt{*.inf.ethz.ch}}
+    \nodepart{second}
+    \texttt{spcl.inf.ethz.ch} (Parallel Comp.)\\
+    \texttt{sri.inf.ethz.ch} (Secure \& Reliable AI)\\
+    \texttt{netsec.inf.ethz.ch} (Network Security)\\
+    \texttt{las.inf.ethz.ch} $\cdot$ \texttt{da.inf.ethz.ch}\\
+    \texttt{igl.inf.ethz.ch} $\cdot$ \texttt{cgl.inf.ethz.ch}\\
+    \texttt{bmi.inf.ethz.ch} $\cdot$ \texttt{mds.inf.ethz.ch}\\
+    \texttt{gtc.inf.ethz.ch} (Game Tech Center)%
+  };
+
+  \node[card_dashed, below=0.3cm of l2_direct] (l2_auton) {%
+    \textbf{Autonomiczne domeny w \texttt{*.ethz.ch}}
+    \nodepart{second}
+    \texttt{systems.ethz.ch} (Systems Group)\\
+    \texttt{zisc.ethz.ch} (ZISC Security Center)\\
+    \texttt{syssec.ethz.ch} (System Security)\\
+    \texttt{infsec.ethz.ch} (Information Security)\\[2pt]
+    {\color{acadMuted}\textit{Jednostki D-INFK utrzymywane pod \texttt{ethz.ch}}}%
+  };
+
+  % --- Kolumna 3 (Dydaktyka i VIS) ---
+  \node[card, below=0.3cm of hdr_l3] (l3_clusters) {%
+    \textbf{Klastry obliczeniowe i dydaktyka}
+    \nodepart{second}
+    \texttt{student-cluster.inf.ethz.ch} (GPU)\\
+    \texttt{student-cluster1/2.inf.ethz.ch}\\
+    \texttt{student-jupyter.inf.ethz.ch}\\
+    \texttt{student-cluster-courses.inf.ethz.ch}\\
+    \texttt{student-files.inf.ethz.ch} (SMB)\\[3pt]
+    {\color{acadMuted}\textit{Odizolowane od klastra \texttt{euler.ethz.ch}}}%
+  };
+
+  \node[card_dashed, below=0.3cm of l3_clusters] (l3_vis) {%
+    \textbf{Społeczność studencka w budynku CAB}
+    \nodepart{second}
+    \texttt{vis.ethz.ch} (\textit{Verein der Informatik-\\studierenden} - stowarzyszenie D-INFK)\\
+    - Biura i serwisy w budynku CAB\\
+    - Własny stos (Nginx / Proxmox / Python)\\
+    - Korelacja tożsamości studentów D-INFK%
+  };
+
+\end{tikzpicture}

@@ -12,11 +12,11 @@
 
 \subsection{System autonomiczny AS559 i routing BGP}\label{subsec:asn-bgp}
 
-Podstawę łączności zewnętrznej Politechniki Federalnej w Zurychu (ETH Zürich) oraz Wydziału Informatyki (D-INFK) stanowi infrastruktura szwajcarskiej akademickiej sieci naukowo-badawczej \textbf{SWITCHlan}, operującej w globalnej tablicy routingu pod autonomicznym numerem systemu \textbf{AS559} (\textit{aut-num: AS559, as-name: SWITCH}). Zgodnie z rejestrem IANA oraz bazą RIPE NCC, zasób ten posiada status historyczny (\textit{LEGACY / ALLOCATED}) z datą pierwotnej alokacji przypadającą na 1 września 1993 roku (RFC 1930), co potwierdzają oficjalne rekordy rejestracyjne przedstawione na rysunku~\ref{fig:ripe-whois}.
+Podstawę łączności zewnętrznej Politechniki Federalnej w Zurychu (ETH Zürich) oraz Wydziału Informatyki (D-INFK) stanowi infrastruktura szwajcarskiej akademickiej sieci naukowo-badawczej \textbf{SWITCHlan}, operującej w globalnej tablicy routingu pod autonomicznym numerem systemu \textbf{AS559} (\textit{aut-num: AS559, as-name: SWITCH}). Zgodnie z rejestrem IANA oraz bazą RIPE NCC, zasób ten posiada status historyczny (\textit{LEGACY / ALLOCATED}) z datą pierwotnej alokacji przypadającą na 1 września 1993 roku (RFC 1930), co potwierdzają oficjalne rekordy rejestracyjne przedstawione na rysunku \ref{fig:ripe-whois}.
 
 \Figure[0.65]{ripe_as559_whois.png}{Wpis rejestracyjny WHOIS dla autonomicznego systemu AS559 potwierdzający status LEGACY i politykę peeringową (RIPE Stat)}{fig:ripe-whois}
 
-Analiza telemetryczna przeprowadzona z wykorzystaniem platform \textit{RIPE Stat} oraz \textit{Hurricane Electric BGP Toolkit} ujawnia architekturę tranzytową o najwyższym stopniu redundancji operacyjnej. Węzeł AS559 utrzymuje bezpośrednie sesje BGP z \textbf{1302 sąsiadami} (\textit{observed BGP neighbours}), osiągając globalną widoczność routingu na poziomie \textbf{99{,}7\%} dla monitorów IPv4 RIS (320 pełnych węzłów tranzytowych) oraz \textbf{100{,}0\%} dla węzłów IPv6 RIS (309 monitorów), co zilustrowano na rysunku~\ref{fig:ripe-routing-status}.
+Analiza telemetryczna przeprowadzona z wykorzystaniem platform \textit{RIPE Stat} oraz \textit{Hurricane Electric BGP Toolkit} ujawnia architekturę tranzytową o najwyższym stopniu redundancji operacyjnej. Węzeł AS559 utrzymuje bezpośrednie sesje BGP z \textbf{1302 sąsiadami} (\textit{observed BGP neighbours}), osiągając globalną widoczność routingu na poziomie \textbf{99{,}7\%} dla monitorów IPv4 RIS (320 pełnych węzłów tranzytowych) oraz \textbf{100{,}0\%} dla węzłów IPv6 RIS (309 monitorów), co zilustrowano na rysunku \ref{fig:ripe-routing-status}.
 
 \Figure[0.70]{ripe_as559_routing_status.png}{Status globalnej widoczności routingu BGP oraz wolumen rozgłaszanych prefiksów AS559 -- platforma RIPE Stat}{fig:ripe-routing-status}
 
@@ -31,18 +31,18 @@ Propagacja tras BGP systemu AS559 opiera się na wielościeżkowym modelu \texti
 
 \Figure[0.65]{as559_route_propagation.png}{Graf propagacji tras BGP AS559 do globalnych operatorów tranzytowych Tier-1 (Hurricane Electric BGP Toolkit)}{fig:as559-route-propagation}
 
-Szczegółowa dekompozycja sesji peeringowych w podziale na protokoły IPv4 oraz IPv6, zaprezentowana na rysunku~\ref{fig:as559-peers}, dowodzi zaawansowanej symetrii routingu. Kluczowymi partnerami peeringowymi poza siecią akademicką GÉANT są międzynarodowi operatorzy telekomunikacyjni (Zayo, Bharti Airtel, EDGEUNO, Liberty Global, COLT, RETN oraz RASCOM), co gwarantuje optymalizację opóźnień pakietowych do dowolnego punktu globu.
+Szczegółowa dekompozycja sesji peeringowych w podziale na protokoły IPv4 oraz IPv6, zaprezentowana na rysunku \ref{fig:as559-peers}, dowodzi zaawansowanej symetrii routingu. Kluczowymi partnerami peeringowymi poza siecią akademicką GÉANT są międzynarodowi operatorzy telekomunikacyjni (Zayo, Bharti Airtel, EDGEUNO, Liberty Global, COLT, RETN oraz RASCOM), co gwarantuje optymalizację opóźnień pakietowych do dowolnego punktu globu.
 
 \Figure[0.75]{as559_bgp_peers.png}{Zestawienie głównych partnerów peeringowych IPv4 oraz IPv6 dla systemu AS559 (Hurricane Electric BGP Toolkit)}{fig:as559-peers}
 
 \lead{Fizyczne punkty obecności i węzły wymiany ruchu (IXP)}
 
-Równolegle SWITCH utrzymuje bezpośrednią, fizyczną obecność w strategicznych europejskich i szwajcarskich punktach wymiany ruchu internetowego (\textit{Internet Exchange Points -- IXP}), zestawionych na rysunku~\ref{fig:as559-ix}:
+Równolegle SWITCH utrzymuje bezpośrednią, fizyczną obecność w strategicznych europejskich i szwajcarskich punktach wymiany ruchu internetowego (\textit{Internet Exchange Points -- IXP}), zestawionych na rysunku \ref{fig:as559-ix}:
 \begin{itemize}
     \item \textbf{SwissIX (Zurych, CH):} lokalny szwajcarski punkt wymiany (porty IPv4: \code{91.206.52.245}, \code{91.206.52.53}; porty IPv6: \code{2001:7f8:24::15}, \code{2001:7f8:24::35}), gwarantujący bezpośrednią, beztranzytową komunikację z głównymi szwajcarskimi dostawcami usług komercyjnych (Swisscom, Sunrise, Init7).
     \item \textbf{Equinix Zurich (Zurych, CH):} kluczowy komercyjny węzeł kolokacyjny w aglomeracji Zurychu (\code{194.42.48.11}).
     \item \textbf{CIXP (CERN Internet Exchange Point, Genewa, CH):} historyczny punkt wymiany przy Europejskiej Organizacji Badań Jądrowych CERN (\code{192.65.185.130}).
-    \item \textbf{DE-CIX Frankfurt (DE) i AMS-IX Amsterdam (NL):} dwa największe paneuropejskie węzły tranzytowe, zapewniające minimalne opóźnienia pakietów w ruchu międzynarodowym (\textit{AS Path Length} średnio poniżej 2--3 przeskoków, co zilustrowano na rysunku~\ref{fig:ripe-aspath}).
+    \item \textbf{DE-CIX Frankfurt (DE) i AMS-IX Amsterdam (NL):} dwa największe paneuropejskie węzły tranzytowe, zapewniające minimalne opóźnienia pakietów w ruchu międzynarodowym (\textit{AS Path Length} średnio poniżej 2--3 przeskoków, co zilustrowano na rysunku \ref{fig:ripe-aspath}).
 \end{itemize}
 
 \Figure[0.75]{as559_ix_points.png}{Węzły bezpośredniej wymiany ruchu internetowego (IXP) zidentyfikowane dla infrastruktury SWITCH (bgp.he.net)}{fig:as559-ix}
@@ -51,11 +51,11 @@ Równolegle SWITCH utrzymuje bezpośrednią, fizyczną obecność w strategiczny
 
 \lead{Struktura rozgłaszanej przestrzeni adresowej i analiza stabilności (2000--2026)}
 
-Łączna przestrzeń adresowa ogłaszana przez AS559 obejmuje \textbf{117 prefiksów IPv4} (reprezentujących 2\,184\,960 adresów IP) oraz \textbf{9 zagregowanych bloków IPv6} (ekwiwalent ponad 2{,}68 miliona podsieci /48). Analiza historyczna obejmująca 26-letni okres obserwacji telemetrycznej (lata 2000--2026), przedstawiona na rysunku~\ref{fig:ripe-prefix-count}, wykazuje organiczny, stabilny wzrost wolumenu rozgłaszanych sieci przy całkowitym braku przerw w ciągłości rozgłaszania tras brzegowych.
+Łączna przestrzeń adresowa ogłaszana przez AS559 obejmuje \textbf{117 prefiksów IPv4} (reprezentujących 2\,184\,960 adresów IP) oraz \textbf{9 zagregowanych bloków IPv6} (ekwiwalent ponad 2{,}68 miliona podsieci /48). Analiza historyczna obejmująca 26-letni okres obserwacji telemetrycznej (lata 2000--2026), przedstawiona na rysunku \ref{fig:ripe-prefix-count}, wykazuje organiczny, stabilny wzrost wolumenu rozgłaszanych sieci przy całkowitym braku przerw w ciągłości rozgłaszania tras brzegowych.
 
 \Figure[0.70]{ripe_as559_prefix_count.png}{Wieloletnia historia liczby ogłaszanych prefiksów IPv4 i IPv6 w latach 2000--2026 dowodząca wysokiej stabilności routingu (RIPE Stat)}{fig:ripe-prefix-count}
 
-Z perspektywy rekonesansu D-INFK kluczowe znaczenie ma identyfikacja bloków należących bezpośrednio do ETH Zürich w relacji do pozostałych instytucji domeny federalnej, co zestawiono w tabeli~\ref{tab:as559-prefiksy}.
+Z perspektywy rekonesansu D-INFK kluczowe znaczenie ma identyfikacja bloków należących bezpośrednio do ETH Zürich w relacji do pozostałych instytucji domeny federalnej, co zestawiono w tabeli \ref{tab:as559-prefiksy}.
 
 \begin{table}[H]
 \caption{Kluczowe prefiksy IPv4 i IPv6 rozgłaszane w systemie autonomicznym AS559 (RIPE Stat)}
@@ -87,7 +87,7 @@ Z perspektywy rekonesansu D-INFK kluczowe znaczenie ma identyfikacja bloków nal
 \begin{enumerate}
     \item \textbf{Wysoka odporność na ataki BGP Hijacking i BGP Route Leaks:} Analiza telemetrii RIPE wykazuje pełną implementację mechanizmów \textit{RPKI (Resource Public Key Infrastructure)} z kryptograficznymi obiektami ROA dla prefiksów ETH Zürich. Próba nieuprawnionego przejęcia ruchu poprzez wstrzyknięcie fałszywych tras BGP zostanie odrzucona przez nadrzędnych dostawców Tier-1 (Arelion, Lumen).
     \item \textbf{Brak wąskich gardeł przepustowości (DDoS Resilience):} Dzięki bezpośredniemu stykowi ze SwissIX, CIXP, DE-CIX oraz przepustowościom rzędu setek gigabitów na węzłach tranzytowych, perymetr sieciowy ETH cechuje się ogromną odpornością na wolumetryczne ataki odmowy usługi (DDoS).
-    \item \textbf{Wymuszenie wektorów ataku:} Odporność routingu autonomicznego AS559 potwierdza tezę o wysokiej dojrzałości perymetru (\textit{High Security Posture}) na poziomie warstwy L3/BGP, co wymusza przesunięcie działań rozpoznawczych na logikę podsieci wewnętrznych (podrozdział~\ref{subsec:pule-ip}) oraz warstwę aplikacji webowych.
+    \item \textbf{Wymuszenie wektorów ataku:} Odporność routingu autonomicznego AS559 potwierdza tezę o wysokiej dojrzałości perymetru (\textit{High Security Posture}) na poziomie warstwy L3/BGP, co wymusza przesunięcie działań rozpoznawczych na logikę podsieci wewnętrznych (podrozdział \ref{subsec:pule-ip}) oraz warstwę aplikacji webowych.
 \end{enumerate}
 
 \subsection{Podsieci IPv4 i IPv6 dedykowane dla D-INFK}\label{subsec:pule-ip}

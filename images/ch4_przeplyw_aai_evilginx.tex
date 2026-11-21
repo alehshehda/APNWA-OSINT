@@ -1,0 +1,130 @@
+% !tikz-libs: babel,positioning,arrows.meta,calc
+% Diagram sekwencji (Lifelines): standardowy przepływ federacyjny SAML 2.0 vs przejęcie sesji przez proxy AitM (Evilginx2).
+\begin{tikzpicture}[
+  >= {Stealth[length=2.2mm, width=1.5mm]},
+  secbanner/.style = {
+    rectangle,
+    draw=acadInk,
+    semithick,
+    fill=acadFill,
+    minimum width=14.6cm,
+    minimum height=0.55cm,
+    inner sep=3pt,
+    align=left,
+    font=\scriptsize\bfseries
+  }
+]
+
+  % =========================================================================
+  % CZĘŚĆ A: STANDARDOWY PRZEPŁYW SAML 2.0 (SHIBBOLETH AAI / SWITCH EDU-ID)
+  % =========================================================================
+  \node[secbanner] (ban_a) at (6.0, 0) {\quad A. STANDARDOWY PRZEPŁYW FEDERACYJNY SAML 2.0 (WYMUSZENIE REFEDS MFA NA BRAMIE IdP)};
+
+  \node[iconnode] (a_u_ic) at (0, -0.95) {\AffIcon[1.05cm]{sq_client}};
+  \node[iconlabel, below=0.12cm of a_u_ic] (a_u_lbl) {%
+    \textbf{1. Użytkownik D-INFK}\\
+    {\color{acadMuted}Przeglądarka (\texttt{nethz} + TOTP)}%
+  };
+
+  \node[iconnode] (a_sp_ic) at (6.0, -0.95) {\AffIcon[1.05cm]{sq_server}};
+  \node[iconlabel, below=0.12cm of a_sp_ic] (a_sp_lbl) {%
+    \textbf{2. Service Provider (SP)}\\
+    {\color{acadMuted}np. \texttt{gitlab.inf.ethz.ch}}%
+  };
+
+  \node[iconnode] (a_idp_ic) at (12.0, -0.95) {\AffIcon[1.05cm]{sq_shield}};
+  \node[iconlabel, below=0.12cm of a_idp_ic] (a_idp_lbl) {%
+    \textbf{3. Identity Provider (IdP)}\\
+    {\color{acadMuted}\texttt{aai-logon.ethz.ch} / \texttt{eduid.ch}}%
+  };
+
+  % Linie życia Części A
+  \coordinate (a_l1_top) at (0, -2.35);
+  \coordinate (a_l2_top) at (6.0, -2.35);
+  \coordinate (a_l3_top) at (12.0, -2.35);
+  \coordinate (a_l1_bot) at (0, -6.15);
+  \coordinate (a_l2_bot) at (6.0, -6.15);
+  \coordinate (a_l3_bot) at (12.0, -6.15);
+
+  \draw[lifeline] (a_l1_top) -- (a_l1_bot);
+  \draw[lifeline] (a_l2_top) -- (a_l2_bot);
+  \draw[lifeline] (a_l3_top) -- (a_l3_bot);
+
+  % Komunikaty Części A (wszystkie etykiety mieszczą się wewnątrz 6.0 cm odstępu między liniami życia)
+  \draw[flow] (0, -2.75) --
+    node[flowlabel, above=1pt] {\textbf{1)} \texttt{GET /protected/resource}}
+    (6.0, -2.75);
+
+  \draw[ctrl] (6.0, -3.45) --
+    node[flowlabel, above=1pt] {\textbf{2)} \texttt{HTTP 302} (\texttt{SAMLRequest} + \texttt{RelayState})}
+    (0, -3.45);
+
+  \draw[flow, draw=acadBlue] (0, -4.25) --
+    node[flowlabel, above=1pt, text=acadBlue] {\textbf{3)} \texttt{GET /idp/profile/SAML2/Redirect/SSO} (login \texttt{nethz} + hasło + TOTP MFA)}
+    (12.0, -4.25);
+
+  \draw[flow, draw=acadBlue] (12.0, -5.05) --
+    node[flowlabel, above=1pt, text=acadBlue] {\textbf{4)} \texttt{POST /Shibboleth.sso/SAML2/POST}}
+    (6.0, -5.05);
+
+  \draw[flow] (6.0, -5.80) --
+    node[flowlabel, above=1pt] {\textbf{5)} \texttt{HTTP 302} + \texttt{Set-Cookie: \_shibsession\_*}}
+    (0, -5.80);
+
+  % =========================================================================
+  % CZĘŚĆ B: PRZECHWYCENIE SESJI PO 2FA PRZEZ PROXY AitM (EVILGINX2)
+  % =========================================================================
+  \node[secbanner, draw=acadRed, fill=white, text=acadRed] (ban_b) at (6.0, -6.95) {\quad B. PRZECHWYCENIE SESJI PO WERYFIKACJI 2FA PRZEZ ODWROTNE PROXY AitM (EVILGINX2 - SCENARIUSZ 1)};
+
+  \node[iconnode] (b_u_ic) at (0, -7.90) {\AffIcon[1.05cm]{sq_client}};
+  \node[iconlabel, below=0.12cm of b_u_ic] (b_u_lbl) {%
+    \textbf{Ofiara (Pracownik)}\\
+    {\color{acadMuted}Otwiera link phishingowy}%
+  };
+
+  \node[iconnode] (b_px_ic) at (6.0, -7.90) {\AffIcon[1.05cm]{sq_scull}};
+  \node[iconlabel, below=0.12cm of b_px_ic] (b_px_lbl) {%
+    \textbf{\textcolor{acadRed}{Reverse Proxy AitM (\texttt{Evilginx2})}}\\
+    {\color{acadRed}Domena \textit{lookalike} (\texttt{aai-ethz[.]ch})}%
+  };
+
+  \node[iconnode] (b_idp_ic) at (12.0, -7.90) {\AffIcon[1.05cm]{sq_shield}};
+  \node[iconlabel, below=0.12cm of b_idp_ic] (b_idp_lbl) {%
+    \textbf{Prawdziwy IdP oraz SP}\\
+    {\color{acadMuted}\texttt{aai-logon.ethz.ch} / \texttt{gitlab.inf.ethz.ch}}%
+  };
+
+  % Linie życia Części B
+  \coordinate (b_l1_top) at (0, -9.30);
+  \coordinate (b_l2_top) at (6.0, -9.30);
+  \coordinate (b_l3_top) at (12.0, -9.30);
+  \coordinate (b_l1_bot) at (0, -12.60);
+  \coordinate (b_l2_bot) at (6.0, -12.60);
+  \coordinate (b_l3_bot) at (12.0, -12.60);
+
+  \draw[lifeline] (b_l1_top) -- (b_l1_bot);
+  \draw[lifeline, draw=acadRed] (b_l2_top) -- (b_l2_bot);
+  \draw[lifeline] (b_l3_top) -- (b_l3_bot);
+
+  % Komunikaty Części B
+  \draw[alert] (0, -9.75) --
+    node[flowlabel, above=1pt, text=acadRed] {\textbf{1)} Login \texttt{nethz} + hasło + kod TOTP}
+    (6.0, -9.75);
+
+  \draw[alert] (6.0, -10.55) --
+    node[flowlabel, above=1pt, text=acadRed] {\textbf{2)} Przekazanie na żywo (proxy TLS)}
+    (12.0, -10.55);
+
+  \draw[flow] (12.0, -11.35) --
+    node[flowlabel, above=1pt] {\textbf{3)} \texttt{SAMLResponse} + \texttt{Set-Cookie}}
+    (6.0, -11.35);
+
+  \draw[ctrl] (6.0, -12.15) --
+    node[flowlabel, above=1pt] {\textbf{4)} Przekierowanie do portalu}
+    (0, -12.15);
+
+  \node[block, draw=acadRed, thick, fill=white, text=acadRed, font=\scriptsize\bfseries] at (9.1, -12.15) {%
+    Przejęto ciasteczko \texttt{\_shibsession\_*}%
+  };
+
+\end{tikzpicture}
