@@ -3,7 +3,7 @@
 [![View PDF](https://img.shields.io/badge/View-PDF-blue?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](https://alehshehda.github.io/APNWA-OSINT/APNWA-OSINT.pdf)
 [![Download PDF](https://img.shields.io/badge/Download-PDF-success?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alehshehda/APNWA-OSINT/releases/download/latest/APNWA-OSINT.pdf)
 
-Project documentation for the **Advanced Pentesting of Network and Web Application** course (*Zaawansowane testy penetracyjne sieci i aplikacji Web*) at Wrocław University of Science and Technology, Faculty of Information and Communication Technology (Cybersecurity).
+Project documentation for the **Advanced Pentesting of Networks and Web Application** course (*Zaawansowane testy penetracyjne sieci i aplikacji Web*) at Wrocław University of Science and Technology, Faculty of Information and Communication Technology (Cybersecurity).
 
 ## Authors
 

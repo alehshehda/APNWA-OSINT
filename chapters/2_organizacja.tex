@@ -10,69 +10,650 @@
 
 \section{Struktura organizacyjna i zarządzanie wydziałem D-INFK}\label{sec:struktura-dinfk}
 
+Analiza struktury organizacyjnej instytucji akademickiej stanowi fundamentalny etap rekonesansu w ramach Filaru I przyjętej metodyki OSINT. Pozwala ona na zidentyfikowanie łańcucha decyzyjnego, podziału kompetencji, nieformalnych zależności oraz kluczowych punktów zaufania wewnątrz organizacji. W przypadku Wydziału Informatyki Politechniki Federalnej w Zurychu (\textit{Departement Informatik - D-INFK}) dekompozycja struktury zarządczej umożliwia nie tylko zrozumienie obiegu informacji formalnych, lecz przede wszystkim dostarcza danych niezbędnych do wiarygodnego modelowania wektorów socjotechnicznych opartych na autorytecie instytucjonalnym.
+
 \subsection{Władze wydziału i organy decyzyjne}\label{subsec:wladze-wydzialu}
-% TO-DO:
-% 1. Przedstawić formalne kierownictwo (Head of Department, Director of Studies).
-% 2. Opisać zależność D-INFK od Rady Uczelni ETH (Schulleitung) i ETH Board.
-% 3. Wymienić organy kolegialne: Departementskonferenz (DK) i Departementsausschuss (DA).
-% 4. Wyjaśnić znaczenie wywiadowcze autorytetu władz dla pretextingu socjotechnicznego.
+
+W strukturze akademickiej i administracyjnej Politechniki Federalnej w Zurychu Wydział Informatyki (\textit{D-INFK}) funkcjonuje jako jednostka o wysokim stopniu autonomii wykonawczej, podlegając bezpośrednio nadrzędnej Radzie Uczelni (\textit{Schulleitung}) oraz federalnej Radzie Politechnik (\textit{ETH-Rat}). Organem kierowniczym odpowiedzialnym za bieżące zarządzanie strategiczne, operacyjne i naukowe wydziału jest Rada Wydziału (\textit{Departementsleitung - DL}) \cite{eth_dinfk_org}. Działalność kierownictwa jest wspierana przez dwa kluczowe organy kolegialne:
+\begin{itemize}
+    \item \textbf{Konferencję Wydziału (\textit{Departementskonferenz - DK}):} Najwyższe ciało plenarne zrzeszające wszystkich profesorów zwyczajnych, przedstawicieli kadry naukowej, personelu techniczno-administracyjnego oraz studentów. Konferencja odpowiada za uchwalanie programów studiów, regulaminów wewnętrznych oraz opiniowanie wniosków nominacyjnych.
+    \item \textbf{Komitet Wydziałowy (\textit{Departementsausschuss - DA}):} Węższy komitet doradczo-wykonawczy, koordynujący realizację uchwał DK oraz opiniujący kluczowe decyzje finansowo-lokalowe przed ich wdrożeniem.
+\end{itemize}
+
+W ramach pasywnego rekonesansu OSINT przeprowadzono ekstrakcję danych ze struktury oficjalnego portalu wydziału (\file{inf.ethz.ch}), co pozwoliło na precyzyjną identyfikację imiennego składu Rady Wydziału (DL), zaprezentowanego na rysunku \ref{fig:dinfk-board} oraz w tabeli \ref{tab:wladze-dinfk}.
+
+\Figure[0.65]{dinfk_board.jpg}{Skład zarządu wydziału D-INFK (\textit{Departementsleitung}) opublikowany na oficjalnym portalu uczelni}{fig:dinfk-board}
+
+\begin{table}[H]
+    \centering
+    \caption{Skład Rady Wydziału Informatyki ETH Zürich (\textit{Departementsleitung - DL})}\label{tab:wladze-dinfk}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.28\linewidth} L{0.32\linewidth} Y}
+        \toprule
+        \hcell{Imię i nazwisko} & \hcell{Funkcja formalna (DL)} & \hcell{Rola operacyjna i znaczenie instytucjonalne} \\
+        \midrule
+        Prof. Thomas Hofmann & Head of Department & Strategiczne zarządzanie wydziałem, nadzór nad budżetem i reprezentacja zewnętrzna. \\
+        Prof. Srdjan Čapkun & Deputy Head of Department & Zastępca szefa wydziału, koordynacja inicjatyw badawczych w obszarze bezpieczeństwa. \\
+        Prof. Adrian Perrig & Director of Studies & Nadzór nad tokiem studiów, sprawami studenckimi, egzaminami i kadrą dydaktyczną. \\
+        Prof. Valentina Boeva & Deputy Director of Studies & Zastępca dyrektora ds. dydaktyki, koordynacja międzynarodowych programów studiów. \\
+        Prof. Stelian Coros & Członek zarządu (Board Member) & Reprezentacja instytutów interaktywnych systemów inteligentnych. \\
+        Prof. Siyu Tang & Członek zarządu (Board Member) & Reprezentacja instytutów obliczeń wizualnych i grafiki komputerowej. \\
+        Barbara Pfändner & Managing Director & Dyrektor zarządzająca; operacyjna administracja kadr, finansów i infrastruktury. \\
+        Stefan Walter & Head IT Services (ISGINF) & Szef wydziałowej grupy wsparcia teleinformatycznego (ISG D-INFK). \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Znaczenie wywiadowcze i modelowanie wektorów socjotechnicznych (Actionable Intelligence)}
+
+Identyfikacja ścisłego kierownictwa wydziału dostarcza kluczowych przesłanek dla konstrukcji realistycznych scenariuszy socjotechnicznych, opisanych szczegółowo w rozdziale \ref{ch:socjotechnika}. W inżynierii społecznej mechanizm uległości wobec autorytetu (\textit{Authority Bias}) stanowi jeden z najskuteczniejszych wektorów manipulacji w środowiskach akademickich i korporacyjnych:
+\begin{enumerate}
+    \item \textbf{Pretexting dziekański (Prof. Thomas Hofmann):} Wykorzystanie tożsamości szefa wydziału umożliwia formułowanie komunikatów o charakterze bezwzględnego priorytetu organizacyjnego (np. rzekome pilne ankiety akredytacyjne, zarządzenia kryzysowe czy wymogi sprawozdawczości federalnej). Ze względu na pozycję w hierarchii, odbiorcy niższego szczebla rzadko dokonują weryfikacji takich żądań kanałem zwrotnym.
+    \item \textbf{Pretexting dydaktyczny i studencki (Prof. Adrian Perrig):} Funkcja Dyrektora Studiów sprawia, że wezwania dotyczące weryfikacji zapisów na przedmioty, logowania do platform egzaminacyjnych czy potwierdzania tematów prac dyplomowych kierowane do studentów i doktorantów charakteryzują się niemal stuprocentową wiarygodnością operacyjną.
+    \item \textbf{Pretexting administracyjno-proceduralny (Barbara Pfändner):} Pozycja dyrektor zarządzającej stanowi idealny punkt wyjścia do kierowania zapytań o status rozliczeń, deklaracje podatkowe, audyty sprzętowe lub weryfikację uprawnień do gabinetów i laboratoriów do pracowników administracji i sekretariatów.
+    \item \textbf{Wektor wsparcia teleinformatycznego (Stefan Walter):} Zidentyfikowanie obecności szefa grupy IT (ISGINF) bezpośrednio w ścisłym zarządzie wydziału dowodzi wysokiej integracji procedur technicznych z procesami decyzyjnymi. Daje to podstawę do wysoce wiarygodnych ataków vishingowych i spear-phishingowych podszywających się pod bezpośrednie polecenia szefa IT (np. wymuszenie pilnej zmiany poświadczeń nethz lub aktualizacji kluczy SSH).
+\end{enumerate}
 
 \subsection{Instytuty badawcze i laboratoria wydziałowe}\label{subsec:instytuty-laboratoria}
-% TO-DO:
-% 1. Wymienić i scharakteryzować instytuty D-INFK (np. Systems, InfSec, IML, Pervasive, TCS, IVC, IPL).
-% 2. Opisać centrum cyberbezpieczeństwa ZISC (współpraca z sektorem przemysłowym/bankowym).
-% 3. Zwrócić uwagę na autonomię instytutów w doborze narzędzi i serwerów.
+
+Struktura badawczo-dydaktyczna Wydziału Informatyki ETH Zürich charakteryzuje się wysokim stopniem decentralizacji naukowej. Działalność badawcza skupiona jest w siedmiu wyspecjalizowanych instytutach, obejmujących pełne spektrum współczesnej informatyki – od podstaw teoretycznych, przez inżynierię systemów i bezpieczeństwo, po zaawansowane systemy sztucznej inteligencji \cite{eth_dinfk_institutes}. Na czele każdego instytutu stoi mianowany kierownik (\textit{Head of Institute}), koordynujący pracę podległych laboratoriów i grup badawczych prowadzonych przez poszczególnych profesorów zwyczajnych i nadzwyczajnych.
+
+W ramach rekonesansu źródeł otwartych zmapowano strukturę instytutów D-INFK oraz ich aktualną kadrę kierowniczą, co zestawiono w tabeli \ref{tab:instytuty-dinfk}.
+
+\begin{table}[H]
+    \centering
+    \caption{Zestawienie instytutów badawczych D-INFK, kierownictwa i głównych obszarów badawczych}\label{tab:instytuty-dinfk}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.34\linewidth} L{0.26\linewidth} Y}
+        \toprule
+        \hcell{Instytut badawczy} & \hcell{Kierownik (Head)} & \hcell{Główny profil operacyjny i aktywa webowe} \\
+        \midrule
+        Institute for Theoretical Computer Science (TCS) & Prof. David Steurer & Teoria obliczeń, algorytmy aproksymacyjne, kryptografia teoretyczna i złożoność obliczeniowa. \\
+        Institute for Computing Platforms & Prof. Gustavo Alonso & Architektury sprzętowo-programowe, klastry wielordzeniowe, akceleracja FPGA/GPU i systemy bazodanowe. \\
+        Institute for Intelligent Interactive Systems (IIIS) & Prof. Stelian Coros & Robotyka obliczeniowa, fizyczna interakcja człowiek-komputer (HCI) oraz inteligentne systemy sensoryczne. \\
+        Institute for Visual Computing (IVC) & Prof. Siyu Tang & Widzenie komputerowe, przetwarzanie obrazu, rendering, grafika 3D oraz wirtualna rzeczywistość. \\
+        Institute for Information Security (InfSec) & Prof. Kenny Paterson & Kryptografia stosowana, bezpieczeństwo systemów sieciowych, weryfikacja formalna i ochrona prywatności. \\
+        Institute for Machine Learning (IML) & Prof. Gunnar Rätsch & Teoria uczenia maszynowego, sieci neuronowe, bioinformatyka obliczeniowa i medycyna precyzyjna. \\
+        Institute for Programming Languages and Systems (IPLS) & Prof. Zhendong Su & Języki programowania, optymalizacja kompilatorów, statyczna analiza kodu i automatyczna synteza programów (\code{pls.inf.ethz.ch}). \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Szczególną rolę w architekturze organizacyjnej wydziału odgrywa Centrum Bezpieczeństwa Informacji i Ochrony Prywatności w Zurychu (\textit{Zurich Information Security and Privacy Center - ZISC}) \cite{eth_zisc}. Założone w 2003 roku centrum stanowi platformę strategicznej współpracy pomiędzy badaczami Instytutu InfSec a wiodącymi partnerami przemysłowymi ze szwajcarskiego sektora finansowego, ubezpieczeniowego i technologicznego.
+\lead{Autonomia technologiczna laboratoriów a ryzyko infrastrukturalne}
+
+Analiza struktury wykazała, że poszczególne instytuty i laboratoria cieszą się dużą swobodą operacyjną w zakresie doboru infrastruktury obliczeniowej. O ile podstawowe stacje robocze i centralne laboratoria studenckie są standaryzowane przez grupę wsparcia ISG D-INFK, o tyle specjalistyczne serwery obliczeniowe, klastry GPU dedykowane uczeniu maszynowemu oraz serwery deweloperskie są nierzadko konfigurowane i zarządzane bezpośrednio przez doktorantów i asystentów badawczych.
+
+Z perspektywy bezpieczeństwa IT prowadzi to do zjawiska tzw. \textit{Shadow IT} na poziomie akademickim:
+\begin{itemize}
+    \item Utrzymywanie odrębnych subdomen i dedykowanych serwisów WWW (np. \code{pls.inf.ethz.ch}), które mogą podlegać nieregularnym cyklom aktualizacji oprogramowania w porównaniu z głównym portalem uczelni.
+    \item Niejednolita polityka zarządzania uprawnieniami do lokalnych repozytoriów kodu źródłowego oraz testowych baz danych zawierających zbiory badawcze.
+\end{itemize}
+
+\lead{Wnioski operacyjne dla inżynierii społecznej (Actionable Intelligence)}
+
+Powiązanie nazwisk kierowników instytutów z konkretnymi domenami badawczymi umożliwia precyzyjne sprofilowanie ataków socjotechnicznych typu \textit{spear-phishing} i \textit{waterholing}:
+\begin{enumerate}
+    \item \textbf{Wertykalny pretexting laboratoryjny:} Młodzi badacze, doktoranci i asystenci wykazują wysoki stopień uległości wobec poleceń wydawanych przez bezpośrednich szefów swoich instytutów. Wiadomość podszywająca się pod prof. Kenny'ego Patersona (InfSec) lub prof. Zhendonga Su (IPLS) z prośbą o pilną ocenę artefaktu programistycznego (\textit{artifact evaluation}), uruchomienie kodu weryfikacyjnego na lokalnym serwerze lub uzupełnienie danych do publikacji konferencyjnej posiada wysoki wskaźnik otwarć i uruchomień załącznika.
+    \item \textbf{Pretexting grantowy i konferencyjny:} Zbieżność tematyczna ułatwia tworzenie fałszywych zaproszeń do komitetów programowych renomowanych konferencji (np. ACM CCS, IEEE S\&P, USENIX Security, NeurIPS) zawierających złośliwe formularze phishingu poświadczeń \code{nethz}.
+\end{enumerate}
 
 \subsection{Struktura i zadania grupy wsparcia IT (ISG D-INFK)}\label{subsec:administracja-isg}
-% TO-DO:
-% 1. Opisać rolę IT Service Group (ISG D-INFK) jako autonomicznego ośrodka IT wydziału.
-% 2. Wskazać zadania: zarządzanie serwerownią CAB, klastrami HPC, helpdeskiem (helpdesk@inf.ethz.ch),
-%    zarządzaniem stacjami roboczymi (Ubuntu LTS, Windows) i kontami nethz.
-% 3. Wskazać ISG jako centralny punkt zaufania technicznego (kluczowe dla vishingu w Rozdziale 6).
+
+Podczas gdy centralne usługi teleinformatyczne Politechniki są zarządzane przez ogólnouczelniany dział \textit{Informatikdienste (ID)}, Wydział Informatyki utrzymuje w pełni autonomiczną, wyspecjalizowaną jednostkę wsparcia – \textit{IT Service Group (ISG D-INFK / ISGINF)} \cite{eth_isg}. Jednostka ta odpowiada za kompleksowe utrzymanie lokalnej infrastruktury serwerowej, klastrów obliczeniowych, laboratoriów dydaktycznych oraz stacji roboczych pracowników naukowych.
+
+Na czele zespołu stoi Stefan Walter (\textit{Head IT Services / ISL}), reprezentujący jednocześnie pion techniczny w Radzie Wydziału (DL). Szczegółowa eksploracja zasobów portalu \file{isg.inf.ethz.ch} pozwoliła na zidentyfikowanie pełnego składu osobowego grupy wsparcia, podziału ról technologicznych, a także przypisanych gabinetów i numerów telefonów w budynku CAB, co zestawiono w tabeli \ref{tab:isg-personel}.
+
+\begin{table}[H]
+    \centering
+    \caption{Struktura ról technologicznych i alokacji fizycznej personelu ISG D-INFK w budynku CAB}\label{tab:isg-personel}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.22\linewidth} L{0.26\linewidth} C{0.14\linewidth} Y}
+        \toprule
+        \hcell{Identyfikator roli} & \hcell{Specjalizacja operacyjna} & \hcell{Gabinet (CAB)} & \hcell{Zakres odpowiedzialności technologicznej} \\
+        \midrule
+        Stefan Walter & Head IT Services / Team Leader & CAB E 46 & Strategiczne zarządzanie ISG, koordynacja projektów IT. \\
+        \anon{Admin_Win_DB} & Windows Administrator & CAB E 45 & Zarządzanie stacjami Windows, domeną Active Directory i politykami GPO. \\
+        \anon{Admin_Mac_AK} & Windows / Mac Administrator & CAB E 45 & Wsparcie środowisk macOS i stacji roboczych Apple. \\
+        \anon{Admin_Linux_MB} & Linux Administrator & CAB E 43 & Utrzymanie stacji Linux, repozytoriów pakietów i instalacji sieciowych. \\
+        \anon{DevOps_Linux_MB} & Linux Admin / DevOps & CAB E 44.2 & Automatyzacja konfiguracji, utrzymanie serwerów wydziałowych i potoków CI/CD. \\
+        \anon{Dev_Web_MM} & Linux Admin / Web Developer & CAB E 44.1 & Rozwój i utrzymanie wewnętrznych portali WWW wydziału. \\
+        \anon{DevOps_K8s_MR} & Kubernetes / DevOps & CAB E 44.1 & Zarządzanie klastrami kontenerowymi Kubernetes i platformami chmurowymi. \\
+        \anon{Admin_Edu_MS} & Linux Admin / Apprentice Teacher & CAB E 44.2 & Opieka nad laboratoriami studenckimi i szkolenie kadr technicznych. \\
+        \anon{Purchase_TS} & Purchase / Multimedia & CAB E 48 & Realizacja zamówień sprzętowych, logistyka IT. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Katalog usług i domen operacyjnych ISG D-INFK}
+
+Analiza publicznie dostępnego katalogu wsparcia technicznego ISG pozwoliła na precyzyjne sklasyfikowanie 18 domen operacyjnych realizowanych przez wydziałowy zespół IT, które podzielono na cztery kluczowe filary technologiczne:
+\begin{enumerate}
+    \item \textbf{Infrastruktura obliczeniowa, orkiestracja i przechowywanie danych:}
+    \begin{itemize}
+        \item \textit{Cluster Computing i Kubernetes:} Utrzymanie wielowęzłowych klastrów obliczeniowych HPC oraz środowisk kontenerowych na potrzeby zaawansowanych symulacji naukowych.
+        \item \textit{Storage i Backup:} Zapewnianie wydziałowych zasobów dyskowych, sieciowych systemów plików (NFS/SMB) oraz regularnych migawek i kopii zapasowych danych badawczych.
+    \end{itemize}
+    \item \textbf{Środowiska stacji roboczych i laboratoria studenckie:}
+    \begin{itemize}
+        \item \textit{Desktops and Laptops:} Przygotowywanie, instalacja sieciowa i standaryzacja obrazów systemów operacyjnych na urządzeniach pracowników.
+        \item \textit{Student Computer Labs:} Utrzymanie publicznych sal terminalowych i laboratoriów komputerowych zlokalizowanych w budynku CAB.
+        \item \textit{Software, Printing i Multimedia:} Repozytoria oprogramowania licencjonowanego, infrastruktura druku sieciowego.
+    \end{itemize}
+    \item \textbf{Zarządzanie tożsamością, dostępem i bezpieczeństwem sieciowym:}
+    \begin{itemize}
+        \item \textit{User Accounts:} Zarządzanie uprawnieniami, atrybutami POSIX i grupami dostępowymi skorelowanymi z centralnymi kontami \code{nethz}.
+        \item \textit{Remote Access i Network:} Konfiguracja bezpiecznego dostępu zdalnego (wydziałowe tunele VPN, bramy bastionowe SSH) oraz lokalnej segmentacji sieci LAN i Wi-Fi.
+        \item \textit{Security:} Wdrażanie zaleceń bezpieczeństwa, obsługa incydentów we współpracy z ETH-CSIRT oraz egzekwowanie dobrych praktyk kryptograficznych.
+    \end{itemize}
+    \item \textbf{Komunikacja, rozwój oprogramowania i usługi WWW:}
+    \begin{itemize}
+        \item \textit{Collaboration Platforms, Mail i Mailing Lists:} Obsługa wydziałowych list dyskusyjnych i platform pracy grupowej uzupełniających centralną pocztę uczelnianą.
+        \item \textit{Version Control:} Utrzymanie instancji GitLab (\code{gitlab.inf.ethz.ch}) dedykowanej projektom dydaktycznym i badawczym wydziału.
+        \item \textit{Web:} Hosting witryn grup badawczych i konferencji naukowych pod domenami instytutowymi.
+    \end{itemize}
+\end{enumerate}
+
+\lead{Wnioski infrastrukturalne i analiza wektorów ataku (Actionable Intelligence)}
+
+Struktura zespołu ISG oraz katalog świadczonych usług ujawniają kluczowe wektory wywiadowcze o krytycznym znaczeniu dla kolejnych etapów rekonesansu oraz modelowania scenariuszy socjotechnicznych:
+
+\begin{enumerate}
+    \item \textbf{Topologia fizycznego skrzydła IT w budynku CAB:} Pokoje administratorów tworzą zwarty kompleks na parterze budynku CAB w pokojach \code{CAB E 43}--\code{CAB E 48}, w bezpośrednim sąsiedztwie Helpdesku \code{CAB E 41.1}. Informacja ta ma fundamentalne znaczenie dla analizy ochrony obwodowej w podrozdziale \ref{sec:lokalizacja} i scenariuszy obecności fizycznej w rozdziale \ref{ch:socjotechnika}.
+    \item \textbf{Mapowanie wewnętrznej numeracji telefonicznej:} Bezpośrednie numery telefonów personelu należą do zwartej puli z prefiksem \code{+41 44 632 72 XX} oraz \code{+41 44 632 81/82 XX}. W scenariuszach vishingowych atakujący może wykorzystać techniki fałszowania tożsamości, podszywając się pod konkretny numer wewnętrzny administratora Windows.
+    \item \textbf{Ujawnienie schematu nazw kont nethz:} Analiza adresów e-mail personelu odsłania regułę generowania identyfikatorów kont użytkowników w usłudze \code{nethz} (zbitki literowe nazwiska i imienia do maksymalnie 8 znaków), co ułatwia enumerację kont i ataki typu \textit{password spraying}.
+    \item \textbf{Wektory pretextingu oparte na usługach (Remote Access, GitLab, Backup):} Udokumentowane procedury usług dają napastnikowi gotowe preteksty techniczne. Komunikat od \code{helpdesk@inf.ethz.ch} o rzekomym wygaśnięciu certyfikatu VPN, konieczności ponownej autoryzacji klucza SSH w usłudze \code{gitlab.inf.ethz.ch} lub przekroczeniu limitu dyskowego nie wzbudza podejrzeń i wymusza natychmiastowe kliknięcie w link phishingowy.
+    \item \textbf{Punkt zaczepienia łańcucha dostaw (Supply Chain):} Zidentyfikowanie roli \anon{Purchase_TS} (pokój \code{CAB E 48}) odpowiadającej za zamówienia sprzętu wskazuje konkretny cel osobowy dla fałszywych faktur, ofert dostawców i złośliwych załączników pod pretekstem wyceny serwerów.
+\end{enumerate}
 
 \section{Otoczenie fizyczne i infrastruktura kampusowa}\label{sec:lokalizacja}
 
-\subsection{Lokalizacja i topologia budynków wydziałowych}\label{subsec:budynki}
-% TO-DO:
-% 1. Opisać lokalizację budynków na kampusie ETH Zentrum (Zurych).
-% 2. Skupić się na budynku CAB (Universitätstrasse 6) jako sercu wydziału (Dziekanat, ISG pokój CAB E 41.1,
-%    serwerownie wydziałowe, laboratoria studenckie).
-% 3. Wymienić budynki pomocnicze (np. CHN, CNB, OAT).
+Rozpoznanie otoczenia fizycznego stanowi integralny komponent filaru i metodyki OSINT. W analizie bezpieczeństwa teleinformatycznego warstwa fizyczna definiuje obwód zaufania organizacji, determinując bezpośredni dostęp do okablowania strukturalnego, gniazd sieciowych LAN, stacji roboczych personelu oraz serwerowni. Zgodnie z przyjętymi założeniami pasywnymi, analiza otoczenia fizycznego Wydziału Informatyki ETH Zürich została przeprowadzona wyłącznie w oparciu o publiczne plany kampusowe, oficjalne przewodniki nawigacyjne uczelni oraz zdjęcia satelitarne i panoramiczne Google Street View.
+
+\subsection{Lokalizacja i topologia obiektów wydziału}\label{subsec:budynki}
+
+Wydział Informatyki D-INFK nie stanowi zwartego, odizolowanego miasteczka akademickiego, lecz funkcjonuje w modelu rozproszonym w obrębie zurbanizowanej tkanki miejskiej Zurychu. Główna koncentracja zasobów wydziału przypada na historyczny kampus centralny (\textit{Campus Zentrum}), uzupełniony o zamiejscowe obiekty badawcze i budynki komercyjne, co zilustrowano na planie sytuacyjnym (rys. \ref{fig:campus-zentrum-map}).
+
+\Figure[0.80]{campus_zentrum_map.jpg}{Plan sytuacyjny kampusu ETH Zentrum z lokalizacją kompleksu budynków CAB, CNB i CHN oraz węzłów komunikacyjnych}{fig:campus-zentrum-map}
+
+\lead{Kompleks CAB/CNB jako operacyjne serce wydziału}
+
+Główną siedzibą i centrum operacyjnym D-INFK jest zabytkowy kompleks CAB zlokalizowany przy \textit{Universitätstrasse 6, 8092 Zürich}, bezpośrednio połączony przewiązką ze skrzydłem CNB. Budynek CAB łączy reprezentacyjny charakter z rozbudowaną infrastrukturą techniczną. Analiza planu poziomu E (rys. \ref{fig:cab-floor-plan}), portalu wejściowego (rys. \ref{fig:cab-portal}) oraz wnętrza holu (rys. \ref{fig:cab-hall}) pozwoliła na odtworzenie szczegółowej topologii wewnętrznej:
+\begin{itemize}
+    \item \textbf{Kondygnacje podziemne (poziomy C i D):} Mieszczą wydziałową serwerownię centralną zarządzaną przez grupę ISGINF, w tym węzły klastrów HPC, macierze dyskowe oraz główne punkty dystrybucyjne światłowodowego szkieletu sieciowego.
+    \item \textbf{Kondygnacja techniczna E (skrzydło ISG):} Jak uwidoczniono na planie \ref{fig:cab-floor-plan}, korytarz centralny mieści zwarty kompleks wsparcia IT: punkt bezpośredniej obsługi Helpdesk (\code{CAB E 41.1}) oraz gabinety administratorów (\code{CAB E 43}--\code{CAB E 48}). Na tym samym poziomie funkcjonują ogólnodostępna kawiarnia \textit{Irrational Coffee}, stowarzyszenie inżynierów \textit{AMIV} oraz kompleks sportowo-rekreacyjny \textit{ASVZ (Come And Be)}.
+    \item \textbf{Poziom wejściowy i reprezentacyjny F:} Obejmuje monumentalne wejście z dziedzińca z zabytkową bramą trójarkadową (\textit{Chemisches Laboratorium}, rys. \ref{fig:cab-portal}), reprezentacyjny hol centralny (rys. \ref{fig:cab-hall}), stołówkę studencką \textit{SV Restaurant CAB} oraz siedzibę stowarzyszenia studentów informatyki \textit{VIS}.
+    \item \textbf{Kondygnacje dydaktyczno-naukowe (poziomy G i H):} Mieszczą główne aule wykładowe (\code{CAB G 11}, \code{CAB G 61}), laboratoria terminalowe studentów (\code{CAB H 56}, \code{CAB H 57}), Bibliotekę Informatyczną (\textit{Computer Science Library}) oraz gabinety Dziekanatu i kluczowych profesorów instytutów InfSec, Machine Learning i IPLS.
+\end{itemize}
+
+\Figure[0.90]{cab_floor_plan.jpg}{Rzut poziomu E budynku CAB z zaznaczeniem korytarza ISG (pokoje 41--48), stref gastronomicznych oraz łącznika do budynku CNB}{fig:cab-floor-plan}
+
+\Figure[0.75]{cab_historic_portal.jpg}{Historyczna brama wejściowa i portal frontowy budynku CAB od strony Universitätstrasse 6}{fig:cab-portal}
+
+\Figure[0.75]{cab_interior_hall.jpg}{Wnętrze holu głównego budynku CAB demonstrujące brak fizycznych bramek kontroli dostępu w ciągu dnia}{fig:cab-hall}
+
+Szczególne znaczenie dla dynamiki ruchu pieszego na kondygnacji G mają dwie flagowe aule wykładowe: amfiteatralna aula \code{CAB G 11} (rys. \ref{fig:cab-g11}) oraz półkolista aula \code{CAB G 61} (rys. \ref{fig:cab-g61}), z których każda mieści dokładnie 193 słuchaczy. Zapewniają one łącznie blisko 400 miejsc audytoryjnych, generując intensywne fale przemieszczania się studentów w stałych cyklach godzinowych.
+
+\Figure[0.85]{cab_g11_hoersaal.jpg}{Wielopoziomowa aula wykładowa CAB G 11 o pojemności 193 miejsc ze stanowiskiem prelegenta i węzłami multimedialnymi}{fig:cab-g11}
+
+\Figure[0.85]{cab_g61_hoersaal.jpg}{Półkolista aula wykładowa CAB G 61 o pojemności 193 miejsc charakteryzująca się wysoką gęstością urządzeń bezprzewodowych}{fig:cab-g61}
+
+\lead{Charakterystyka obiektów satelitarnych D-INFK}
+
+Poza kompleksem CAB/CNB wydział wykorzystuje obiekty pomocnicze i zewnętrzne centra biurowe (\textit{Geschäftshäuser}), w których ulokowano wybrane grupy badawcze oraz centra współpracy przemysłowej, co zestawiono w tabeli \ref{tab:budynki-dinfk}.
+
+\begin{table}[H]
+    \centering
+    \caption{Kompleksowa taksonomia obiektów budowlanych Wydziału Informatyki (D-INFK)}\label{tab:budynki-dinfk}
+    \tablefont
+    \begin{tabularx}{\linewidth}{C{0.12\linewidth} L{0.24\linewidth} Y C{0.14\linewidth}}
+        \toprule
+        \hcell{Obiekt} & \hcell{Adres fizyczny} & \hcell{Alokowane jednostki, laboratoria i kluczowa kadra} & \hcell{Krytyczność} \\
+        \midrule
+        \textbf{CAB} & Universitätstr. 6 & Siedziba D-INFK, Dziekanat, ISG (E 41.1--48), serwerownie HPC, InfSec (Paterson, Perrig, Shinde, Tramèr), ML (Hofmann, Schölkopf, Rätsch), IPLS (Vechev, Müller), TCS (Hofheinz), kantyna SV. & Krytyczna \\
+        \textbf{CNB} & Universitätstr. 6 & Skrzydło przyległe do CAB, łącznik wewnętrzny. Rampa rozładunkowa, Media Technology Center (MTC), Game Technology Center (GTC). & Wysoka \\
+        \textbf{STD} & Stampfenbachstr. 48 & Budynek komercyjny (\textit{Geschäftshaus}). Instytut IIIS (Prof. Christian Holz) oraz komercyjna pracownia **Disney Research|Studios**. & Średnia \\
+        \textbf{STF} & Stampfenbachstr. 114 & Instytut Computing Platforms / Systems Group (Prof. Alonso, Chronis, Friedman, Klimovic, Roscoe, Venkataraman), Visual Computing (Prof. El-Assady), agencja kantonalna Hochbauamt. & Wysoka \\
+        \textbf{CHN} & Universitätstr. 16 & Budynek nauk o środowisku naprzeciwko CAB; aule i sale ćwiczeniowe. & Średnia \\
+        \textbf{WWA} & Wasserwerkstr. 10/12 & Pracownie techniczno-inżynieryjne. & Niska \\
+        \textbf{HEA} & Heinrichstr. 237 & Przestrzenie projektowe i pracownie studenckie. & Niska \\
+        \textbf{OAT} & Andreasstr. 5 (Oerlikon) & Ośrodek zaawansowanych badań nad sztuczną inteligencją. & Średnia \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\Figure[0.75]{cnb_delivery_entrance.jpg}{Strefa dostawcza i rampa rozładunkowa budynku CNB (brama towarowa z symbolem transportowym, zjazd do garażu oraz wejście personelu)}{fig:cnb-delivery}
+
+\Figure[0.75]{std_building_entrance.jpg}{Wejście do budynku komercyjnego STD (Stampfenbachstrasse 48) mieszczącego m.in. Disney Research|Studios}{fig:std-entrance}
+
+\Figure[0.75]{stf_building_entrance.jpg}{Fasada budynku STF (Stampfenbachstrasse 114) z widocznym oznakowaniem ETH Zürich oraz Hochbauamt Kanton Zürich}{fig:stf-entrance}
+
+\lead{Wnioski z analizy przestrzennej i otoczenia fizycznego (Actionable Intelligence)}
+
+Syntetyczna korelacja planów architektonicznych, fotografii satelitarnych i ujęć naziemnych pozwoliła na zidentyfikowanie fundamentalnych luk w fizycznym perymetrze jednostki:
+
+\begin{enumerate}
+    \item \textbf{Brak strefy buforowej i bramek w holu CAB (Zero-Checkpoint Entry):} Fotografia wnętrza (\ref{fig:cab-hall}) empirycznie dowodzi braku kołowrotów, bramek RFID czy stałego posterunku ochrony przy głównym wejściu do CAB w ciągu dnia. Osoba wchodząca z ulicy uzyskuje bezpośredni, niekontrolowany dostęp do reprezentacyjnego holu, otwartych klatek schodowych prowadzących na wszystkie kondygnacje oraz korytarzy z drzwiami gabinetów profesorskich.
+    \item \textbf{Współdzielenie infrastruktury w budynkach komercyjnych (STD, STF):} Lokowanie kluczowych laboratoriów w budynkach biurowych typu \textit{Geschäftshaus} (STD, rys. \ref{fig:std-entrance}) oraz współdzielenie obiektu STF (rys. \ref{fig:stf-entrance}) z instytucjami zewnętrznymi (\textit{Hochbauamt Kanton Zürich}) uniemożliwia wdrożenie jednolitego obwodu ochrony. Zewnętrzni petenci, kurierzy i pracownicy innych podmiotów swobodnie poruszają się po wspólnych klatkach schodowych i windach.
+    \item \textbf{Rampa dostawcza CNB jako wektor niekontrolowanego dostępu:} Zdjęcie strefy towarowej CNB (rys. \ref{fig:cnb-delivery}) ujawnia wydzieloną bramę rozładunkową oraz przyległe wejście personelu ze strefą dla palących. Podczas porannych dostaw do kantyny oraz rozładunku sprzętu laboratoryjnego drzwi bywają odryglowane, a obecność osób palących w bezpośrednim sąsiedztwie wejścia stanowi idealne warunki do ataku typu \textit{tailgating} (wejście za pracownikiem z pominięciem procedury autoryzacji).
+    \item \textbf{Ekspozycja bezprzewodowa na ciągi komunikacyjne:} Bezpośrednie przyleganie fasady CAB do ruchliwej Universitätstrasse i peronu tramwajowego \textit{ETH/Universitätsspital} umożliwia prowadzenie pasywnego nasłuchu ruchu bezprzewodowego (sieci \code{eduroam} i \code{eth-employee}) lub realizację ataku \textit{Rogue AP / Evil Twin} bezpośrednio z przystanku tramwajowego, bez przekraczania progu budynku.
+\end{enumerate}
 
 \subsection{Strefy dostępu i zabezpieczenia fizyczne budynków}\label{subsec:bezpieczenstwo-fizyczne}
-% TO-DO:
-% 1. Zestawić strefy ogólnodostępne w dzień (kantyna, korytarze, audytoria) vs strefy chronione (24/7).
-% 2. Opisać system kart zbliżeniowych ETH Card (np. technologie Legic / Mifare DESFire badane w dokumentacji kampusowej).
-% 3. Przeanalizować wektor fizyczny (wejście za pracownikiem, strefy dostawcze/kantyna CAB) vs procedury zamykania laboratoriów.
+
+Skuteczność ochrony teleinformatycznej organizacji jest nierozerwalnie związana z rygorem fizycznej kontroli dostępu do obiektów budowlanych. Analiza procedur bezpieczeństwa (\textit{Safety, Security, Health and Environment - SSHE / SGU}), oficjalnych instrukcji technicznych systemu zamykania (\textit{Schliessmanagement / eZuko}) oraz zebrany materiał fotograficzny pozwoliły na zrekonstruowanie zaawansowanego, hybrydowego modelu kontroli dostępu w kompleksie CAB/CNB.
+
+\lead{Harmonogram dostępu i podział na strefy bezpieczeństwa}
+
+Budynek CAB funkcjonuje w zróżnicowanym reżimie czasowym, dzieląc przestrzeń na strefy o odmiennym poziomie kontroli:
+\begin{itemize}
+    \item \textbf{Strefa publiczna (otwarta w dni robocze w godz. 07:00--19:00):} Główne wejścia od strony Universitätstrasse pozostają odryglowane w ciągu dnia. Obejmuje hol główny, reprezentacyjny atriowy korytarz (w którym, jak wykazano na rys. \ref{fig:cab-hall}, brak jest fizycznych kołowrotów i stałego posterunku straży), aule wykładowe \code{CAB G 11} i \code{G 61}, stołówkę \textit{SV Restaurant CAB}, kawiarnię \textit{Irrational Coffee} oraz kompleks sportowy \textit{ASVZ}. W tych godzinach wstęp do budynku nie wymaga okazywania żadnych poświadczeń tożsamości.
+    \item \textbf{Strefa chroniona 24/7 (całodobowa kontrola elektroniczna):} Skrzydło wsparcia IT (\code{CAB E 43}--\code{CAB E 48}), gabinety profesorskie, laboratoria badawcze instytutów (InfSec, Systems) oraz sale serwerowe podlegają bezwzględnej kontroli dostępu przez całą dobę.
+    \item \textbf{Reżim nocny i weekendowy:} Po godzinie 19:00 oraz w dni wolne od pracy zewnętrzne drzwi obwodowe budynku zostają zablokowane elektromagnetycznie. Wejście do obiektu staje się możliwe wyłącznie po zbliżeniu aktywnej karty uprawnionego pracownika lub studenta.
+\end{itemize}
+
+Strukturę stref bezpieczeństwa kompleksu CAB oraz mechanizmy autoryzacji zestawiono w tabeli \ref{tab:strefy-dostepu-cab}.
+
+\begin{table}[H]
+    \centering
+    \caption{Klasyfikacja stref bezpieczeństwa fizycznego i mechanizmów autoryzacji w budynku CAB}\label{tab:strefy-dostepu-cab}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.24\linewidth} C{0.20\linewidth} C{0.22\linewidth} Y}
+        \toprule
+        \hcell{Strefa obiektu} & \hcell{Godziny dzienne (07:00--19:00)} & \hcell{Poza godzinami i weekendy} & \hcell{Mechanizm kontroli i zabezpieczenia} \\
+        \midrule
+        Hol, kantyna SV, kawiarnia, aule G & Dostęp swobodny & Zablokowane & Drzwi automatyczne, brak weryfikacji tożsamości w dzień. \\
+        Pokoje ISG (\code{CAB E 41.1}--\code{E 48}) & Karta ETH Card / klucz & Karta ETH Card / klucz & Czytniki zbliżeniowe Kaba, okucia CardLink, klucze patentowe. \\
+        Laboratoria studenckie (\code{CAB H}) & Dostęp wg planu zajęć & Karta ETH Card (24/7) & Terminale nethz, autoryzacja uprawnień kierunkowych D-INFK. \\
+        Serwerownia główna (\code{CAB C/D}) & Ściśle ograniczony & Ściśle ograniczony & Dedykowana lista uprawnień ISGINF, monitoring CCTV, podwójna autoryzacja. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Architektura i charakterystyka wizualna karty kampusowej (ETH Card)}
+
+Głównym fizycznym poświadczeniem tożsamości oraz instrumentem kontroli dostępu (SKD) w obiektach Politechniki jest elektroniczna karta zbliżeniowa ETH Card. Karta pełni wielofunkcyjną rolę: cyfrowego klucza do drzwi, legitymacji bibliotecznej (\textit{ETH Library}), karty usług poligraficznych (\textit{Print Service}) oraz identyfikatora zniżkowego i sportowego (\textit{ASVZ}).
+
+Analiza oficjalnej dokumentacji wizualnej uczelni pozwoliła na precyzyjną dekompozycję układu graficznego oraz elementów zabezpieczających identyfikatora, co przedstawiono na rysunku \ref{fig:eth-card-anatomy}.
+
+\Figure[0.70]{eth_card_anatomy.jpg}{Anatomia karty identyfikacyjnej ETH Card: dekompozycja danych stałych, paska termoczułego TRW oraz rewersu z numerem SKD}{fig:eth-card-anatomy}
+
+Karta ETH charakteryzuje się dwudzielną konstrukcją warstwy wizualnej:
+\begin{itemize}
+    \item \textbf{Strefa danych niezmiennych (\textit{Unalterable data}):} Górna część karty z niebiesko-szarym paskiem tła zawiera naniesione fabrycznie logo \textit{ETH Zürich}, fotografię biometryczną posiadacza, nazwisko i imię (\textit{Muster Thomas}) oraz datę urodzenia w formacie \code{DD.MM.YYYY}. Dane te nie ulegają zmianie w toku eksploatacji karty.
+    \item \textbf{Strefa danych modyfikowalnych (\textit{Alterable data}):} Dolna, biała część awersu pokryta jest folią termoczułą wielokrotnego zapisu (\textit{Thermo-ReWrite - TRW}). Nadruk na pasku jest dynamicznie nanoszony i kasowany w dedykowanych terminalach walidacyjnych zlokalizowanych na kampusach Zentrum i Hönggerberg. Pole to zawiera:
+    \begin{itemize}
+        \item Rolę zawodową (\textit{Professional role}): \code{Studies}, \code{Continuing Education}, \code{Guest}, \code{Staff unlimited}, \code{Staff temporary} lub \code{Lecturers}.
+        \item Przypisanie organizacyjne (\textit{Organisational responsibility}): np. \code{D-INFK}, \code{D-MAVT} lub skrót programu studiów.
+        \item Numer identyfikacyjny studenta/pracownika oraz oznaczenie członkostwa w zrzeszeniu studentów (\code{VSETH}).
+        \item Wielką literę wyróżnika zniżkowego: \textbf{S} (dla studentów studiów podstawowych) lub \textbf{G} (dla gości akademickich, rys. \ref{fig:eth-card-variants}).
+        \item Datę ważności (\textit{Gültig bis / valid through}): określającą rygorystyczny termin wygaśnięcia uprawnień.
+        \item Logotyp \textbf{ASVZ}: potwierdzający automatyczne uprawnienie do obiektów sportowych (drukowany wyłącznie na kartach studentów i stażystów).
+    \end{itemize}
+    \item \textbf{Rewers karty i identyfikator budynkowy:} Rewers identyfikatora (rys. \ref{fig:eth-card-anatomy}) składa się z granatowego pola z paskiem na podpis odręczny oraz kodu kreskowego biblioteki wraz ze znacznikami kalibracyjnymi drukarki termicznej (\textit{card positioning marks}). Kluczowym elementem z punktu widzenia kontroli dostępu jest umieszczony w białej ramce \textbf{sześciocyfrowy numer ewidencyjny (\textit{Identity card number / access to buildings})}, jednoznacznie mapujący fizyczny blankiet do profilu uprawnień w centralnym systemie kontrolerów drzwiowych.
+\end{itemize}
+
+\Figure[0.70]{eth_card_variants.jpg}{Zróżnicowanie wizualne identyfikatora ETH Card w zależności od roli: student (litera S, logo ASVZ), studia podyplomowe (MAS) oraz gość akademicki (litera G, prefiks G99999)}{fig:eth-card-variants}
+
+\lead{System kontroli dostępu dormakaba-exos i dualizm architektoniczny}
+
+Infrastruktura kontroli dostępu Politechniki Federalnej w Zurychu opiera się na zintegrowanym systemie zarządzania bezpieczeństwem **dormakaba exos 9300** (\textit{Schliessmanagement ETH}). Analiza dokumentacji technicznej ujawnia istnienie dwóch równoległych podsystemów wykonawczych: komponentów sieciowych (\textit{Online}) oraz autonomicznych modułów mechatronicznych (\textit{Offline / CardLink}).
+
+\lead{Podsystem Online: czytniki ścienne i autoryzacja kodem PIN}
+
+Zewnętrzny perymetr budynków oraz główne węzły komunikacyjne zabezpieczone są czytnikami ściennymi Kaba połączonymi bezpośrednio ze szkieletem sieciowym ETH, co zilustrowano na rysunku \ref{fig:kaba-readers}.
+
+\Figure[0.70]{kaba_card_readers.jpg}{Sieciowe czytniki ścienne dormakaba stosowane na perymetrze budynków ETH: moduł z klawiaturą PIN oraz czytniki zbliżeniowe RFID}{fig:kaba-readers}
+
+Procedura autoryzacji w podsystemie online realizowana jest według następującego schematu:
+\begin{enumerate}
+    \item Zbliżenie karty ETH Card do czytnika na odległość roboczą rzędu 5--10 cm (transmisja w standardzie zbliżeniowym LEGIC CTC / 13.56 MHz z szyfrowaniem sprzętowym).
+    \item W przypadku przejść o podwyższonym rygorze bezpieczeństwa lub w godzinach nocnych: wprowadzenie sześciocyfrowego kodu PIN na zintegrowanej klawiaturze numerycznej i zatwierdzenie klawiszem \code{E} (\textit{Enter}).
+\end{enumerate}
+
+Procedury zarządzania tożsamością ujawniają istotną cechę architektoniczną: kod PIN do karty jest w pełni konfigurowalny przez użytkownika za pośrednictwem dedykowanej aplikacji webowej \file{mycontact.ethz.ch}. Co kluczowe, zmiana lub zresetowanie zapomnianego kodu PIN w portalu nie wymaga znajomości dotychczasowego kodu, lecz opiera się wyłącznie na uwierzytelnieniu w uczelnianym systemie tożsamości cyfrowej \code{nethz}. Wnioskowanie o rozszerzenie fizycznych uprawnień budynkowych odbywa się drogą elektroniczną w portalu \file{immobilien-services.ethz.ch} (\textit{Meldeportal}), gdzie zgłoszenie jest zatwierdzane przez wydziałowego pełnomocnika ds. kluczy (\textit{Schlüsseldelegierter}) i aktywowane przez centralną jednostkę ISC (\textit{Info- und Service-Center}).
+
+\lead{Podsystem Offline i technologia CardLink (Data-on-Card)}
+
+W celu eliminacji kosztów prowadzenia okablowania strukturalnego do setek gabinetów profesorskich i laboratoriów w zabytkowych wnętrzach CAB, ETH wdrożyło zaawansowany podsystem komponentów autonomicznych CardLink w środowisku \textit{dormakaba-exos}.
+
+\Figure[0.45]{cardlink_door_fitting.png}{Autonomiczne okucie drzwiowe CardLink (Kaba c-lever) z wbudowanym czytnikiem RFID niewymagające połączenia z siecią}{fig:cardlink-fitting}
+
+Konstrukcja i zasada działania technologii CardLink opiera się na paradygmacie \textit{Data-on-Card}:
+\begin{itemize}
+    \item \textbf{Komponenty drzwiowe offline:} Drzwi wewnętrzne wyposażone są w bateryjne okucia elektroniczne (\textit{Kaba c-lever}, rys. \ref{fig:cardlink-fitting}) lub cyfrowe wkładki bębenkowe. Urządzenia te nie posiadają żadnego fizycznego ani radiowego połączenia z siecią komputerową ETH.
+    \item \textbf{Przenoszenie uprawnień przez kartę:} Karta ETH Card pełni rolę fizycznego nośnika uprawnień. Uprawnienia przyznane w portalu Meldeportal są zapisywane bezpośrednio w chronionej pamięci chipa karty podczas jej zbliżenia do specjalnego terminala aktualizacyjnego (Update-Terminal).
+    \item \textbf{Rygor 30-dniowego okna ważności (\textit{Updatefrist: 30 Tage}):} Z przyczyn bezpieczeństwa uprawnienia dostępowe zapisane na chipie karty dla komponentów offline posiadają sztywny limit czasowy wynoszący 30 dni. Po upływie tego okresu okucie drzwiowe odrzuca kartę (sygnalizacja czerwonym podświetleniem LED i serią impulsów dźwiękowych). Użytkownik ma obowiązek regularnego odnawiania ważności uprawnień w terminalu Update-Terminal.
+\end{itemize}
+
+Należy podkreślić fundamentalne rozróżnienie dwóch typów urządzeń terminalowych funkcjonujących na uczelni:
+\begin{itemize}
+    \item \textbf{Validierungsterminal (Terminal walidacyjny):} Urządzenie wyposażone w mechaniczną szczelinę i termiczną głowicę drukującą, służące wyłącznie do fizycznego przepisywania nadruku daty na białym pasku TRW awersu karty.
+    \item \textbf{Update-Terminal (Terminal aktualizacyjny CardLink):} Naścienny czytnik RFID wyposażony w wyświetlacz LCD oraz pole zbliżeniowe (oznaczone białym prostokątem), służący do kryptograficznego zapisu uprawnień do stref offline w pamięci chipa karty (komunikat \textit{„Update erfolgreich”}).
+\end{itemize}
+
+Rozmieszczenie terminali aktualizacyjnych (\textit{Update-Terminals}) oraz sieciowych punktów dostępowych na obszarze kampusu centralnego przedstawiono na oficjalnej mapie dostępowej (rys. \ref{fig:campus-access-map}). Analiza planu potwierdza obecność dedykowanego terminala Update-Terminal bezpośrednio w budynku CAB, co zapewnia ciągłość odnawiania uprawnień dla pracowników D-INFK.
+
+\Figure[0.85]{campus_electronic_access_map.jpg}{Rozmieszczenie sieciowych punktów dostępu oraz terminali aktualizacyjnych Update-Terminal (oznaczonych symbolem T) na kampusie ETH Zentrum}{fig:campus-access-map}
+
+\lead{Wnioski dla inżynierii społecznej i fizycznych testów penetracyjnych (Actionable Intelligence)}
+
+Syntetyczna korelacja zebranej dokumentacji technicznej CardLink, fotografii identyfikatorów oraz mapy infrastruktury ujawnia krytyczne podatności proceduralne i architektoniczne:
+
+\begin{enumerate}
+    \item \textbf{30-dniowe okno podatności po unieważnieniu karty (\textit{CardLink Revocation Delay}):} Zgodnie z oficjalną instrukcją techniczną ETH (\textit{User Guide for CardLink}): \textit{„W przypadku zagubienia lub kradzieży karty (...) uprawnienia dostępowe dla komponentów CardLink/Offline pozostają aktywne do momentu upłynięcia 30-dniowego okresu ważności lub do czasu aktualizacji karty w terminalu”}. Ponieważ autonomiczne okucia drzwiowe w budynku CAB nie posiadają łączności z siecią, centralna blokada skradzionej karty w systemie exos nie propaguje się natychmiastowo do drzwi gabinetów i laboratoriów. Napastnik, który wszedł w posiadanie karty pracownika naukowego, dysponuje oknem czasowym (do 30 dni) na fizyczne otwarcie zabezpieczonych pomieszczeń offline, nawet jeśli prawowity właściciel zgłosił już utratę dokumentu w biurze obsługi.
+    \item \textbf{Wektor przejęcia fizycznego dostępu poprzez kompromitację tożsamości nethz:} Powiązanie procedury nadawania PIN-u z portalem \file{mycontact.ethz.ch} bez wymogu znajomości starego kodu PIN stanowi poważną lukę krzyżową (pivot logiczno-fizyczny). Atakujący, który pozyska poświadczenia domenowe \code{nethz} pracownika w wyniku kampanii spear-phishingowej, może zalogować się do portalu, zmienić kod PIN do drzwi na własny, a następnie posłużyć się fizycznie skradzioną lub znalezioną kartą na perymetrze nocnym CAB, obchodząc barierę dwuskładnikowego uwierzytelnienia (karta + PIN).
+    \item \textbf{Fabrykacja fizyczna identyfikatora gościa (\textit{Guest Badge Forgery}):} Zebrana dokumentacja fotograficzna (rys. \ref{fig:eth-card-variants}) ujawnia dokładny układ graficzny karty gościa akademickiego (\textit{Guest}). Karta ta cechuje się literą \textbf{G}, prefiksem numeru \code{G99999} oraz oznaczeniem wydziału (\code{D-INFK}). W ciągu dnia portierzy oraz pracownicy naukowi weryfikują obecność identyfikatora wyłącznie powierzchownie wzrokiem. Wykonanie wysokiej jakości atrapy identyfikatora gościa z przypisaniem do D-INFK zapewnia perfekcyjny kamuflaż podczas poruszania się po korytarzach CAB i STF pod pretekstem udziału w seminariach ZISC.
+    \item \textbf{Pozyskanie numeru dostępowego metodą Shoulder Surfingu:} Jawne nadrukowanie sześciocyfrowego numeru ewidencyjnego (\textit{identity card number}) na rewersie karty stanowi lukę proceduralną. W kawiarni \textit{Irrational Coffee} (poziom E CAB) lub stołówce pracownicy często odkładają karty na stoły rewersem do góry. Sfotografowanie rewersu karty pozwala napastnikowi na kontakt telefoniczny z Helpdeskiem ISG (\code{CAB E 41.1}) lub ochroną: podszywając się pod pracownika i podając poprawny numer identyfikacyjny z rewersu, atakujący może zgłosić problem techniczny i wyłudzić doraźne zdalne otwarcie drzwi.
+    \item \textbf{Wektor tailgatingu przy rampie towarowej CNB:} Zdjęcie strefy towarowej CNB (rys. \ref{fig:cnb-delivery}) potwierdza obecność wydzielonego miejsca dla palących tuż obok wejścia personelu i zjazdu do rampy podziemnej. W kulturze akademickiej powszechny jest nawyk przytrzymywania drzwi osobom wchodzącym z tyłu. Napastnik w stroju kuriera lub studenta może z łatwością wejść za pracownikiem powracającym z przerwy (\textit{piggybacking}), całkowicie omijając czytniki Kaba i procedurę autoryzacji CardLink.
+\end{enumerate}
 
 \section{Analiza finansowo-gospodarcza i przetargowa}\label{sec:finanse-gospodarka}
 
+Zdolność operacyjna, potencjał technologiczny oraz odporność organizacyjna instytucji akademickiej są bezpośrednio uwarunkowane jej stabilnością finansową oraz strukturą strumieni kapitałowych. W ramach wywiadu gospodarczego OSINT przeprowadzono dekompozycję budżetu Politechniki Federalnej w Zurychu (ETH Zürich) oraz mechanizmów alokacji zasobów w Wydziale Informatyki (D-INFK). Eksploracja oficjalnego sprawozdania finansowego uczelni sporządzonego zgodnie z międzynarodowymi standardami rachunkowości sektora publicznego (\textit{Jahresrechnung / Financial Report in accordance with IPSAS}) \cite{eth_financial_report_2024}, rejestrów dotacji federalnych oraz dokumentacji systemów planowania zasobów (ERP) pozwoliła na zidentyfikowanie krytycznych wektorów ryzyka związanych z obiegiem środków i rozliczeniami projektowymi.
+
 \subsection{Budżet operacyjny i struktura finansowania}\label{subsec:budzet-sprawozdania}
-% TO-DO:
-% 1. Zwięźle podsumować budżet ETH (>1.8 mld CHF) i mechanizm alokacji federalnej dla D-INFK.
-% 2. Wskazać podział na środki podstawowe, granty zewnętrzne i kontrakty przemysłowe.
+
+Politechnika Federalna w Zurychu jako autonomiczna federalna instytucja prawa publicznego (\textit{öffentlich-rechtliche Anstalt des Bundes}) dysponuje jednym z największych budżetów operacyjnych wśród europejskich uczelni technicznych. Zgodnie ze skonsolidowanym sprawozdaniem finansowym za 2024 rok, łączne przychody operacyjne uczelni (\textit{Gesamteinnahmen}) przekroczyły historyczny próg 2 miliardów franków szwajcarskich, osiągając wartość 2\,051 mln CHF.
+
+Struktura przychodowa Politechniki opiera się na dwóch fundamentalnych filarach, których szczegółową dekompozycję przedstawiono na oficjalnym diagramie finansowym uczelni (rys. \ref{fig:eth-revenue-composition}).
+
+\Figure[0.90]{eth_revenue_composition_2024.jpg}{Skonsolidowana struktura przychodów ETH Zürich (2\,051 mln CHF) w podziale na wkład federalny oraz źródła zewnętrzne wg standardu IPSAS}{fig:eth-revenue-composition}
+
+\lead{Mechanizm dualizmu finansowania: Globalbudget vs. Drittmittel}
+
+Analiza bilansu ujawnia wyraźny podział na finansowanie statutowe oraz fundusze konkurencyjne:
+\begin{itemize}
+    \item \textbf{Wkład podstawowy Konfederacji (\textit{Federal financial contribution / Globalbudget}):} Wynosi 1\,385 mln CHF i stanowi trzon budżetu (67,5\% łącznych przychodów). Środki te są przekazywane corocznie przez Radę ETH (\textit{ETH-Rat}) z budżetu federalnego Konfederacji Szwajcarskiej w ramach kredytów operacyjnych (\textit{Aufwandkredit}) oraz inwestycyjnych (\textit{Investitionskredit}).
+    \item \textbf{Finansowanie ze źródeł trzecich (\textit{Third-party funding / Drittmittel}):} Osiąga łączną wartość 666 mln CHF (32,5\% przychodów uczelni, uwzględniając nadwyżkę podmiotów powiązanych). Kwota ta stanowi sumę czterech kluczowych strumieni kapitałowych:
+    \begin{itemize}
+        \item \textbf{Wkłady na projekty badawcze (\textit{Research contributions} -- 406 mln CHF):} Najważniejszy komponent zewnętrzny, obejmujący:
+        \begin{itemize}
+            \item \textit{Krajowe wkłady badawcze (225 mln CHF):} finanse ze Szwajcarskiej Narodowej Fundacji Nauki (\textit{SNSF}) oraz agencji innowacji \textit{Innosuisse}.
+            \item \textit{Europejskie programy ramowe (64 mln CHF):} m.in. prestiżowe granty \textit{Horizon Europe} oraz ERC.
+            \item \textit{Badania ukierunkowane przemysłowo (67 mln CHF):} bezpośrednie kontrakty R\&D z korporacjami (w tym partnerstwa technologiczne ZISC, banki ZKB, Swissquote, Google, Disney).
+            \item \textit{Inne badania projektowe (49 mln CHF):} wyspecjalizowane subwencje celowe.
+        \end{itemize}
+        \item \textbf{Przychody wygenerowane własną działalnością (\textit{Self-generated revenue} -- 115 mln CHF):} w tym czesne studenckie (\textit{Tuition fees} -- 44 mln CHF, stanowiące zaledwie 2,1\% budżetu uczelni), wynik z operacji finansowych (27 mln CHF) oraz pozostałe przychody operacyjne (44 mln CHF).
+        \item \textbf{Donacje, darowizny i zapisy celowe (\textit{Donations and bequests} -- 105 mln CHF):} pozyskiwane głównie przez powołaną w 2003 roku dedykowaną fundację uniwersytecką \textit{ETH Zurich Foundation}.
+        \item \textbf{Udział w wynikach podmiotów stowarzyszonych (40 mln CHF):} przychody kapitałowe z podmiotów powiązanych i komercjalizacji.
+    \end{itemize}
+\end{itemize}
+
+\lead{Presja makroekonomiczna, erozja rezerw i deficyt wolnych przepływów pieniężnych}
+
+Szczegółowa lektura sprawozdania zarządu odsłania bezprecedensowe zjawisko erozji rezerw finansowych uczelni, co zilustrowano na rysunku \ref{fig:eth-cash-flow}.
+
+\Figure[0.85]{eth_free_cash_flow.png}{Dynamika ujemnego wolnego przepływu pieniężnego (\textit{Free Cash Flow}) ETH Zürich w latach 2020--2025 w mln CHF}{fig:eth-cash-flow}
+
+Oficjalny raport finansowy uczelni bezpośrednio wskazuje na narastające ryzyka płynnościowe:
+\begin{itemize}
+    \item \textbf{Załamanie poziomu rezerw płynnych:} Rezerwy finansowe ETH Zürich uległy drastycznemu uszczupleniu o 55\% w stosunku do poziomu z 2019 roku. Uczelnia posiada obecnie zaledwie 110 mln CHF rezerw wolnych (\textit{reserves without dedication}), które mogą zostać użyte na pokrycie nieprzewidzianych wydatków, co stanowi mniej niż 10\% sumy aktywów.
+    \item \textbf{Zobowiązania wewnętrzne i płynność:} Rezerwy z wewnętrzną dedykacją celową (203 mln CHF) odzwierciedlają twarde zobowiązania kontraktowe i gwarantowany odpływ gotówki. Aktualna płynność pokrywa jedynie 83\% tych rezerw, nie uwzględniając przyszłych zobowiązań emerytalnych w funduszu \textit{PUBLICA}.
+    \item \textbf{Przewlekły ujemny wolny przepływ gotówki (\textit{Negative Free Cash Flow}):} Jak wynika z rysunku \ref{fig:eth-cash-flow}, uczelnia notuje deficyt gotówkowy nieprzerwanie od 2020 roku (-91 mln w 2021 r., -39 mln w 2023 r., -27 mln w 2024 r. oraz prognozowane -70 mln CHF w 2025 r.).
+    \item \textbf{Zapowiedziane cięcia federalne:} W obliczu planowanych przez rząd federalny redukcji finansowania podstawowego od 2025 roku, Politechnika zmuszona jest do agresywnego poszukiwania prywatnych donacji (\textit{ETH Zurich Foundation}) oraz priorytetyzacji i cięcia kosztów wewnątrz wydziałów.
+\end{itemize}
+
+\lead{Decentralizacja alokacji w D-INFK i system finansowy ETHIS}
+
+Wydział Informatyki (D-INFK) należy do najbardziej kapitałochłonnych jednostek uczelni. Wynika to z konieczności utrzymywania kosztownej infrastruktury serwerowej HPC oraz agresywnego konkurowania o kadrę naukową.
+
+Zarządzanie operacyjne finansami wydziału spoczywa w rękach Dyrektor Zarządzającej D-INFK -- Barbary Pf{\"a}ndner (\code{dept-admin@inf.ethz.ch}), która koordynuje budżet, przestrzeń lokalową oraz etaty profesorskie. 
+
+Na poziomie operacyjnym zarządzanie strumieniami finansowymi odbywa się za pośrednictwem zintegrowanego portalu ERP ETHIS (\textit{ETH Information and Support System} -- \file{ethis.ethz.ch}), bazującego na rozwiązaniu SAP:
+\begin{itemize}
+    \item \textbf{Autonomia centrów kosztowych (\textit{Kostenstellen}):} Każdy z profesorów D-INFK zarządza własnym centrum kosztowym powiązanym z indywidualnymi subkontami projektowymi (\textit{Projektabrechnungen}) dla grantów SNSF czy zleceń komercyjnych.
+    \item \textbf{Autoryzacja zakupów IT:} Za pośrednictwem ETHIS profesorowie oraz sekretariaty zatwierdzają zamówienia sprzętowe (\textit{Hardware Orders}) realizowane przez sekcję zakupową ISGINF (pokój \code{CAB E 48}, rola \anon{Purchase_TS}).
+\end{itemize}
+
+\lead{Wnioski dla inżynierii społecznej i modelowania wektorów ataków (Actionable Intelligence)}
+
+Korelacja danych makroekonomicznych, kryzysu płynnościowego oraz procedur obiegu dokumentów dostarcza wysoce skutecznych wektorów ataku socjotechnicznego:
+
+\begin{enumerate}
+    \item \textbf{Pretexting oparty na prywatnych donacjach i grantach (\textit{Donation / Endowment Lure}):} W warunkach 55-procentowego spadku rezerw i cięć w budżecie federalnym, presja na pozyskiwanie środków od prywatnych darczyńców i fundacji (\textit{ETH Zurich Foundation}, generującej aż 105 mln CHF rocznie) jest bezprecedensowa. Sfabrykowana oferta nawiązania współpracy, ufundowania stypendium lub przekazania wielomilionowej darowizny celowej na badania nad sztuczną inteligencją lub cyberbezpieczeństwem (np. rzekomo od szwajcarskiej fundacji rodzinnej lub funduszu powierniczego z Liechtensteinu) stanowi doskonałą przynętę. Dziekanat oraz profesorowie D-INFK bez wahania podejmą korespondencję i otworzą załączone konspekty programowe lub formularze intencyjne zawierające złośliwy kod.
+    \item \textbf{Pretexting cięć budżetowych i audytu kosztów (\textit{Austerity Audit Scam}):} Wobec chronicznego deficytu wolnych przepływów pieniężnych (-70 mln CHF w 2025 r.) i wymuszonej redukcji usług, personel naukowy jest wyczulony na komunikaty o zamrożeniu funduszy. Kampania spear-phishingowa podszywająca się pod Dział Finansów ETH (\textit{Abteilung Finanzen}) lub Szwajcarską Federalną Kontrolę Finansów (\textit{EFK}) z żądaniem pilnego uzasadnienia kosztów projektu pod rygorem zablokowania centrum kosztowego (\textit{Kostenstelle}) w systemie ETHIS wywoła pośpiech i bezkrytyczne wprowadzenie poświadczeń domenowych \code{nethz}.
+    \item \textbf{Infiltracja procedur grantowych SNSF (225 mln CHF skali rocznej):} Wolumen 225 mln CHF w krajowych grantach badawczych oznacza, że niemal każda katedra w CAB prowadzi jednocześnie kilka projektów finansowanych przez SNSF. Fałszywe powiadomienie o konieczności akceptacji raportu okresowego w portalu ETHIS idealnie wpisuje się w rutynowe obowiązki kierowników grup badawczych.
+    \item \textbf{Oszustwo na fakturę w łańcuchu dostaw IT (\textit{Invoice Fraud / BEC}):} Zidentyfikowanie roli \anon{Purchase_TS} w pokoju \code{CAB E 48} koordynującej zakupy sprzętu umożliwia atak podszywający się pod stałego dostawcę serwerów HPC lub licencji z prośbą o realizację płatności na zaktualizowany rachunek bankowy.
+\end{enumerate}
 
 \subsection{Granty badawcze i finansowanie zewnętrzne (SNSF)}\label{subsec:granty-badawcze}
-% TO-DO:
-% 1. Kwerenda w bazie SNSF (data.snf.ch) dla dyscypliny Computer Science powiązana z profesorami D-INFK.
-% 2. Zestawienie 2-3 realnych grantów badawczych (tematyka np. TEE/SGX, obliczenia HPC, uczenie maszynowe, sieci; kwoty w CHF).
-% 3. Actionable Intelligence: powiązanie tematyki zidentyfikowanego grantu ze scenariuszem ataku w Rozdziale 6.
+
+Szwajcarska Narodowa Fundacja Nauki (\textit{Schweizerischer Nationalfonds zur Förderung der wissenschaftlichen Forschung -- SNSF / SNF}) stanowi główne źródło krajowego finansowania badań naukowych w Konfederacji Szwajcarskiej. Jak wykazano w podrozdziale \ref{subsec:budzet-sprawozdania}, uczelnia pozyskała ze środków krajowych SNSF i Innosuisse łącznie 225 mln CHF w 2024 roku, stanowiących ponad jedną trzecią wszystkich zewnętrznych przychodów projektowych. Wydziałowi Informatyki ETH Zürich (D-INFK) przysługuje nieproporcjonalnie wysoki udział w tej puli finansowania, wynikający z koncentracji strategicznie priorytetowych tematyk badawczych: bezpieczeństwa cyfrowego, architektury sieci, weryfikacji oprogramowania i uczenia maszynowego.
+
+Publiczna baza danych SNSF (\file{data.snf.ch}) umożliwia pasywną eksplorację aktywnych i zakończonych projektów według instytucji goszczącej, dyscypliny naukowej oraz kierownika projektu (\textit{Principal Investigator}). Analiza rekordów dla Wydziału Informatyki ETH Zürich pozwoliła na zidentyfikowanie trzech reprezentatywnych projektów o szczególnym znaczeniu wywiadowczym, zestawionych w tabeli \ref{tab:granty-snsf}.
+
+\lead{Mechanizm przejściowego finansowania SNSF w zastępstwie grantów ERC}
+
+Kluczowym kontekstem instytucjonalnym jest fakt, iż w latach 2022--2023 Szwajcaria -- ze względu na nierozwiązany spór polityczny dotyczący jej statusu stowarzyszonego z programem ramowym \textit{Horizon Europe} -- została tymczasowo wykluczona z bezpośredniego udziału w naborach Europejskiej Rady ds. Badań Naukowych (ERC). W odpowiedzi SNSF -- na zlecenie Państwowego Sekretariatu ds. Edukacji, Badań i Innowacji (SERI) -- uruchomił krajowe programy przejściowe (\textit{SNSF Transitional Grants}: odpowiedniki \textit{Starting / Consolidator / Advanced Grants}), finansowane bezpośrednio ze środków federalnych według identycznych kryteriów ewaluacyjnych jak ERC. Programy te pozwoliły zachować ciągłość finansowania dla najwybitniejszych badaczy D-INFK, przyznając granty w wysokości do 2 mln CHF na projekt.
+
+\begin{table}[H]
+    \centering
+    \caption{Wybrane projekty badawcze profesorów D-INFK finansowane ze środków SNSF (2021--2024)}\label{tab:granty-snsf}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.22\linewidth} L{0.32\linewidth} C{0.14\linewidth} C{0.12\linewidth} L{0.12\linewidth}}
+        \toprule
+        \hcell{Kierownik projektu (PI)} & \hcell{Tytuł projektu i tematyka} & \hcell{Program SNSF} & \hcell{Kwota [CHF]} & \hcell{Okres} \\
+        \midrule
+        Prof. Martin Vechev (SRI Lab) & \textit{Elegant and Efficient Quantum Programming: Compilation, Optimization, Analysis} -- weryfikacja i kompilacja języków kwantowych & SNSF / ERC Transition Consolidator & \textasciitilde{}750\,000 & 2022--2025 \\
+        Prof. Florian Tramèr (SPY Lab) & \textit{Privacy-Preserving Machine Learning and Adversarial Robustness} (grant nr 214838) -- ataki i obrona modeli ML pod kątem prywatności & SNSF Project Funding & \textasciitilde{}600\,000 & 2023--2026 \\
+        Prof. Adrian Perrig (NSG) & \textit{Centre for Cyber Trust -- Next-Generation Secure Internet (SCION)} -- kryptograficzne zabezpieczenie tras BGP i odporny na ataki DRDoS protokół routingu & Werner Siemens Stiftung / SNSF-linked & 9\,830\,000 & 2019--2027 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Charakterystyka zidentyfikowanych projektów i ich podatności wywiadowcze}
+
+\begin{itemize}
+    \item \textbf{Projekt SCION / Centre for Cyber Trust (Prof. Adrian Perrig, NSG -- \code{CAB H 03}):} Flagowy projekt badawczy Wydziału realizowany pod przewodnictwem twórcy architektury SCION (\textit{Scalability, Control, and Isolation On Next-Generation Networks}) -- bezpiecznej alternatywy dla protokołu BGP. Projekt dofinansowany przez Fundację Wernera Siemensa kwotą 9,83 mln CHF (2019--2027). Równolegle, katedra Perringa zainicjowana została funduszem celowym od operatora Swisscom w wysokości 10 mln CHF. Projekt SCION posiada komercyjnego spin-offa w postaci spółki \textit{Anapaya Systems} (2017) oraz jest wdrożony w sieci Szwajcarskiego Banku Narodowego (SNB) i giełdy SIX Group.
+    \item \textbf{Projekt Privacy-Preserving ML (Prof. Florian Tramèr, SPY Lab):} Badania nad atakami \textit{membership inference}, ochroną prywatności modeli dużej skali i adversarialnym uczeniem maszynowym, finansowane grantem SNSF nr \textbf{214838} (2023--2026). Laboratorum SPY Lab prowadzi intensywną współpracę z prof. Thomasem Hofmannem (ML Lab) oraz zewnętrznymi partnerami przemysłowymi z sektora fintech zainteresowanymi prywatnością modeli bankowych.
+    \item \textbf{Projekt Quantum Programming (Prof. Martin Vechev, SRI Lab):} Grant SNSF / przejściowy ERC Consolidator na kwotę \textasciitilde{}750 tys. CHF za weryfikację i kompilację oprogramowania kwantowego. Laboratorum SRI prowadzi równolegle projekt \textit{LatticeFlow AI} (spin-off 2020) zajmujący się certyfikacją modeli uczenia maszynowego, co tworzy organiczne powiązanie między finansowaniem publicznym a komercjalizacją.
+\end{itemize}
+
+\lead{Wnioski dla inżynierii społecznej i Actionable Intelligence}
+
+Wiedza o tematyce i strukturze finansowania grantów stanowi kluczowy zasób dla konstruowania wysoce wiarygodnych scenariuszy pretextingowych w Rozdziale 6:
+
+\begin{enumerate}
+    \item \textbf{Spear-phishing pod pretekstem recenzji grantowej SNSF:} Każdy projekt SNSF podlega obowiązkowemu raportowaniu pośredniemu i końcowemu w portalu \textit{mySNF} (\file{my.snf.ch}). Sfabrykowane powiadomienie o konieczności złożenia sprawozdania z projektu nr 214838 (Tramèr) lub zaproszenie do udziału w panelu ekspertów recenzujących projekt z zakresu kwantowego bezpieczeństwa sieci stanowi doskonały pretext, gdyż obaj profesorowie angażują się w tego rodzaju działalność recenzencką dla SNSF i ERC.
+    \item \textbf{Pretexting oparty na zaufaniu do finansowania SCION i SNB:} Fakt wdrożenia architektury SCION w sieci Szwajcarskiego Banku Narodowego (SNB) i giełdy SIX Group umożliwia konstruowanie przynęty podszywającej się pod koordynatora projektu ze strony SNB z prośbą o udostępnienie specyfikacji kryptograficznej lub protokołu konfiguracyjnego dla nowego węzła routingowego.
+    \item \textbf{Ataki ukierunkowane na platformę mySNF:} Portal \file{my.snf.ch} służy do składania wniosków, raportów i zarządzania płatnościami grantowymi przez kierowników projektów. Phishingowa strona imitująca logowanie do mySNF, rozsyłana do kierowników aktywnych projektów SNSF w D-INFK, może prowadzić do masowej kompromitacji kont badaczy i wyłudzenia danych finansowych projektów.
+\end{enumerate}
 
 \subsection{Zamówienia publiczne IT i dostawcy (simap.ch)}\label{subsec:zamowienia-simap}
-% TO-DO:
-% 1. Wskazówka: szukać na simap.ch zamówień IT powiązanych z ETH Zurich (sprzęt np. serwery obliczeniowe, macierze, przełączniki).
-% 2. Tabela 2-3 zidentyfikowanych postępowań przetargowych lub wykazanie centralizacji zakupów sprzętu przez jednostki nadrzędne ETH/BBL.
-% 3. Zidentyfikować dostawców technologii jako wektor ryzyka w łańcuchu dostaw (Supply Chain).
+
+Jako federalna instytucja publiczna objęta szwajcarskim prawem zamówień publicznych (\textit{Bundesgesetz über das öffentliche Beschaffungswesen -- BöB / IVöB}) oraz porozumieniem GPA/WTO (\textit{Government Procurement Agreement}), ETH Zürich ma prawny obowiązek publikowania postępowań przetargowych przekraczających progi traktatowe (ok.\ 230\,000\,CHF netto dla dostaw sprzętu i usług IT). Ogłoszenia te są publikowane w szwajcarskim portalu federalnym \file{simap.ch} oraz równolegle w Dzienniku Urzędowym Unii Europejskiej (\textit{TED -- Tenders Electronic Daily}).
+
+Eksploracja ogłoszeń przetargowych stanowi pasywne źródło wywiadowcze o najwyższej wiarygodności, ujawniając nie tylko plany modernizacyjne i architekturę sprzętowo-programową uczelni, ale również podział kompetencyjny wewnątrz administracji ETH, nazwy konkretnych wykonawców oraz dedykowane adresy e-mail komórek przetargowych.
+
+W toku przeprowadzonej kwerendy zidentyfikowano cztery kluczowe postępowania przetargowe powiązane z infrastrukturą technologiczną uczelni i D-INFK, zestawione w tabeli~\ref{tab:zamowienia-it}.
+
+\begin{table}[H]
+\caption{Zidentyfikowane postępowania przetargowe ETH Zürich -- infrastruktura IT i badawcza (simap.ch / TED)}
+\label{tab:zamowienia-it}
+\centering\tablefont
+\begin{tabularx}{\linewidth}{C{0.14\linewidth} Y L{0.28\linewidth} L{0.26\linewidth}}
+\toprule
+\hcell{Identyfikator} & \hcell{Przedmiot zamówienia} & \hcell{Zamawiający i kontakt} & \hcell{Wartość, status i wykonawca} \\
+\midrule
+806887-2026 &
+  \textbf{Umowy ramowe na systemy HPC i storage AI} \newline
+  LOT-0001: Klastry obliczeniowe (19'' / ORv3) \newline
+  LOT-0002: Macierze Storage dla HPC i AI &
+  ETH Zurich -- Procurement Services VPIN \newline
+  \code{gatt-wto@ethz.ch} &
+  Postępowanie ramowe \newline
+  Status: otwarty \newline
+  Termin: 18.01.2027 \\
+\midrule
+dd9b7c82 &
+  \textbf{Zintegrowany system ITSM/ESM} \newline
+  Platforma zarządzania usługami IT z portalem samoobsługowym &
+  ETH Zürich -- Abt.\ Informatikdienste \newline
+  \code{gatt-wto@id.ethz.ch} &
+  \textbf{6\,000\,000\,CHF} \newline
+  Udzielony: 06.11.2026 \newline
+  Wykonawca: \textbf{DXC Technology Switzerland GmbH} \\
+\midrule
+CSCS 2025--29 &
+  \textbf{Infrastruktura sprzętowa CSCS} \newline
+  Serwery, macierze, przełączniki sieciowe i oprogramowanie data-center &
+  ETH Zürich Informatikdienste -- Corporate Centre \newline
+  \code{gatt-wto@id.ethz.ch} &
+  Kontrakt ramowy \newline
+  Okres: 2025--2029 \newline
+  Centrum Superkomputerowe w Lugano \\
+\midrule
+CPV 30232100 &
+  \textbf{Laboratoryjny Benchtop 3D-Biodrucker} \newline
+  Wysokorozdzielcza drukarka 3D &
+  ETH Zürich (PLZ 8092 Zentrum) \newline
+  \code{publictender@ethz.ch} &
+  Postępowanie rozstrzygnięte \newline
+  Sprzęt bioinżynieryjny \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection*{1. Umowy ramowe na klastry HPC i pamięci masowe AI (Ref.\ 806887-2026)}
+
+Postępowanie konkursowe nr 806887-2026, ogłoszone w reżimie standardowym (OJ S 225/2026 z 19.11.2026), dotyczy strategicznego zaopatrzenia uczelni w wysokowydajne zasoby obliczeniowe. Zamówienie podzielono na dwa kluczowe zadania częściowe:
+\begin{itemize}
+    \item \textbf{LOT-0001 (HPC clusters and components):} Dostawa serwerów i węzłów obliczeniowych kompatybilnych ze standardowymi szafami rack 19-calowymi oraz otwartym standardem \textit{Open Rack v3 (ORv3)}. Wskazuje to na wdrażanie rozwiązań hiperskalowalnych o wysokiej gęstości upakowania i zaawansowanym chłodzeniu cieczą.
+    \item \textbf{LOT-0002 (High-Performance Storage for HPC and AI Applications):} Pamięci masowe dużej przepustowości dedykowane modelom sztucznej inteligencji i równoległym obliczeniom numerycznym.
+\end{itemize}
+Jednostką zamawiającą jest centralny pion zakupów ETH (\textit{Procurement Services VPIN}) korzystający z dedykowanego kanału pocztowego \code{gatt-wto@ethz.ch}. Termin składania ofert wyznaczono na \textbf{18 stycznia 2027 roku}. 
+
+\Figure[0.80]{simap_hpc_lots.png}{Ogłoszenie konkursowe na klastry HPC i storage AI opublikowane na simap.ch -- termin składania ofert 18.01.2027}{fig:simap-hpc}
+
+\subsubsection*{2. Wdrożenie centralnego systemu ITSM/ESM -- kontrakt DXC Technology (6\,mln\,CHF)}
+
+Z punktu widzenia analizy bezpieczeństwa teleinformatycznego kluczowym znaleziskiem jest rozstrzygnięcie przetargu na platformę \textit{IT Service Management / Enterprise Service Management (ITSM/ESM)}. Postępowanie prowadzone przez pion informatyki (\textit{Abt. Informatikdienste}) pod adresem \code{gatt-wto@id.ethz.ch} zostało sfinalizowane 6 listopada 2026 roku. Zwycięzcą kontraktu o łącznej wartości \textbf{6\,000\,000\,CHF} została spółka \textbf{DXC Technology Switzerland GmbH} z siedzibą w Wallisellen (kanton Zurych).
+
+Wdrożenie nowego systemu ITSM/ESM wraz z portalem samoobsługowym stanowi krytyczną zmianę w krajobrazie operacyjnym ETH:
+\begin{itemize}
+    \item System ten zarządza procesami uwierzytelniania, nadawania uprawnień, zgłoszeniami incydentów, wnioskami o sprzęt oraz resetowaniem haseł pracowników i studentów.
+    \item Zewnętrzny integrator (DXC Technology) uzyskuje uprzywilejowany wgląd w architekturę Active Directory, systemy IdM (\textit{Identity Management}) oraz wewnętrzne procedury wsparcia technicznego uczelni.
+\end{itemize}
+
+\subsubsection*{3. Infrastruktura Narodowego Centrum Superkomputerowego CSCS (2025--2029)}
+
+Ogłoszenie ramowe na platformie simap.ch obejmuje pełen cykl zaopatrzenia w maszyny przetwarzania danych, macierze dyskowe, przełączniki sieciowe wysokiej przepustowości (Infiniband / high-speed Ethernet) oraz oprogramowanie dla Szwajcarskiego Narodowego Centrum Superkomputerowego (CSCS w Lugano), podlegającego bezpośrednio ETH Zürich. Kontrakt zaplanowano na lata 2025--2029. 
+
+\Figure[0.80]{simap_cscs_notice.png}{Ogłoszenie ramowe na serwery, przełączniki i macierze dyskowe CSCS na lata 2025--2029 -- simap.ch}{fig:simap-cscs}
+
+\subsubsection*{4. Laboratoryjny sprzęt badawczy -- Drukarka 3D (CPV 30232100)}
+
+Czwartym zidentyfikowanym ogłoszeniem jest zamówienie na wysokorozdzielczą drukarkę laboratoryjną (\textit{Hochauflösender Benchtop 3D-Biodrucker}). Analiza metadanych ogłoszenia ujawnia istotne techniczne szczegóły proceduralne:
+\begin{itemize}
+    \item \textbf{Klasyfikacja CPV:} Zastosowano kod CPV \code{30232100} (\textit{Printers and plotters}), czyli standardową kategorię urządzeń drukujących. Wskazuje to, że przy wyszukiwaniu sprzętu komputerowego i peryferiów IT na portalach simap/TED w wynikach pojawiają się również precyzyjne urządzenia bioinżynieryjne.
+    \item \textbf{Lokalizacja i kontakt:} Kod pocztowy zamawiającego \code{8092} odpowiada bezpośrednio kampusowi głównemu ETH Zentrum (gdzie zlokalizowany jest budynek CAB Wydziału Informatyki oraz sąsiadujące laboratoria inżynieryjne).
+    \item \textbf{Dedykowany kanał e-mail:} Ogłoszenie ujawnia trzeci, niezależny adres e-mail pionu przetargowego uczelni: \code{publictender@ethz.ch}.
+\end{itemize}
+
+\Figure[0.80]{simap_3d_printer.png}{Szczegóły ogłoszenia na laboratoryjną drukarkę 3D (CPV 30232100) -- platforma simap.ch}{fig:simap-3d-printer}
+
+\lead{Struktura adresowa i wnioski dla inżynierii społecznej (Actionable Intelligence)}
+
+Analiza zamówień publicznych obnaża podział organizacyjny procesów zakupowych w ETH Zürich, identyfikując trzy wyspecjalizowane punkty kontaktowe:
+\begin{enumerate}
+    \item \code{gatt-wto@ethz.ch} -- centralne biuro zamówień publicznych wiceprezydenta ds.\ infrastruktury (\textit{Procurement Services VPIN}).
+    \item \code{gatt-wto@id.ethz.ch} -- komórka przetargowa pionu usług informatycznych (\textit{Informatikdienste Corporate Centre}).
+    \item \code{publictender@ethz.ch} -- ogólna skrzynka postępowań publicznych ETH.
+\end{enumerate}
+
+Na podstawie zebranych danych zdefiniowano następujące wektory zagrożeń:
+\begin{enumerate}
+    \item \textbf{Preteksting w oparciu o wdrożenie ITSM (DXC Technology):} Kwota 6 milionów CHF i data zawarcia umowy (listopad 2026) oznaczają, że ETH jest w fazie intensywnej integracji lub pilotażu nowego portalu helpdeskowego. Napastnik podszywający się pod zespół wdrożeniowy DXC Technology Switzerland może prowadzić wysoce wiarygodny \textit{spear-phishing} lub \textit{vishing} do pracowników D-INFK pod pretekstem „migracji do nowego portalu samoobsługowego ITSM” z wezwaniem do weryfikacji konta.
+    \item \textbf{Rozpoznanie dostawców HPC przed dostawą (Supply Chain):} Monitorowanie rozstrzygnięcia przetargu 806887-2026 (po 18.01.2027) pozwoli na poznanie konkretnych marek i modeli węzłów obliczeniowych oraz macierzy AI. Umożliwia to wcześniejsze wyszukiwanie podatności 0-day/N-day w oprogramowaniu układowym (firmware BMC/IPMI) przed ich wdrożeniem w szafach serwerowych ETH.
+    \item \textbf{Podszywanie się pod dział wsparcia technicznego:} Wykorzystanie oficjalnej terminologii formularzy i workflow nowego portalu samoobsługowego ITSM pozwala na generowanie fałszywych ticketów serwisowych żądających instalacji rzekomego certyfikatu bezpieczeństwa lub agenta monitorującego.
+\end{enumerate}
 
 \section{Relacje gospodarcze i ekosystem innowacji}\label{sec:partnerstwa-gospodarcze}
 
+Wydział Informatyki ETH Zürich nie funkcjonuje jako wyizolowana jednostka akademicka, lecz stanowi centralne ogniwo szwajcarskiego ekosystemu innowacji technologicznych i finansowych (\textit{Greater Zurich Area}). Bliska symbioza środowiska naukowego z sektorem bankowym, ubezpieczeniowym oraz globalnymi centrami badawczo-rozwojowymi (R\&D) korporacji technologicznych generuje specyficzne uwarunkowania wywiadowcze. Z perspektywy analizy bezpieczeństwa i inżynierii społecznej wielowymiarowe relacje gospodarcze tworzą rozległą powierzchnię zaufania instytucjonalnego, charakteryzującą się stałą obecnością zewnętrznych podmiotów komercyjnych w infrastrukturze wydziału.
+
 \subsection{Partnerstwa technologiczne i konsorcjum ZISC}\label{subsec:partnerzy-przemyslowi}
-% TO-DO:
-% 1. Opisać współpracę z centrami R&D w Zurychu (np. Google Zurich, Microsoft Mixed Reality Lab, IBM Research).
-% 2. Wskazać konsorcjum ZISC (partnerzy bankowi i technologiczni).
-% 3. Wyjaśnić wpływ obecności gości biznesowych na obniżenie czujności personelu w CAB.
+
+Kluczową płaszczyzną instytucjonalnego transferu wiedzy i technologii w obszarze cyberbezpieczeństwa jest Centrum Bezpieczeństwa Informacji i Ochrony Prywatności w Zurychu (\textit{Zurich Information Security and Privacy Center - ZISC}) \cite{eth_zisc}. Zgodnie z oficjalną deklaracją jednostki, ZISC jest finansowane wspólnie przez ETH Zürich oraz partnerów komercyjnych, a pozyskiwane wkłady finansowe bezpośrednio wspierają programy badawcze i edukacyjne wydziału.
+
+Eksploracja oficjalnego portalu konsorcjum (\file{zisc.ethz.ch/partners}) pozwoliła na precyzyjne skatalogowanie zarówno bieżących partnerów strategicznych, jak i podmiotów współpracujących historycznie, co przedstawiono na rysunku \ref{fig:zisc-partners}.
+
+\Figure[0.65]{zisc_partners.jpg}{Struktura aktualnych i historycznych partnerów przemysłowych konsorcjum ZISC opublikowana na portalu jednostki}{fig:zisc-partners}
+
+Analiza zebranego materiału dowodzi wieloletniego, strategicznego powiązania wydziału z kluczowymi filarami szwajcarskiej infrastruktury krytycznej i sektora fintech:
+\begin{itemize}
+    \item \textbf{Aktualni partnerzy przemysłowi:}
+    \begin{itemize}
+        \item \textit{Konfederacja Szwajcarska (Schweizerische Eidgenossenschaft):} Partner założycielski wspierający centrum nieprzerwanie od 2003 roku, co podkreśla państwowy priorytet badań prowadzonych w D-INFK.
+        \item \textit{Zürcher Kantonalbank (ZKB):} Największy szwajcarski bank kantonalny (współpraca od 2015 roku), zaangażowany w projekty ochrony bankowości cyfrowej.
+        \item \textit{Poczta Szwajcarska (Die Post / Swiss Post):} Partner od 2016 roku, rozwijający wspólnie z naukowcami systemy bezpiecznego głosowania elektronicznego (\textit{E-Voting}) oraz cyfrowej tożsamości.
+        \item \textit{Dieter Schwarz Stiftung:} Fundacja wspierająca od 2023 roku inicjatywy z zakresu transformacji cyfrowej i sztucznej inteligencji.
+        \item \textit{Swissquote:} Czołowa szwajcarska grupa bankowości inwestycyjnej i handlu kryptowalutami, która dołączyła do konsorcjum w 2025 roku.
+    \end{itemize}
+    \item \textbf{Byli partnerzy konsorcjum:} Wśród wieloletnich partnerów ZISC zidentyfikowano operatora szwajcarskiej giełdy papierów wartościowych SIX Group (2016--2025), koncern ubezpieczeniowy Zurich Insurance (2015--2025), NEC (2014--2023), bank Credit Suisse (2003--2014) oraz gigantów technologicznych: Google (2011--2014), IBM (2003--2011) i Sun Microsystems.
+\end{itemize}
+
+Równolegle do konsorcjum ZISC pracownicy D-INFK utrzymują bezpośrednie powiązania z laboratoriami R\&D zlokalizowanymi w Zurychu. Szczególnym przykładem jest europejski hub badawczy \textbf{Google Zurich}, z którym wydział prowadzi regularne programy stażowe i seminaria. Z kolei w obszarze grafiki i widzenia komputerowego unikalnym zjawiskiem jest podwójna afiliacja profesorów – przykładowo, prof. Marc Pollefeys pełni jednocześnie funkcję dyrektora naukowego w \textbf{Microsoft Mixed Reality \& AI Lab Zurich}, a prof. Markus Gross kierował przez lata współpracą z \textbf{Disney Research Studios}.
+
+\lead{Wnioski dla modelowania zagrożeń fizycznych i socjotechnicznych (Actionable Intelligence)}
+
+Ujawniona sieć powiązań gospodarczych dostarcza napastnikowi gotowych wzorców zachowań i wektorów manipulacyjnych:
+
+\begin{enumerate}
+    \item \textbf{Efekt kamuflażu biznesowego (Visitor Camouflage):} Intensywna współpraca z bankami (ZKB, Swissquote) i korporacjami technologicznymi sprawia, że obecność gości zewnętrznych w budynku CAB (w garniturach, z identyfikatorami gościa lub w swobodnym stylu biznesowym) jest zjawiskiem codziennym. Zjawisko to drastycznie obniża czujność personelu i studentów wobec osób obcych, umożliwiając niezauważone wejście do stref ograniczonego dostępu za pracownikiem (\textit{tailgating}) pod pretekstem udziału w warsztatach ZISC.
+    \item \textbf{Pretexting oparty na zaufaniu międzyinstytucjonalnym:} Atakujący może przygotować wysoce wiarygodny scenariusz spear-phishingu skierowany do badaczy Instytutu Bezpieczeństwa Informacji (InfSec), podszywając się pod oficjalne zaproszenie na zamknięte warsztaty robocze dotyczące bezpieczeństwa finansowego organizowane przez Swissquote lub Pocztę Szwajcarską. Załącznik rzekomo zawierający konspekt referatu lub formularz NDA stanowi idealny wektor dostarczenia złośliwego oprogramowania.
+\end{enumerate}
 
 \subsection{Spółki spin-off wywodzące się z D-INFK}\label{subsec:spinoffy}
-% TO-DO:
-% 1. Wymienić rynkowe spółki spin-off wywodzące się z D-INFK (np. Scandit, Beekeeper, DeepCode/Snyk).
-% 2. Zinterpretować transfer technologii i współdzielenie narzędzi między laboratoriami a rynkiem.
+
+Kolejnym kluczowym wskaźnikiem pozycji rynkowej i stopnia komercjalizacji badań prowadzonych w Wydziale Informatyki ETH Zürich jest dynamiczny rozwój przedsiębiorstw akademickich typu \textit{spin-off}. Od 1993 roku pracownicy naukowi, doktoranci oraz absolwenci D-INFK założyli łącznie 62 spółki technologiczne, transferując innowacje z laboratoriów uniwersyteckich bezpośrednio na rynek globalny. 
+
+Chronologię powstawania wydziałowych spółek spin-off na przestrzeni ponad trzech dekad przedstawiono na rysunku \ref{fig:spinoffs-timeline}.
+
+\Figure[0.95]{spinoffs_timeline.jpg}{Chronologia powstania 62 spółek typu spin-off wywodzących się z Wydziału Informatyki (D-INFK) w latach 1993--2025}{fig:spinoffs-timeline}
+
+\lead{Ewolucja profilu technologicznego i wiodące podmioty}
+
+Analiza chronologii powstawania spółek odsłania wyraźne etapy ewolucji zainteresowań badawczych wydziału:
+\begin{itemize}
+    \item \textbf{Lata 1993--2005 (Inżynieria oprogramowania i podstawy grafiki):} Wczesny okres reprezentowany przez spółki takie jak \textit{Oberon microsystems} (1993, rozwój systemów obiektowych i języka Oberon tworzonego przez prof. Niklausa Wirtha), \textit{Eurospider} (1995, wyszukiwanie informacji), a także \textit{NovodeX} (2002, silnik fizyki czasu rzeczywistego, stanowiący fundament dzisiejszej technologii NVIDIA PhysX).
+    \item \textbf{Lata 2006--2015 (Mobilność, widzenie komputerowe i komunikacja):} Okres dynamicznego rozwoju technologii sensorycznych i aplikacji mobilnych, z którego wyrosły m.in. \textit{LiberoVision}, \textit{Scandit}, \textit{Beekeeper} oraz \textit{3db Access}.
+    \item \textbf{Od 2016 (Cyberbezpieczeństwo, weryfikacja kodu i sztuczna inteligencja):} Współczesna fala komercjalizacji skupiona wokół bezpieczeństwa systemów, blockchaina i bezpiecznego AI. Obejmuje m.in. \textit{DeepCode} (2016, semantyczna analiza kodu oparta na uczeniu maszynowym), \textit{Anapaya Systems} oraz \textit{SCION Association} (2017/2021, komercjalizacja odpornej na ataki BGP architektury sieciowej SCION), \textit{ChainSecurity} (2019, audyt i weryfikacja formalna inteligentnych kontraktów), \textit{LatticeFlow AI} (2020, certyfikacja i audyt modeli uczenia maszynowego) oraz najnowsze podmioty z lat 2023--2025, takie jak \textit{Invariant Labs}, \textit{NetFabric} i \textit{Soverli}.
+\end{itemize}
+
+\lead{Akwizycje i fuzje ze światowymi liderami technologicznymi}
+
+Wysoka wartość merytoryczna technologii rozwijanych w laboratoriach D-INFK znajduje bezpośrednie potwierdzenie w licznych przejęciach wydziałowych spin-offów przez wiodące międzynarodowe korporacje technologiczne oraz globalne firmy doradcze, co zestawiono w tabeli \ref{tab:spinoff-akwizycje}.
+
+\begin{table}[H]
+    \centering
+    \caption{Zestawienie przejęć kapitałowych (\textit{acquisitions}) spółek spin-off D-INFK przez podmioty zewnętrzne}\label{tab:spinoff-akwizycje}
+    \tablefont
+    \begin{tabularx}{\linewidth}{L{0.28\linewidth} C{0.18\linewidth} L{0.32\linewidth} C{0.16\linewidth}}
+        \toprule
+        \hcell{Spółka spin-off D-INFK} & \hcell{Rok założenia} & \hcell{Podmiot przejmujący (\textit{Acquirer})} & \hcell{Rok akwizycji} \\
+        \midrule
+        Invariant Labs & 2024 & Snyk & 2025 \\
+        3db Access & 2012 & Infineon Technologies & 2023 \\
+        Animatico AG & 2019 & Nvidia & 2022 \\
+        ChainSecurity AG & 2019 & PwC (PricewaterhouseCoopers) & 2020 \\
+        DeepCode AG & 2016 & Snyk & 2020 \\
+        Kapanu AG & 2015 & Ivoclar Vivadent & 2017 \\
+        Koubachi AG & 2009 & Husqvarna Group & 2015 \\
+        LiberoVision AG & 2006 & Vizrt & 2010 \\
+        NetBreeze GmbH & 1998 & Microsoft & 2013 \\
+        NovodeX AG & 2002 & Ageia (2004) / Nvidia & 2008 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\lead{Analiza wektorów zagrożeń i Actionable Intelligence dla inżynierii społecznej}
+
+Z perspektywy analityki OSINT rozległy ekosystem spółek spin-off tworzy specyficzne relacje zaufania, które mogą zostać zainstrumentalizowane w scenariuszach ataków socjotechnicznych:
+
+\begin{enumerate}
+    \item \textbf{Ryzyko łańcucha dostaw kodu (Supply Chain \& Artifact Inheritance):} Oprogramowanie komercyjne spin-offów często bezpośrednio bazuje na otwartych repozytoriach akademickich i prototypach rozwijanych w D-INFK. Utrzymywanie współdzielonych organizacji w serwisach GitHub/GitLab oraz zależności pakietowych stwarza ryzyko zatrucia kodu lub przejęcia porzuconych repozytoriów badawczych.
+    \item \textbf{Pretexting oparty na relacjach absolwenckich (Alumni Trust):} Założyciele i kluczowi inżynierowie spin-offów utrzymują bliskie, prywatne i zawodowe relacje ze swoimi macierzystymi laboratoriami w budynku CAB. Wektor ataku podszywający się pod znanego absolwenta (np. z zespołu Snyk, Anapaya czy LatticeFlow) z prośbą o przetestowanie nowej wersji narzędzia badawczego, ocenę publikacji naukowej lub udostępnienie środowiska obliczeniowego cechuje się znikomym poziomem podejrzliwości ze strony doktorantów i personelu uczelni.
+    \item \textbf{Wspólne platformy rekrutacyjne i stażowe:} Spółki spin-off stanowią naturalne miejsce zatrudnienia dla studentów informatyki ETH. Kampanie socjotechniczne imitujące procesy rekrutacyjne, techniczne zadania kwalifikacyjne lub płatne staże badawcze w spółkach takich jak Beekeeper czy Scandit stanowią wysoce skuteczny mechanizm nakłaniania studentów do pobrania i uruchomienia złośliwych ładunków testowych na stacjach roboczych w laboratoriach CAB.
+\end{enumerate}
