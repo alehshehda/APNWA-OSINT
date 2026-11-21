@@ -135,7 +135,9 @@
                                     \token_if_eq_meaning:NNTF #1 \ %
                                       {
                                         \__report_flush_seg:
-                                        \space
+                                        \bool_if:NTF \l__report_inline_bg_bool
+                                          { \__report_codebox:n { \space } }
+                                          { \space }
                                         \allowbreak
                                       }
                                       {
