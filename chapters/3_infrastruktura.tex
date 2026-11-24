@@ -22,7 +22,7 @@ Analiza telemetryczna przeprowadzona z wykorzystaniem platform \textit{RIPE Stat
 
 \lead{Węzły tranzytowe Tier-1 i partnerzy peeringowi (BGP Peers)}
 
-Propagacja tras BGP systemu AS559 opiera się na wielościeżkowym modelu \textit{multi-homed}, wykluczającym wystąpienie pojedynczego punktu awarii (\textit{Single Point of Failure -- SPOF}). Główny tranzyt międzykontynentalny realizowany jest przez wiodących globalnych operatorów Tier-1:
+Propagacja tras BGP systemu AS559 opiera się na wielościeżkowym modelu \textit{multi-homed}, wykluczającym wystąpienie pojedynczego punktu awarii. Główny tranzyt międzykontynentalny realizowany jest przez wiodących globalnych operatorów Tier-1:
 \begin{itemize}
     \item \textbf{Arelion (dawniej Telia Carrier, AS1299)} oraz \textbf{Hurricane Electric (AS6939)} -- dominujący dostawcy tranzytu globalnego i liderzy wdrożenia IPv6 (grube linie przepływu w grafie propagacji).
     \item \textbf{Lumen / Level 3 (AS3356)}, \textbf{GTT Communications (AS3257)} oraz \textbf{Zayo Bandwidth (AS6461)} -- pomocnicze łącza tranzytowe zapewniające symetrię routingu.
@@ -91,10 +91,87 @@ Z perspektywy rekonesansu D-INFK kluczowe znaczenie ma identyfikacja bloków nal
 \end{enumerate}
 
 \subsection{Podsieci IPv4 i IPv6 dedykowane dla D-INFK}\label{subsec:pule-ip}
-% TO-DO:
-% 1. Wyodrębnić podsieci D-INFK w ramach bloku 129.132.0.0/16 na podstawie rezolucji DNS hostów wydziałowych.
-% 2. Tabela podsieci wydziałowych (np. stacje robocze CAB, serwery ISG, klastry HPC oraz IPv6).
-% 3. Ocenić poprawność segmentacji logicznej i fizycznej sieci w budynku CAB.
+
+Choć z perspektywy globalnej tablicy routingu BGP cała przestrzeń adresowa Politechniki Federalnej w Zurychu jest rozgłaszana jako pojedynczy, zagregowany blok \code{129.132.0.0/16} (\textit{netname: ETH-ETHER}), z punktu widzenia rekonesansu ukierunkowanego na Wydział Informatyki (D-INFK) kluczowe znaczenie ma rozpoznanie wewnętrznej struktury tej sieci. Analiza bazy RIPE Database potwierdziła, że w publicznym rejestrze nie wydzielono mniejszych obiektów \code{inetnum} przypisanych bezpośrednio do poszczególnych wydziałów czy budynków. Całość podziału adresacji na podsieci wydziałowe realizowana jest wewnętrznie przez centralny dział IT uczelni (\textit{Informatikdienste -- ID}) we współpracy z wyspecjalizowanymi grupami wsparcia technicznego jednostek, w tym z grupą \textbf{ISG D-INFK} (\textit{Infrastructure Services Group}).
+
+Jak wynika z publicznie dostępnej dokumentacji procesowej ISG, zarządzanie adresacją w obrębie kampusu opiera się na sformalizowanych przepływach pracy koordynatorów IT (np. procedury \code{04\_01\_0\_create\_new\_subnet} oraz \code{04\_02\_0\_create\_new\_DNS\_DHCP\_entry}). Przyłączenia przewodowe w budynkach wydziałowych wykorzystują mechanizm dynamicznego przypisywania sieci VLAN (w tym dedykowanych sieci typu CX-VLAN) w oparciu o standard uwierzytelniania IEEE 802.1X oraz centralny serwer DHCP. Dodatkowo, w celu uniknięcia kolizji routingu z krytycznymi usługami wewnątrz bloku \code{129.132.0.0/16}, dokumentacja ISG nakazuje stosowanie przez pracowników i studentów odizolowanej przestrzeni prywatnej \code{10.233.0.0/16} dla lokalnych środowisk kontenerowych (Docker oraz Podman).
+
+\lead{Semantyka rekordów PTR i pasywne mapowanie architektury}
+
+Cennym źródłem informacji wywiadowczych o topologii wewnętrznej bez konieczności aktywnego skanowania portów okazała się analiza rekordów odwrotnego DNS (\textit{PTR}) pozyskanych z platformy \textit{Hurricane Electric BGP Toolkit}, \textit{DNSDumpster} oraz zapytań do serwerów nazw. Infrastrukturę uczelnianą cechuje rygorystyczna, ustandaryzowana konwencja nazewnicza w formacie:
+\begin{center}
+\code{<jednostka>-<grupa\_isg>-<budynek>-<rola>-<identyfikator>.ethz.ch}
+\end{center}
+Zastosowanie tak opisowego schematu (zilustrowanego na rysunku~\ref{fig:he-ptr}) stanowi istotną informację z perspektywy rekonesansu OSINT (\textit{Information Disclosure}). Pozwala ono atakującemu zidentyfikować nie tylko przynależność wydziałową hosta (np. \code{infk} dla D-INFK, \code{itet} dla D-ITET), ale również jego dokładną lokalizację fizyczną (np. \code{dcz1} dla centrum danych, \code{hg} dla budynku głównego \textit{Hauptgebäude}) oraz pełnioną rolę operacyjną (\code{server}, \code{dock} dla stacji dokujących, \code{idvm} dla maszyn wirtualnych zarządzanych przez \textit{Informatikdienste}, czy \code{cntr} dla hostów kontenerowych). Adresy nieprzypisane do stałych usług otrzymują natomiast generyczne nazwy w domenie \code{net4.ethz.ch} (np. \code{129-132-0-1.net4.ethz.ch}).
+
+\Figure[0.52]{he_129_132_dns_ptr.png}{Konwencja nazewnictwa rekordów PTR w przestrzeni 129.132.0.0/16 (Hurricane Electric BGP Toolkit)}{fig:he-ptr}
+
+\lead{Kluczowe segmenty sieciowe i punkty dostępowe D-INFK}
+
+Korelacja danych z publicznej dokumentacji technicznej \code{isg.inf.ethz.ch}, pasywnych rekordów DNS (\textit{A}, \textit{AAAA}, \textit{CNAME}, \textit{TXT}) oraz pasywnych baz skanerów internetowych (\textit{Shodan}) pozwoliła wyodrębnić główne strefy sieciowe obsługujące zasoby D-INFK. Ich szczegółową klasyfikację przedstawiono w tabeli~\ref{tab:dinfk-podsieci}.
+
+\begin{table}[H]
+\caption{Zidentyfikowane segmenty sieciowe i węzły infrastruktury D-INFK (ISG, DNS, Shodan)}
+\label{tab:dinfk-podsieci}
+\centering\tablefont
+\begin{tabularx}{\linewidth}{L{0.22\linewidth} L{0.28\linewidth} L{0.24\linewidth} Y}
+\toprule
+\hcell{Zakres / Prefiks} & \hcell{Zidentyfikowane hosty i adresy} & \hcell{Rola w infrastrukturze} & \hcell{Źródło / Uwagi} \\
+\midrule
+\code{129.132.19.0/24} \newline \code{2001:67c:10ec:254::/64} & \code{inf.ethz.ch} (\code{.216} / \code{::216}) & Główny portal D-INFK (Dual-Stack IPv4/IPv6) & Publiczny DNS (\textit{A}, \textit{AAAA}) \\
+\midrule
+\code{129.132.62.0/24} & \code{isg.inf.ethz.ch} $\rightarrow$ \code{k8s-isg-lb.inf.ethz.ch} (\code{.99}) & Klaster Kubernetes grupy wsparcia ISG & Pasywny DNS (\textit{CNAME}) \\
+\midrule
+\code{129.132.227.0/24} & \code{jumphost1.inf.ethz.ch} (\code{.181}), \code{jumphost2.inf.ethz.ch} (\code{.182}) & Bastiony SSH (\textit{Jump Hosts}) do sieci wewnętrznej & Dokumentacja ISG D-INFK \\
+\midrule
+\code{129.132.216.0/24} & \code{optimus.ethz.ch} (\code{.54}), \code{maximus.inf.ethz.ch} (\code{.39}), \code{gitlab.inf.ethz.ch} (\code{.55}) & Hosty logowania studenckiego (\textit{Special Login Hosts}), GitLab i przekaźniki poczty & Dokumentacja ISG + rekord SPF (\code{.35}, \code{.38}, \code{.45}, \code{.59}) \\
+\midrule
+\code{129.132.85.0/24} & Klaster WWW (\code{.2}--\code{.7}), \code{edu.abz.inf.ethz.ch} (\code{.46}), \code{htor.inf.ethz.ch} (\code{.209}) & Klastry webowe D-INFK oraz serwery poszczególnych katedr & Dokumentacja ISG (reguły firewall) + Shodan \\
+\midrule
+\code{129.132.15.0/24} \newline \code{129.132.114.0/24} & \code{edtools-cntr1.inf.ethz.ch} (\code{.15.123}), \code{hilliges-ait.inf.ethz.ch} (\code{.114.75}) & Konteneryzowane narzędzia edukacyjne oraz serwery grup badawczych (AIT Lab) & DNSDumpster (\textit{A}, \textit{PTR}) \\
+\midrule
+\code{129.132.98.12} \newline \code{129.132.250.2} & Wewnętrzne serwery DNS & Centralna infrastruktura rozwiązywania nazw ETH & Dokumentacja ISG D-INFK \\
+\midrule
+\code{129.132.99.0/24} & \code{sslvpn.ethz.ch} (\code{.164}) & Brama dostępu zdalnego SSL VPN (OpenConnect / AnyConnect) & Dokumentacja ISG (\code{staff-net} vs \code{student-net}) \\
+\midrule
+\code{129.132.155.0/24} \newline \code{129.132.161.0/24} & \code{ast-epyc1.inf.ethz.ch} (\code{155.9}), \code{ast-epyc3--5} (\code{161.178--180}) & Węzły obliczeniowe i badawcze (EPYC) & Shodan (ekspozycja portu 111) \\
+\midrule
+\code{192.33.92.0/22} & Subdomeny haszowe (np. \code{18ed40d710322.inf.ethz.ch}) & Dynamiczne węzły obliczeniowe i efemeryczne kontenery & DNSDumpster (blok CSCS/HPC) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Analiza zmapowanych podsieci wskazuje na wyraźne rozwarstwienie funkcjonalne infrastruktury wydziałowej:
+\begin{itemize}
+    \item \textbf{Strefa usług publicznych i kontenerowych (DMZ):} Główna witryna \code{inf.ethz.ch} pracuje w pełnym trybie \textit{Dual-Stack} (\code{129.132.19.216} oraz \code{2001:67c:10ec:254::216}). Zaplecze usługowe grupy ISG przeniesiono natomiast do klastra Kubernetes (\code{k8s-isg-lb.inf.ethz.ch} w podsieci \code{.62.0/24}) oraz dedykowanych serwerów odwrotnego proxy (\code{edtools-cntr1.inf.ethz.ch} w podsieci \code{.15.0/24}, obsługującego 28 wirtualnych hostów narzędzi dydaktycznych).
+    \item \textbf{Infrastruktura dostępu zdalnego i bramy brzegowe:} W celu odseparowania zasobów laboratoryjnych od bezpośredniego ruchu internetowego udostępniono redundantną parę bastionów SSH (\code{jumphost1.inf.ethz.ch} oraz \code{jumphost2.inf.ethz.ch} w podsieci \code{.227.0/24}), a także specjalne hosty logowania studenckiego (\code{optimus.ethz.ch} w środowisku RHEL oraz \code{maximus.inf.ethz.ch} w systemie Ubuntu, ulokowane w podsieci \code{.216.0/24} obok wydziałowego serwera \code{gitlab.inf.ethz.ch}). Komunikacja tunelowana realizowana jest centralnie przez bramę \code{sslvpn.ethz.ch} (\code{129.132.99.164}).
+    \item \textbf{Zasoby obliczeniowe i dedykowane podsieci katedr:} Grupy badawcze posiadają własne, wydzielone pule adresowe dla swoich projektów i laboratoriów (np. \code{.114.0/24} dla laboratorium AIT prof. Hilligesa czy \code{.85.0/24} dla klastrów webowych \code{.2}--\code{.7} oraz katedry ABZ). Z kolei wysokowydajne węzły obliczeniowe (\code{ast-epyc1}, \code{ast-epyc3--5}) rezydują w podsieciach \code{.155.0/24} oraz \code{.161.0/24}, natomiast dynamiczne, efemeryczne środowiska badawcze o nazwach w formie skrótów heksadecymalnych wykorzystują wydzielony blok \code{192.33.92.0/22}.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/isg_jumphosts_login.png}
+        \caption{Hosty logowania oraz bastiony SSH (\code{jumphost1/2})}\label{fig:isg-jumphosts}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/isg_vpn_segmentation.png}
+        \caption{Separacja grup \code{staff-net} i \code{student-net} w SSL VPN}\label{fig:isg-vpn}
+    \end{subfigure}
+    \caption{Mechanizmy kontrolowanego dostępu do zasobów wewnętrznych D-INFK (dokumentacja ISG)}\label{fig:isg-access}
+\end{figure}
+
+\lead{Ocena segmentacji logicznej i fizycznej sieci w budynku CAB}
+
+Zestawienie danych z dokumentacji ISG oraz pasywnej ekspozycji zewnętrznej pozwala precyzyjnie ocenić architekturę bezpieczeństwa budynku CAB (\textit{Universitätstrasse 6}):
+\begin{enumerate}
+    \item \textbf{Pełna izolacja stacji roboczych i laboratoriów studenckich w CAB:} Dokumentacja ISG jednoznacznie potwierdza, że stacje robocze w publicznych salach komputerowych (\code{CAB H 56}, \code{CAB H 57}) oraz otwartych strefach roboczych (\code{CAB F 31}, \code{CAB G 41}) są całkowicie odizolowane od bezpośredniego ruchu przychodzącego z sieci Internet. Dostęp zdalny do zasobów wewnętrznych wymaga przejścia przez uwierzytelnione bastiony SSH (\code{jumphost1/2.inf.ethz.ch}, rysunek~\ref{fig:isg-jumphosts}) lub bramę \code{sslvpn.ethz.ch}. Co istotne, brama VPN wymusza ścisłą separację logiczną ról poprzez odrębne grupy dostępowe i sufiksy domenowe: \code{@staff-net.ethz.ch} (\code{-g staff-net}) dla pracowników i doktorantów oraz \code{@student-net.ethz.ch} (\code{-g student-net}) dla studentów (rysunek~\ref{fig:isg-vpn}), co skutecznie ogranicza ruch boczny (\textit{Lateral Movement}).
+    \item \textbf{Fizyczna koncentracja infrastruktury krytycznej:} Kluczowe serwery wydziałowe oraz sprzęt sieciowy zlokalizowano w wydzielonych, chronionych serwerowniach budynku CAB (\code{CAB D 53.1} oraz \code{CAB D 56}), oddzielonych fizycznie i logicznie od ogólnodostępnych pracowni studenckich. Gniazda Ethernet w pomieszczeniach biurowych i dydaktycznych podlegają dynamicznemu krosowaniu VLAN-ów poprzez 802.1X, co uniemożliwia trywialne wpięcie nieautoryzowanego urządzenia do podsieci serwerowej.
+    \item \textbf{Asymetria bezpieczeństwa na węzłach badawczych (Shadow IT / Research Nodes):} Pomimo wzorowej izolacji stacji klienckich w budynku CAB, pasywna analiza \textit{Shodan} ujawniła, że wybrane serwery obliczeniowe i katedralne pozostają bezpośrednio wystawione na ruch zewnętrzny bez restrykcyjnej filtracji brzegowej. Przykładem są serwery \code{ast-epyc1} oraz \code{ast-epyc3--5} z otwartą usługą RPC \code{portmapper} (port 111 TCP/UDP), serwer katedralny \code{htor.inf.ethz.ch} działający na przestarzałym silniku Apache 2.4.25 z dodatkowymi portami niestandardowymi (6666, 9999, 10443) oraz sieciowa drukarka 3D \code{ultimakers5.inf.ethz.ch}. Stanowi to dowód na istnienie zdecentralizowanej administracji na poziomie pojedynczych katedr badawczych, co zostanie szczegółowo przeanalizowane w podrozdziale~\ref{sec:shodan-censys}.
+\end{enumerate}
 
 \section{Analiza rejestracyjna WHOIS i RDAP}\label{sec:whois-rdap}
 
