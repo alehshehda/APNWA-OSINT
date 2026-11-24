@@ -234,19 +234,42 @@ Domena \code{ethz.ch} (nadrzędna dla \code{inf.ethz.ch}) & SWITCH NIC / RDAP \n
 
 \subsection{Kontakty techniczne i zespoły reagowania (CSIRT)}\label{subsec:whois-historia}
 
-Szczegółowa inspekcja atrybutów kontaktowych i opiekunów obiektów w bazie RIPE pozwala zidentyfikować strukturę odpowiedzialności operacyjnej oraz kanały eskalacji incydentów bezpieczeństwa w ETH Zürich:
+Szczegółowa inspekcja powiązanych obiektów organizacyjnych i kontaktowych w bazie RIPE Database pozwoliła dokładnie zrekonstruować strukturę odpowiedzialności operacyjnej oraz kanały reagowania na incydenty bezpieczeństwa w ETH Zürich:
 \begin{itemize}
-    \item \textbf{Kontakty administracyjne i techniczne (\code{admin-c}, \code{tech-c}):} Zarówno w obiekcie IPv4 (\code{ETH-ETHER}), jak i IPv6 (\code{ETHZ-NET-IPv6}) jako kontakt techniczny widnieje identyfikator \anon{HE688-RIPE}, natomiast dla przestrzeni IPv6 dodatkowo wskazano rolę administracyjną \anon{AW1297-RIPE}. Ze względu na politykę prywatności i minimalizację ekspozycji danych osobowych w ramach analizy OSINT, dane imienne przypisane do tych identyfikatorów zostały zanonimizowane.
-    \item \textbf{Zespół reagowania uczelni (ETH CSIRT) oraz integracja ze SWITCH-CERT:} Oficjalnym punktem zgłaszania nadużyć dla całej puli adresowej uczelni jest adres \code{abuse@ethz.ch}, obsługiwany przez wewnętrzny zespół \textbf{ETH CSIRT} działający w ramach sekcji \textit{Cyber and Information Security (CISEC)} działu IT (\textit{Informatikdienste}). Jednocześnie wpis \code{mnt-irt: IRT-SWITCH-CERT} w rekordzie \code{129.132.0.0/16} oraz funkcja organizacji sponsorującej (\code{sponsoring-org: ORG-SG2-RIPE}) formalnie integrują obsługę incydentów sieciowych ETH Zürich z krajowym zespołem reagowania sieci akademickiej \textbf{SWITCH-CERT} (\code{cert@switch.ch}), akredytowanym w międzynarodowych strukturach \textit{FIRST} oraz \textit{Trusted Introducer}.
+    \item \textbf{Obiekt organizacyjny \code{ORG-ETHZ1-RIPE}:} Zarejestrowany pod adresem głównym uczelni (\textit{Raemistrasse 101, 8092 Zurich}), ze skrzynką administracyjną \code{hostmaster@ethz.ch} oraz powiadomieniami zmian kierowanymi do operatora akademickiego (\code{ref-nfy: hostmaster@switch.ch}). Obiekt jest utrzymywany przez \code{SWITCH-MNT} i był aktualizowany w dniu \code{2026-05-13} (rysunek~\ref{fig:ripe-org}).
+    \item \textbf{Rola techniczna i nadużyć \code{HE688-RIPE} (\code{Hostmaster ETHZ}):} Atrybuty \code{tech-c} oraz \code{abuse-c} wskazują na zbiorczy obiekt funkcyjny jednostki \textit{ID ICT-Networks} (utworzony 22 czerwca 2005 r., ostatnia modyfikacja 30 listopada 2017 r.), który definiuje oficjalną skrzynkę zgłoszeń incydentów \code{abuse-mailbox: abuse@ethz.ch} oraz centralny numer telefonu działu sieciowego \code{+41 44 632 3555} (rysunek~\ref{fig:ripe-role}).
+    \item \textbf{Kontakt imienny \code{AW1297-RIPE}:} Jako główny kontakt administracyjny (\code{admin-c}) dla obiektu \code{ORG-ETHZ1-RIPE}, roli \code{HE688-RIPE} oraz puli IPv6 wskazano imiennego pracownika działu \textit{ID ICT-Networks} -- \anon{Administrator_ID_ICT_01} (obiekt utworzony 17 marca 2009 r., modyfikowany w listopadzie 2017 r.).
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/ripe_org_ethz1.png}
+        \caption{Obiekt organizacyjny \code{ORG-ETHZ1-RIPE}}\label{fig:ripe-org}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/ripe_role_he688.png}
+        \caption{Obiekt funkcyjny \code{HE688-RIPE} (\code{Hostmaster ETHZ})}\label{fig:ripe-role}
+    \end{subfigure}
+    \caption{Struktura kontaktów technicznych i administracyjnych ETH Zürich w bazie RIPE Database}\label{fig:ripe-contacts}
+\end{figure}
+
+\lead{Zespół reagowania uczelni (ETH CSIRT) i integracja ze SWITCH-CERT}
+
+Obsługa incydentów bezpieczeństwa realizowana jest dwupoziomowo. Pierwszą linię obrony stanowi wewnętrzny zespół \textbf{ETH CSIRT} (\textit{Computer Security Incident Response Team}), działający w strukturach \textit{Informatikdienste}. Publiczny katalog pracowników ETH ujawnia skład zespołu: liczy on siedmiu specjalistów pod kierownictwem \anon{Kierownik_CSIRT_01}, zlokalizowanych fizycznie w budynku \code{OCT} (pokój \code{OCT G 12}), wraz z jawnymi bezpośrednimi numerami telefonów oraz adresami e-mail w domenach \code{@ethz.ch} oraz \code{@id.ethz.ch} (np. \anon{Specjalista_CSIRT_01}, \anon{Specjalista_CSIRT_02}).
+
+Na poziomie krajowym, poprzez atrybut \code{mnt-irt: IRT-SWITCH-CERT} oraz funkcję organizacji sponsorującej (\code{sponsoring-org: ORG-SG2-RIPE}), incydenty sieciowe z puli ETH Zürich są formalnie zintegrowane z zespołem \textbf{SWITCH-CERT} (\code{cert@switch.ch}), akredytowanym w międzynarodowych strukturach \textit{FIRST} oraz \textit{Trusted Introducer}.
 
 \lead{Ocena stabilności wpisów i podatności na przejęcie zasobów (Domain / Prefix Hijacking)}
 
-Z perspektywy oceny powierzchni ataku na warstwę administracyjną i rejestracyjną, zidentyfikowana konfiguracja prezentuje bardzo wysoki poziom dojrzałości (\textit{High Security Posture}):
+Z perspektywy oceny powierzchni ataku na warstwę administracyjną i rejestracyjną, zidentyfikowana konfiguracja prezentuje wysoki poziom dojrzałości technicznej (\textit{High Security Posture}), przy jednoczesnym zachowaniu typowej dla instytucji akademickich jawności kadrowej:
 \begin{enumerate}
-    \item \textbf{Brak ryzyka przejęcia domeny (\textit{Domain Hijacking}):} Ponad trzydziestoletnia historia rejestracji domeny \code{ethz.ch} (przed 1996 r.), obsługa przez szwajcarskiego rejestratora korporacyjnego Infomaniak Network SA oraz aktywne zabezpieczenie \textbf{DNSSEC} praktycznie eliminują możliwość nieuprawnionego transferu domeny lub podmiany rekordów delegacji. Ponadto subdomena \code{inf.ethz.ch} nie stanowi odrębnego bytu rejestracyjnego, przez co jest w pełni chroniona polityką domeny głównej.
-    \item \textbf{Wielopoziomowa ochrona obiektów w RIPE NCC:} Obiekty \code{inetnum} i \code{inet6num} nie uległy żadnej modyfikacji od kwietnia 2016 roku i są podwójnie zabezpieczone obiektami uwierzytelniającymi (\code{mnt-by}) należącymi zarówno do operatora akademickiego (\code{SWITCH-MNT}), jak i bezpośrednio do rejestru RIPE (\code{RIPE-NCC-LEGACY-MNT} / \code{RIPE-NCC-END-MNT}). Wyklucza to ryzyko przypadkowej utraty lub przejęcia bloków IP w drodze socjotechniki wymierzonej w rejestr regionalny.
-    \item \textbf{Ograniczony potencjał do ataków na kontakty techniczne:} Ukrycie bezpośrednich adresów imiennych pod ogólnymi rolami \code{abuse@ethz.ch} oraz odseparowanie zarządzania domeną (Infomaniak) od zarządzania infrastrukturą sieciową (SWITCH / CISSEC) minimalizuje skuteczność ataków typu \textit{spear-phishing} podszywających się pod rejestratora w celu wyłudzenia zmian w strefie DNS.
+    \item \textbf{Brak ryzyka przejęcia domeny (\textit{Domain Hijacking}):} Ponad trzydziestoletnia historia rejestracji domeny \code{ethz.ch} (przed 1996 r.), obsługa przez szwajcarskiego rejestratora korporacyjnego Infomaniak Network SA oraz aktywne zabezpieczenie \textbf{DNSSEC} praktycznie eliminują możliwość nieuprawnionego transferu domeny lub podmiany rekordów delegacji. Subdomena \code{inf.ethz.ch} nie stanowi odrębnego bytu rejestracyjnego, przez co jest w pełni chroniona polityką domeny głównej.
+    \item \textbf{Wielopoziomowa ochrona obiektów w RIPE NCC:} Obiekty \code{inetnum} i \code{inet6num} nie uległy żadnej modyfikacji od kwietnia 2016 roku, a obiekty kontaktowe (\code{HE688-RIPE}, \code{AW1297-RIPE}) pozostają niezmienne od listopada 2017 roku. Wszystkie wpisy są chronione przez mechanizmy uwierzytelniające \code{SWITCH-MNT} (z powiadamianiem \code{hostmaster@switch.ch}) oraz opiekunów rejestru RIPE, co wyklucza ryzyko przejęcia bloków IP.
+    \item \textbf{Jawność danych osobowych jako wektor socjotechniczny:} Choć bezpośrednie zgłoszenia nadużyć kierowane są na zbiorcze skrzynki \code{abuse@ethz.ch} i \code{hostmaster@ethz.ch}, to publiczne powiązanie konkretnego pracownika w obiekcie \code{AW1297-RIPE} (\textit{ID ICT-Networks}) oraz ujawnienie imiennego składu całego zespołu ETH CSIRT wraz z lokalizacją (\code{OCT G 12}) i numerami telefonów stanowi wartościowy materiał wywiadowczy dla ukierunkowanych ataków socjotechnicznych (\textit{spear-phishing} / \textit{vishing}), co zostanie wykorzystane przy projektowaniu scenariuszy w Rozdziale~\ref{ch:socjotechnika}.
 \end{enumerate}
 
 \section{Konfiguracja DNS i bezpieczeństwo poczty}\label{sec:dns-poczta}
