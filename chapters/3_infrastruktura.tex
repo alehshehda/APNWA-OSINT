@@ -280,7 +280,7 @@ System nazw domenowych (DNS) stanowi centralny punkt odniesienia dla wszystkich 
 
 \subsection{Architektura i rekordy strefy DNS}\label{subsec:rekordy-dns}
 
-Pasywne odpytanie rekordów strefowych dla domeny nadrzędnej \code{ethz.ch} oraz subdomeny wydziałowej wykazało scentralizowany model zarządzania przestrzenią nazw uczelni.
+Pasywne odpytanie rekordów strefowych dla domeny nadrzędnej \code{ethz.ch} oraz subdomeny wydziałowej \code{inf.ethz.ch} wykazało scentralizowany model zarządzania przestrzenią nazw uczelni.
 
 \lead{Model Hidden Primary (SOA, NS) i brak odrębnej delegacji subdomeny}
 
@@ -295,7 +295,7 @@ Ukrycie głównego serwera \code{ns.ethz.ch} za serwerami wtórnymi skutecznie c
 
 \lead{Kryptograficzna walidacja łańcucha DNSSEC}
 
-Weryfikacja przeprowadzona narzędziem \textit{Verisign DNSSEC Analyzer} (rysunek~\ref{fig:verisign-dnssec}) potwierdziła pełną spójność i poprawność podpisów kryptograficznych od strefy głównej (\code{.}) przez rejestr krajowy \code{ch} (\code{DS=58745/SHA-256}) aż do strefy \code{ethz.ch} (\code{DS=43502/SHA-256}). Uczelnia wykorzystuje nowoczesny algorytm krzywych eliptycznych \textbf{ECDSAP256SHA256} (klucz podpisujący \code{DNSKEY=43502/SEP}), którym bezpośrednio uwierzytelniane są rekordy adresowe wydziału (w tym rekord \code{A 129.132.19.216} dla \code{inf.ethz.ch} opatrzony podpisem \code{RRSIG=43502}). Rozwiązanie to gwarantuje pełną odporność na ataki podmiany odpowiedzi DNS w tranzycie (\textit{DNS Spoofing} / \textit{Cache Poisoning}).
+Weryfikacja przeprowadzona narzędziem \textit{Verisign DNSSEC Analyzer} (rysunek~\ref{fig:verisign-dnssec}) potwierdziła pełną spójność i poprawność podpisów kryptograficznych od strefy głównej (\code{.}) przez rejestr krajowy \code{ch} (\code{DS=58745/SHA-256}) aż do strefy \code{ethz.ch} (\code{DS=43502/SHA-256}). Uczelnia wykorzystuje nowoczesny algorytm krzywych eliptycznych \textbf{ECDSAP256SHA256} (klucz podpisujący \code{DNSKEY=43502/SEP}), którym bezpośrednio uwierzytelniane są rekordy adresowe wydziału (w tym rekord \code{A 129.132.19.216} dla \code{inf.ethz.ch} opatrzony podpisem \code{RRSIG=43502}). Rozwiązanie to gwarantuje pełną odporność na ataki podmiany odpowiedzi DNS w tranzycie.
 
 \Figure[0.56]{verisign_dnssec_inf.png}{Pełna walidacja łańcucha zaufania DNSSEC dla subdomeny inf.ethz.ch z algorytmem ECDSAP256SHA256 (Verisign DNSSEC Analyzer)}{fig:verisign-dnssec}
 
@@ -327,6 +327,8 @@ Dodatkowym artefaktem technologicznym wykrytym w strefie \code{TXT} domeny \code
 \bottomrule
 \end{tabularx}
 \end{table}
+
+Skierowanie ruchu pocztowego dla obu stref przez chmurową bramę Microsoft EOP (\code{AS8075}) istotnie podnosi bazowy poziom filtracji antyspamowej, jednak samo przekierowanie rekordów \code{MX} nie wyklucza możliwości podszywania się pod adresy w domenie \code{inf.ethz.ch}. O rzeczywistej odporności perymetru pocztowego na ataki typu \textit{email spoofing} decyduje dopiero restrykcyjność mechanizmów uwierzytelniania nadawców (\code{SPF}, \code{DKIM} oraz \code{DMARC}), których szczegółowy audyt przedstawiono w kolejnym podrozdziale.
 
 \subsection{Ochrona poczty elektronicznej (SPF, DKIM, DMARC)}\label{subsec:ochrona-poczty-dmarc}
 % TO-DO:
