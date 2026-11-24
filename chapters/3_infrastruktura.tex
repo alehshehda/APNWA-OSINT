@@ -280,11 +280,11 @@ System nazw domenowych (DNS) stanowi centralny punkt odniesienia dla wszystkich 
 
 \subsection{Architektura i rekordy strefy DNS}\label{subsec:rekordy-dns}
 
-Pasywne odpytanie rekordów strefowych dla domeny nadrzędnej \code{ethz.ch} oraz subdomeny wydziałowej \code{inf.ethz.ch} (z wykorzystaniem analizatorów \textit{IntoDNS}, \textit{Verisign DNSSEC Analyzer}, \textit{MXToolbox} oraz publicznych resolwerów) wykazało scentralizowany model zarządzania przestrzenią nazw uczelni.
+Pasywne odpytanie rekordów strefowych dla domeny nadrzędnej \code{ethz.ch} oraz subdomeny wydziałowej wykazało scentralizowany model zarządzania przestrzenią nazw uczelni.
 
 \lead{Model Hidden Primary (SOA, NS) i brak odrębnej delegacji subdomeny}
 
-Kluczową obserwacją architektoniczną jest fakt, że subdomena \code{inf.ethz.ch} nie posiada własnych rekordów \code{NS} ani osobnej podstrefy delegowanej na serwery wydziałowe -- wszystkie rekordy D-INFK są utrzymywane bezpośrednio wewnątrz monolitycznej strefy głównej \code{ethz.ch}. Analiza rekordu \code{SOA} oraz audyt delegacji na poziomie serwera rejestru krajowego \code{f.nic.ch} w narzędziu \textit{IntoDNS} (rysunek~\ref{fig:intodns-ns}) ujawniają klasyczną architekturę ukrytego serwera nadrzędnego (\textit{Hidden Primary}):
+Kluczową obserwacją architektoniczną jest fakt, że subdomena \code{inf.ethz.ch} nie posiada własnych rekordów \code{NS} ani osobnej podstrefy delegowanej na serwery wydziałowe -- wszystkie rekordy D-INFK są utrzymywane bezpośrednio wewnątrz monolitycznej strefy głównej \code{ethz.ch}. Analiza rekordu \code{SOA} oraz audyt delegacji na poziomie serwera rejestru krajowego \code{f.nic.ch} w narzędziu \textit{IntoDNS} (rysunek~\ref{fig:intodns-ns}) ujawniają klasyczną architekturę ukrytego serwera nadrzędnego:
 \begin{itemize}
     \item jako serwer źródłowy (\code{MNAME}) wskazano niepublikowany na zewnątrz węzeł \code{ns.ethz.ch} (kontakt: \code{hostmaster@ethz.ch}, numer seryjny \code{472701}, parametry synchronizacji: \code{refresh 10800 s}, \code{retry 3600 s}, \code{expire 604800 s} oraz krótki domyślny czas życia \code{TTL 300 s} ułatwiający szybkie przełączanie awaryjne),
     \item ruch zapytań publicznych obsługują trzy serwery wtórne (\code{TTL 3600 s}) z poprawnie skonfigurowanymi rekordami sklejającymi (\textit{Glue Records} zgodnie z RFC~1912), rozproszone pomiędzy dwie niezależne sieci autonomiczne: dwa węzły kampusowe (\code{ns1.ethz.ch} -- \code{129.132.98.8} / \code{2001:67c:10ec::a} oraz \code{ns2.ethz.ch} -- \code{129.132.250.8} / \code{2001:67c:10ec::b}) oraz zewnętrzny węzeł zapasowy operatora akademickiego SWITCH (\code{ns2.switch.ch} -- \code{130.59.31.29} / \code{2001:620:0:ff::2f}).
@@ -301,55 +301,7 @@ Weryfikacja przeprowadzona narzędziem \textit{Verisign DNSSEC Analyzer} (rysune
 
 \lead{Infrastruktura pocztowa (MX) i rekordy usługowe (TXT)}
 
-Analiza rekordów kierowania poczty (\code{MX}) wykazała odejście od tradycyjnych, lokalnych bramek pocztowych na rzecz chmurowego filtra brzegowego \textbf{Microsoft Exchange Online Protection (EOP)} w systemie autonomicznym \code{AS8075} (rysunek~\ref{fig:dns-inf-overview}). Zarówno domena główna (\code{0 ethz-ch.mail.protection.outlook.com}), jak i subdomena wydziałowa (\code{0 inf-ethz-ch.mail.protection.outlook.com}, \code{TTL 3600 s}) posiadają dedykowane punkty końcowe z obsługą czterech adresów IPv4 (\code{52.101.185.12}--\code{.14}, \code{52.101.187.1}) oraz czterech adresów IPv6 (\code{2a01:111:f403:ca3c::...}), zlokalizowanych w szwajcarskim regionie przetwarzania danych Microsoftu. Integrację z chmurą Microsoft 365 potwierdza również token weryfikacyjny w rekordzie \code{TXT} (\code{MS=C9ACE593AD931F66157E2F02E496E44774E970BB}).
-
-Dodatkowym artefaktem technologicznym wykrytym w strefie \code{TXT} domeny \code{inf.ethz.ch} jest wpis \code{x-sciondiscovery=8041}, wskazujący punkt odkrywania topologii dla architektury sieciowej nowej generacji \textbf{SCION}, rozwijanej badawczo bezpośrednio na Wydziale Informatyki ETH Zürich. Zbiorcze zestawienie zidentyfikowanych rekordów strefowych ujęto w tabeli~\ref{tab:dns-rekordy}.
-
-\Figure[0.88]{dns_records_inf_overview.jpg}{Zestawienie rekordów A, AAAA, MX (Microsoft EOP w regionie szwajcarskim) oraz TXT dla domeny inf.ethz.ch}{fig:dns-inf-overview}
-
-\begin{table}[H]
-\caption{Kluczowe rekordy infrastrukturalne strefy DNS dla domeny ethz.ch oraz inf.ethz.ch}
-\label{tab:dns-rekordy}
-\centering\tablefont
-\begin{tabularx}{\linewidth}{L{0.16\linewidth} L{0.20\linewidth} L{0.36\linewidth} Y}
-\toprule
-\hcell{Typ rekordu} & \hcell{Strefa} & \hcell{Wartość rekordu} & \hcell{Znaczenie architektoniczne} \\
-\midrule
-\code{SOA} & \code{ethz.ch} & \code{ns.ethz.ch}, \code{hostmaster.ethz.ch} (\code{serial: 472701}, \code{TTL: 300 s}) & Ukryty serwer główny (\textit{Hidden Primary}) i szybka propagacja zmian \\
-\midrule
-\code{NS} & \code{ethz.ch} \newline (w tym \code{inf}) & \code{ns1.ethz.ch}, \code{ns2.ethz.ch}, \code{ns2.switch.ch} & Redundancja Dual-Stack pomiędzy siecią kampusową a operatorem SWITCH \\
-\midrule
-\code{DNSKEY / DS} & \code{ethz.ch} & \code{43502/SHA-256} (\code{ECDSAP256SHA256}) & Kryptograficzna ochrona rekordów \code{inf.ethz.ch} przed zatruwaniem DNS \\
-\midrule
-\code{MX} & \code{inf.ethz.ch} \newline \code{ethz.ch} & \code{0 inf-ethz-ch.mail.protection.outlook.com} \newline \code{0 ethz-ch.mail.protection.outlook.com} & Chmurowa filtracja antyspamowa i antyphishingowa Microsoft EOP (\code{AS8075}, CH) \\
-\midrule
-\code{TXT} (usługowe) & \code{inf.ethz.ch} & \code{MS=C9ACE593...} \newline \code{x-sciondiscovery=8041} & Walidacja dzierżawy Microsoft 365 oraz ogłoszenie węzła architektury SCION \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-Pasywne odpytanie rekordów strefowych dla domeny nadrzędnej \code{ethz.ch} oraz subdomeny wydziałowej \code{inf.ethz.ch} (z wykorzystaniem analizatorów \textit{IntoDNS}, \textit{Verisign DNSSEC Analyzer}, \textit{MXToolbox} oraz publicznych resolwerów) wykazało scentralizowany model zarządzania przestrzenią nazw uczelni.
-
-\lead{Model Hidden Primary (SOA, NS) i brak odrębnej delegacji subdomeny}
-
-Kluczową obserwacją architektoniczną jest fakt, że subdomena \code{inf.ethz.ch} nie posiada własnych rekordów \code{NS} ani osobnej podstrefy delegowanej na serwery wydziałowe -- wszystkie rekordy D-INFK są utrzymywane bezpośrednio wewnątrz monolitycznej strefy głównej \code{ethz.ch}. Analiza rekordu \code{SOA} oraz audyt delegacji na poziomie serwera rejestru krajowego \code{f.nic.ch} w narzędziu \textit{IntoDNS} (rysunek~\ref{fig:intodns-ns}) ujawniają klasyczną architekturę ukrytego serwera nadrzędnego (\textit{Hidden Primary}):
-\begin{itemize}
-    \item jako serwer źródłowy (\code{MNAME}) wskazano niepublikowany na zewnątrz węzeł \code{ns.ethz.ch} (kontakt: \code{hostmaster@ethz.ch}, numer seryjny \code{472701}, parametry synchronizacji: \code{refresh 10800 s}, \code{retry 3600 s}, \code{expire 604800 s} oraz krótki domyślny czas życia \code{TTL 300 s} ułatwiający szybkie przełączanie awaryjne),
-    \item ruch zapytań publicznych obsługują trzy serwery wtórne (\code{TTL 3600 s}) z poprawnie skonfigurowanymi rekordami sklejającymi (\textit{Glue Records} zgodnie z RFC~1912), rozproszone pomiędzy dwie niezależne sieci autonomiczne: dwa węzły kampusowe (\code{ns1.ethz.ch} -- \code{129.132.98.8} / \code{2001:67c:10ec::a} oraz \code{ns2.ethz.ch} -- \code{129.132.250.8} / \code{2001:67c:10ec::b}) oraz zewnętrzny węzeł zapasowy operatora akademickiego SWITCH (\code{ns2.switch.ch} -- \code{130.59.31.29} / \code{2001:620:0:ff::2f}).
-\end{itemize}
-Ukrycie głównego serwera \code{ns.ethz.ch} za serwerami wtórnymi skutecznie chroni proces zarządzania strefą przed ukierunkowanymi atakami odmowy usługi oraz próbami bezpośredniej eksploatacji interfejsu administracyjnego DNS.
-
-\Figure[0.82]{intodns_parent_ns.png}{Weryfikacja delegacji serwerów nazw na węźle nadrzędnym f.nic.ch oraz rekordów sklejających Glue wg RFC 1912 (IntoDNS)}{fig:intodns-ns}
-
-\lead{Kryptograficzna walidacja łańcucha DNSSEC}
-
-Weryfikacja przeprowadzona narzędziem \textit{Verisign DNSSEC Analyzer} (rysunek~\ref{fig:verisign-dnssec}) potwierdziła pełną spójność i poprawność podpisów kryptograficznych od strefy głównej (\code{.}) przez rejestr krajowy \code{ch} (\code{DS=58745/SHA-256}) aż do strefy \code{ethz.ch} (\code{DS=43502/SHA-256}). Uczelnia wykorzystuje nowoczesny algorytm krzywych eliptycznych \textbf{ECDSAP256SHA256} (klucz podpisujący \code{DNSKEY=43502/SEP}), którym bezpośrednio uwierzytelniane są rekordy adresowe wydziału (w tym rekord \code{A 129.132.19.216} dla \code{inf.ethz.ch} opatrzony podpisem \code{RRSIG=43502}). Rozwiązanie to gwarantuje pełną odporność na ataki podmiany odpowiedzi DNS w tranzycie (\textit{DNS Spoofing} / \textit{Cache Poisoning}).
-
-\Figure[0.56]{verisign_dnssec_inf.png}{Pełna walidacja łańcucha zaufania DNSSEC dla subdomeny inf.ethz.ch z algorytmem ECDSAP256SHA256 (Verisign DNSSEC Analyzer)}{fig:verisign-dnssec}
-
-\lead{Infrastruktura pocztowa (MX) i rekordy usługowe (TXT)}
-
-Analiza rekordów kierowania poczty (\code{MX}) wykazała odejście od tradycyjnych, lokalnych bramek pocztowych na rzecz chmurowego filtra brzegowego \textbf{Microsoft Exchange Online Protection (EOP)} w systemie autonomicznym \code{AS8075} (rysunek~\ref{fig:dns-inf-overview}). Zarówno domena główna (\code{0 ethz-ch.mail.protection.outlook.com}), jak i subdomena wydziałowa (\code{0 inf-ethz-ch.mail.protection.outlook.com}, \code{TTL 3600 s}) posiadają dedykowane punkty końcowe z obsługą czterech adresów IPv4 (\code{52.101.185.12}--\code{.14}, \code{52.101.187.1}) oraz czterech adresów IPv6 (\code{2a01:111:f403:ca3c::...}), zlokalizowanych w szwajcarskim regionie przetwarzania danych Microsoftu. Integrację z chmurą Microsoft 365 potwierdza również token weryfikacyjny w rekordzie \code{TXT} (\code{MS=C9ACE593AD931F66157E2F02E496E44774E970BB}).
+Analiza rekordów kierowania poczty (\code{MX}) wykazała odejście od tradycyjnych, lokalnych bramek pocztowych na rzecz chmurowego filtra brzegowego \textbf{Microsoft Exchange Online Protection (EOP)} w systemie autonomicznym \code{AS8075} (rysunek~\ref{fig:dns-inf-overview}). Zarówno domena główna (\code{0 ethz-ch.mail.protection.outlook.com}), jak i subdomena wydziałowa (\code{0 inf-ethz-ch.mail.protection.outlook.com}) posiadają dedykowane punkty końcowe z obsługą czterech adresów IPv4 (\code{52.101.185.12}--\code{.14}, \code{52.101.187.1}) oraz czterech adresów IPv6 (\code{2a01:111:f403:ca3c::...}), zlokalizowanych w szwajcarskim regionie przetwarzania danych Microsoftu. Integrację z chmurą Microsoft 365 potwierdza również token weryfikacyjny w rekordzie \code{TXT} (\code{MS=C9ACE593AD931F66157E2F02E496E44774E970BB}).
 
 Dodatkowym artefaktem technologicznym wykrytym w strefie \code{TXT} domeny \code{inf.ethz.ch} jest wpis \code{x-sciondiscovery=8041}, wskazujący punkt odkrywania topologii dla architektury sieciowej nowej generacji \textbf{SCION}, rozwijanej badawczo bezpośrednio na Wydziale Informatyki ETH Zürich. Zbiorcze zestawienie zidentyfikowanych rekordów strefowych ujęto w tabeli~\ref{tab:dns-rekordy}.
 
